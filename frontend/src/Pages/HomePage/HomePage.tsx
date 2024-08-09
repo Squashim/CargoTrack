@@ -1,32 +1,34 @@
-import "./HomePage.css";
+import NavBar from "../../components/Navbar/Navbar";
+import styles from "./HomePage.module.scss";
 
 const HomePage = () => {
 	return (
 		<>
-			<main id='main-home'>
-				<article>
-					<h1>
-						Zarządzaj transportami swojej firmy na bieżąco, z jednego miejsca.
-					</h1>
-					<h2>
-						Pomagamy w tworzeniu i zarządzaniu firmami zajmującymi się
-						transportami towarów.
-					</h2>
-
-					<div>
-						<button>ZOBACZ OFERTĘ</button>
-						<button>PRZETESTUJ</button>
-					</div>
-				</article>
+			<NavBar />
+			<main className={styles.main}>
+				<h1>Spróbuj swoich sił w zarządzaniu firmą transportową.</h1>
+				<h2>
+					Nasza strona oferuje symulację działalności przedsiębiorstwa, w którym
+					to użytkownik wciela się w rolę kierownika.
+				</h2>
+				<h3>
+					Kupuj, sprzedawaj, transportuj, zatrudniaj i konkuruj z innymi firmami
+					na rynku.
+				</h3>
+				<button>Rozpocznij zabawę</button>
+				<p>lub</p>
+				<button>Sprawdź jak to działa</button>
 			</main>
-			<section id='how-it-works'>
+			<section id='how'>
 				<h2>Jak to działa?</h2>
 			</section>
-			<section id='for-company'>
-				<h2>Dla firm?</h2>
+
+			<section id='scoreboard'>
+				<h2>Tablica wyników</h2>
 			</section>
-			<section id='about'>
-				<h2>O nas</h2>
+
+			<section id='faq'>
+				<h2>FAQ</h2>
 			</section>
 		</>
 	);
