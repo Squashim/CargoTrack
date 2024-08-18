@@ -1,0 +1,59 @@
+@import "../../styles/variables.scss";
+
+.accordion_container {
+	width: 100%;
+
+	.wrapper {
+		border-bottom: 1px solid $background;
+		overflow: hidden;
+
+		.question_container {
+			padding: 1rem;
+			font-weight: 600;
+			color: $copy;
+			width: 100%;
+			text-align: left;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			background: $foreground;
+			border: 1px solid $border;
+			cursor: pointer;
+			box-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.3);
+			border-radius: 0.25rem;
+			transition: all 0.5s ease;
+
+			&.active {
+				background: $primary;
+				color: $primary-content;
+				border-radius: 0.25rem 0.25rem 0 0;
+
+				&:hover {
+					border-color: $primary-content;
+					background: $primary-light;
+				}
+			}
+
+			&:hover {
+				border-color: $copy-lighter;
+			}
+		}
+
+		.answer_container {
+			padding: 0rem 1rem;
+			transition: height 0.7s ease-in-out;
+			background: $foreground;
+			border-radius: 0 0 0.25rem 0.25rem;
+
+			.content {
+				padding: 1rem 0;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 880px) {
+	.accordion_container {
+		max-width: 40rem;
+	}
+}

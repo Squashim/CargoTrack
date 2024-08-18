@@ -1,0 +1,135 @@
+[
+	{
+		"month": "july",
+		"year": "2024",
+		"scoreboard": [
+			{
+				"companyName": "Polska Logistyka",
+				"username": "LogistykaMaster",
+				"balance": 1200000
+			},
+			{
+				"companyName": "Krajowy Transport Spedycyjny",
+				"username": "TransportowiecPL",
+				"balance": 950000
+			},
+			{
+				"companyName": "Wielkopolska Spedycja",
+				"username": "SpedytorX",
+				"balance": 800000
+			},
+			{
+				"companyName": "Express Cargo Polska",
+				"username": "CargoBoss",
+				"balance": 650000
+			},
+			{
+				"companyName": "Mazowieckie Przewozy",
+				"username": "MazoviaDrive",
+				"balance": 450000
+			},
+			{
+				"companyName": "Pomorska Logistyka i Transport",
+				"username": "PomorzeLogistics",
+				"balance": 440000
+			},
+			{
+				"companyName": "Centralny Transport Towarowy",
+				"username": "CentralCargo",
+				"balance": 340000
+			},
+			{
+				"companyName": "Beskidzka Spedycja",
+				"username": "BeskidTrans",
+				"balance": 240000
+			},
+			{
+				"companyName": "Śląskie Przewozy i Logistyka",
+				"username": "SilesiaTruck",
+				"balance": 120000
+			},
+			{
+				"companyName": "Transport i Logistyka Wschód",
+				"username": "EastLogistics",
+				"balance": 1050000
+			}
+		]
+	},
+	{
+		"month": "august",
+		"year": "2024",
+		"scoreboard": [
+			{
+				"companyName": "Polska Logistyka 2.0",
+				"username": "LogistykaPro",
+				"balance": 1300000
+			},
+			{
+				"companyName": "Krajowy Transport Spedycyjny",
+				"username": "TransMasterPL",
+				"balance": 1000000
+			},
+			{
+				"companyName": "Wielkopolska Spedycja Premium",
+				"username": "SpedytorMax",
+				"balance": 850000
+			},
+			{
+				"companyName": "Express Cargo Polska Extra",
+				"username": "CargoKing",
+				"balance": 820000
+			},
+			{
+				"companyName": "Mazowieckie Przewozy Plus",
+				"username": "MazoviaDrivePro",
+				"balance": 750000
+			},
+			{
+				"companyName": "Pomorska Logistyka i Transport Max",
+				"username": "PomorzeLogiX",
+				"balance": 650000
+			},
+			{
+				"companyName": "Centralny Transport Towarowy 2.0",
+				"username": "CentralFreight",
+				"balance": 550000
+			},
+			{
+				"companyName": "Beskidzka Spedycja Pro",
+				"username": "BeskidExpress",
+				"balance": 400000
+			},
+			{
+				"companyName": "Śląskie Przewozy i Logistyka Plus",
+				"username": "SilesiaExpress",
+				"balance": 350000
+			},
+			{
+				"companyName": "Transport i Logistyka Wschód Pro",
+				"username": "EastTrans",
+				"balance": 200000
+			}
+		]
+	},
+	{
+		"month": "september",
+		"year": "2024",
+		"scoreboard": [
+			{
+				"companyName": "Krajowy Transport Spedycyjny",
+				"username": "TransMasterPL",
+				"balance": 450000
+			},
+			{
+				"companyName": "Polska Logistyka 2.0",
+				"username": "LogistykaPro",
+				"balance": 25000
+			}
+		]
+	},
+	{
+		"month": "october",
+		"year": "2024",
+		"scoreboard": []
+	}
+]

@@ -4,60 +4,72 @@ import styles from "./Navbar.module.scss";
 import Button from "../Button/Button";
 import arrow_right from "../../assets/icons/arrow-right.svg";
 import hamburger from "../../assets/icons/hamburger.svg";
+import close from "../../assets/icons/close.svg";
 
 import { useNavigate } from "react-router-dom";
-
-const navLinks = [
-	{
-		title: "jak grać",
-		to: "#how",
-	},
-	{
-		title: "tabela wyników",
-		to: "#scoreboard",
-	},
-	{
-		title: "faq",
-		to: "#faq",
-	},
-];
+import { useState } from "react";
 
 const NavBar = () => {
 	const navigate = useNavigate();
+	const [showMenu, setShowMenu] = useState(false);
+	const toggleMenu = () => {
+		setShowMenu(!showMenu);
+	};
+	const closeMenuOnMobile = () => {
+		if (window.innerWidth <= 1150) {
+			setShowMenu(false);
+		}
+	};
 
 	return (
 		<nav className={styles.nav_container}>
-			<Link to='/'>
+			<Link to='/#main' className={styles.logo}>
 				<img src={logo} alt='Cargo Track Logo' />
 			</Link>
 
-			<div className={styles.nav_menu}>
-				<div>
-					{navLinks.map((link) => {
-						return (
-							<Link key={link.title} to={link.to}>
-								{link.title}
-							</Link>
-						);
-					})}
+			<div className={`${styles.nav_menu} ${showMenu ? styles.showMenu : ""}`}>
+				<div className={styles.nav_links}>
+					<Link onClick={closeMenuOnMobile} to='#how'>
+						jak grać
+					</Link>
+					<Link onClick={closeMenuOnMobile} to='#scoreboard'>
+						tabela wyników
+					</Link>
+					<Link onClick={closeMenuOnMobile} to='#faq'>
+						FAQ
+					</Link>
+					<Link onClick={closeMenuOnMobile} to='#contact'>
+						kontakt
+					</Link>
 				</div>
-				<div>
+				<div
+					className={`${styles.nav_buttons} ${
+						showMenu ? styles.showMenu : ""
+					}`}>
 					<Button
+						size='small'
 						style='secondary'
-						text='logowanie'
+						text='Logowanie'
 						onClick={() => navigate("/logowanie")}
 					/>
 					<Button
+						size='small'
 						style='primary'
 						icon={arrow_right}
 						iconType={"icon-right"}
-						text='dołącz za darmo'
+						text='Dołącz za darmo'
 						onClick={() => navigate("/rejestracja")}
 					/>
 				</div>
-				<div>
-					<Button style='secondary' iconType='only-icon' icon={hamburger} />
-				</div>
+			</div>
+
+			<div className={styles.toggleBtn}>
+				<Button
+					style='secondary'
+					iconType='only-icon'
+					icon={showMenu ? close : hamburger}
+					onClick={toggleMenu}
+				/>
 			</div>
 		</nav>
 	);

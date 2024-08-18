@@ -1,4 +1,266 @@
 @import "../../styles/variables.scss";
 
+.svg_container {
+	position: relative;
+	width: 1337px;
+	top: 15rem;
+	bottom: 0;
+	left: 60%;
+	transform: translateX(-60%);
+	opacity: 0.5;
+	z-index: -1;
+
+	@media screen and (max-width: 1360px) {
+		left: 100%;
+		transform: translateX(-100%);
+	}
+
+	@media screen and (max-width: 975px) {
+		display: none;
+	}
+
+	@media screen and (max-height: 875px) {
+		top: 5.5rem;
+	}
+	@media screen and (max-height: 718px) {
+		display: none;
+	}
+
+	svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		path {
+			stroke-dasharray: 1000;
+			stroke-dashoffset: 1000;
+			stroke: $copy-light;
+			stroke-width: 20px;
+			stroke-linecap: round;
+		}
+	}
+
+	.truck {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 60px;
+		height: 60px;
+		transform-origin: bottom;
+		background: $copy-light;
+		padding: 0.25rem;
+		border-radius: 50%;
+
+		img {
+			width: 100%;
+			height: 100%;
+			filter: brightness(0) saturate(100%) invert(4%) sepia(4%) saturate(6837%)
+				hue-rotate(300deg) brightness(84%) contrast(76%);
+		}
+	}
+}
+
 .main {
+	min-height: 100vh;
+	padding: 1rem;
+	padding-top: calc($header-height + 10vh);
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-top: 3rem;
+	max-width: 1280px;
+	margin: 0 auto;
+
+	hr {
+		border: 0;
+		font-size: 0.875rem;
+		height: 1.5rem;
+		line-height: 1rem;
+		position: relative;
+		text-align: center;
+
+		&::before {
+			content: "";
+			background: $copy;
+			position: absolute;
+			left: 0;
+			top: 50%;
+			width: 100%;
+			height: 1px;
+		}
+
+		&::after {
+			background: $background;
+			color: $copy;
+			content: attr(data-content);
+			line-height: 1.5rem;
+			padding-inline: 0.5rem;
+			position: relative;
+		}
+	}
+
+	.btn_group {
+		margin-top: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.mouse_scroll {
+		position: fixed;
+		bottom: 4rem;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 40px;
+		height: 60px;
+		border: 3px solid $border;
+		border-radius: 60px;
+		z-index: -1;
+		margin: 0;
+		padding: 0;
+
+		&::before {
+			content: "";
+			width: 10px;
+			height: 10px;
+			position: absolute;
+			top: 10px;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: $copy-lighter;
+			border-radius: 50%;
+			opacity: 1;
+			animation: wheel 2s infinite;
+			-webkit-animation: wheel 2s infinite;
+		}
+
+		img {
+			width: 32px;
+			height: 32px;
+			position: absolute;
+			bottom: -2rem;
+			left: 50%;
+			transform: translateX(-50%);
+			filter: brightness(0) saturate(100%) invert(19%) sepia(2%) saturate(4818%)
+				hue-rotate(298deg) brightness(82%) contrast(75%);
+		}
+
+		@keyframes wheel {
+			to {
+				opacity: 0;
+				top: 40px;
+			}
+		}
+		@media screen and (max-width: 768px) {
+			display: none;
+		}
+		@media screen and (max-height: 718px) {
+			display: none;
+		}
+	}
+}
+
+.section {
+	padding: 7rem 1rem 1rem 1rem;
+
+	// how section
+	&:nth-of-type(1) {
+		display: grid;
+		gap: 1.5rem;
+		max-width: 1280px;
+		margin: 0 auto;
+
+		.warning {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.25rem;
+			border-radius: 0.25rem;
+			padding: 0.25rem;
+			background: $warning;
+			margin: 0 auto;
+
+			color: $warning-content;
+
+			// invert color to black
+			img {
+				filter: brightness(0) saturate(100%) invert(0%) sepia(0%)
+					saturate(7500%) hue-rotate(340deg) brightness(99%) contrast(106%);
+			}
+
+			p {
+				font-weight: 600;
+			}
+		}
+	}
+
+	// scoreboard section
+	&:nth-of-type(2) {
+		max-width: 1280px;
+		margin: 0 auto;
+		display: grid;
+	}
+
+	// faq section
+	&:nth-of-type(3) {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		justify-content: center;
+		max-width: 1280px;
+		margin: 0 auto;
+	}
+}
+
+@media screen and (min-width: 880px) {
+	.container {
+		background-position: 120%;
+		background-size: 60%;
+	}
+	.main {
+		& > h1,
+		h2,
+		h3 {
+			max-width: 880px;
+		}
+
+		.btn_group {
+			flex-direction: row;
+			gap: 3rem;
+			button {
+				width: 25rem;
+			}
+			hr {
+				display: none;
+			}
+		}
+	}
+
+	.section {
+		// how section
+		&:nth-of-type(1) {
+			grid-template-columns: 1fr 1fr 1fr;
+
+			.warning {
+				padding: 0.5rem;
+			}
+
+			.warning,
+			h2 {
+				grid-column: span 3;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.section {
+		// scoreboard section
+		&:nth-of-type(2) {
+			grid-template-columns: 1fr 1fr;
+			gap: 1rem;
+		}
+	}
 }

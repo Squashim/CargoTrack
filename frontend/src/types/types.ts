@@ -11,3 +11,15 @@ export type City = {
 	population: string;
 	id: string;
 };
+
+export type Scoreboard = {
+	companyName: string;
+	balance: number;
+	username: string;
+};
+
+export type ScoreData = {
+	month: string;
+	year: string;
+	scoreboard: Scoreboard[];
+};
