@@ -1,18 +1,21 @@
 package backend.cargoTrack.model;
 
-import org.springframework.data.annotation.Id;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "\"user\"")
-public class User {
+public class User implements UserDetails {
   @jakarta.persistence.Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id_user")
@@ -31,8 +34,8 @@ public class User {
   public void setId(Long id) {
     this.id = id;
   }
-
-  public String getEmail() {
+  @Override
+  public String getUsername() {
     return email;
   }
 
@@ -40,6 +43,12 @@ public class User {
     this.email = email;
   }
 
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of();
+  }
+
+  @Override
   public String getPassword() {
     return password;
   }
@@ -54,5 +63,24 @@ public class User {
 
   public void setCompanyName(String companyName) {
     this.companyName = companyName;
+  }
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
   }
 }

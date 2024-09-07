@@ -41,8 +41,26 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
+      </dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+  <dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-api</artifactId>
+    <version>0.11.5</version>
+  </dependency>
+  <dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-impl</artifactId>
+    <version>0.11.5</version>
+  </dependency>
+  <dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt-jackson</artifactId>
+    <version>0.11.5</version>
+  </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -70,6 +88,11 @@
       <artifactId>spring-security-core</artifactId>
       <version>6.3.3</version>
     </dependency>
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>dotenv-java</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
