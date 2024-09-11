@@ -7,7 +7,7 @@ import backend.cargoTrack.model.User;
 import java.util.List;
 
 @RepositoryRestResource
-public interface UserRepositories extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
   List<User> findByCompanyName(String companyName);
 
   User findByEmail(String email);

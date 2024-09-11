@@ -4,7 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import backend.cargoTrack.repositories.UserRepositories;
+import backend.cargoTrack.repositories.UserRepository;
 import backend.cargoTrack.dtos.LoginDto;
 import backend.cargoTrack.dtos.RegisterDto;
 import backend.cargoTrack.model.User;
@@ -12,12 +12,12 @@ import backend.cargoTrack.model.User;
 @Service
 public class AuthenticationService {
 
-  private final UserRepositories userRepository;
+  private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationService(
-      UserRepositories userRepository,
+      UserRepository userRepository,
       AuthenticationManager authenticationManager,
       PasswordEncoder passwordEncoder) {
     this.authenticationManager = authenticationManager;

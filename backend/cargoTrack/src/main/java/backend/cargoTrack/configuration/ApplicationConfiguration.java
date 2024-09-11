@@ -1,7 +1,7 @@
 package backend.cargoTrack.configuration;
 
 import backend.cargoTrack.model.User;
-import backend.cargoTrack.repositories.UserRepositories;
+import backend.cargoTrack.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class ApplicationConfiguration {
-    private final UserRepositories userRepository;
+    private final UserRepository userRepository;
 
-    public ApplicationConfiguration(UserRepositories userRepository) {
+    public ApplicationConfiguration(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

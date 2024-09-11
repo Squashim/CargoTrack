@@ -3,11 +3,9 @@ package backend.cargoTrack.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import backend.cargoTrack.repositories.UserRepositories;
+import backend.cargoTrack.repositories.UserRepository;
 
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +22,7 @@ import backend.cargoTrack.responses.LoginResponse;
 public class LoginController {
 
   @Autowired
-  UserRepositories userRepo;
+  UserRepository userRepo;
   @Autowired
   PasswordEncoder passwordEncoder;
 
