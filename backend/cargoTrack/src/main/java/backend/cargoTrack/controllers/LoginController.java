@@ -44,11 +44,11 @@ public class LoginController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<User> register(@RequestBody RegisterDto registerUserDto) {
+  public ResponseEntity<String> register(@RequestBody RegisterDto registerUserDto) {
     System.out.println("register");
     User registeredUser = authenticationService.signup(registerUserDto);
 
-    return ResponseEntity.ok(registeredUser);
+    return ResponseEntity.ok("Zarejestrowano pomyslnie");
   }
 
   @PostMapping("/login")

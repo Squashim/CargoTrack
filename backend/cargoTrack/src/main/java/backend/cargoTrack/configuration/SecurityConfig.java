@@ -32,6 +32,8 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf()
             .disable()
+            .cors()
+            .and()
             .authorizeHttpRequests()
             .requestMatchers("/auth/**")
             .permitAll()
@@ -44,6 +46,7 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+
     return http.build();
   }
 
@@ -51,7 +54,7 @@ public class SecurityConfig {
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
 
-    configuration.setAllowedOrigins(List.of("http://localhost:8080"));
+    configuration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:5173"));
     configuration.setAllowedMethods(List.of("GET","POST"));
     configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
