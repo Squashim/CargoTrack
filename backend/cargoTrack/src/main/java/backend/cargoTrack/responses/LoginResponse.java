@@ -5,6 +5,7 @@ public class LoginResponse {
   private String token;
   private long expiresIn;
   private String refreshToken;
+  private String error;
   public String getToken() {
     return token;
   }
@@ -22,4 +23,6 @@ public class LoginResponse {
   }
   public void setRefreshToken(String refreshToken) {this.refreshToken = refreshToken;}
   public String getRefreshToken() {return refreshToken;}
+  public String getError() {return error;}
+  public void setError(String error) {this.error = error;}
 }

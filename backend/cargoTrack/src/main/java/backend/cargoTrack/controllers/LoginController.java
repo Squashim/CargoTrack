@@ -3,6 +3,7 @@ package backend.cargoTrack.controllers;
 import backend.cargoTrack.dtos.RefreshTokenDto;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,24 +46,51 @@ public class LoginController {
 
   @PostMapping("/signup")
   public ResponseEntity<String> register(@RequestBody RegisterDto registerUserDto) {
-    System.out.println("register");
-    User registeredUser = authenticationService.signup(registerUserDto);
-
-    return ResponseEntity.ok("Zarejestrowano pomyslnie");
+    try {
+      User registeredUser = authenticationService.signup(registerUserDto);
+      return ResponseEntity.ok("Zarejestrowano pomyślnie");
+    } catch (IllegalArgumentException e) {
+      String errorMessage = e.getMessage();
+      if (errorMessage.equals("Użytkownik o podanym e-mailu już istnieje")) {
+        return ResponseEntity.status(400).body("Użytkownik o podanym e-mailu już istnieje");
+      } else if (errorMessage.equals("Firma o podanej nazwie już istnieje")) {
+        return ResponseEntity.status(400).body("Firma o podanej nazwie już istnieje");
+      } else {
+        return ResponseEntity.status(400).body(errorMessage);
+      }
+    } catch (Exception e) {
+      return ResponseEntity.status(500).body("Wystąpił błąd podczas rejestracji");
+    }
   }
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginUserDto) {
-    User authenticatedUser = authenticationService.authenticate(loginUserDto);
-    String jwtToken = jwtService.generateToken(authenticatedUser);
-    String refreshJwtToken = jwtService.generateRefreshToken(authenticatedUser);
-    LoginResponse loginResponse = new LoginResponse();
-    loginResponse.setToken(jwtToken);
-    loginResponse.setExpiresIn(jwtService.getExpirationTime());
-    loginResponse.setRefreshToken(refreshJwtToken);
-    System.out.println(loginResponse);
-    System.out.println(loginResponse.getRefreshToken());
-    return ResponseEntity.ok(loginResponse);
+    try {
+      User authenticatedUser = authenticationService.authenticate(loginUserDto);
+
+      String jwtToken = jwtService.generateToken(authenticatedUser);
+      String refreshJwtToken = jwtService.generateRefreshToken(authenticatedUser);
+
+      LoginResponse loginResponse = new LoginResponse();
+      loginResponse.setToken(jwtToken);
+      loginResponse.setExpiresIn(jwtService.getExpirationTime());
+      loginResponse.setRefreshToken(refreshJwtToken);
+
+      return ResponseEntity.ok(loginResponse);
+
+    } catch (BadCredentialsException e) {
+      LoginResponse response = new LoginResponse();
+      response.setError(e.getMessage());
+      return ResponseEntity.status(401).body(response);
+    } catch (IllegalArgumentException e) {
+      LoginResponse response = new LoginResponse();
+      response.setError(e.getMessage());
+      return ResponseEntity.status(400).body(response);
+    } catch (Exception e) {
+      LoginResponse response = new LoginResponse();
+      response.setError("Wystąpił błąd podczas logowania");
+      return ResponseEntity.status(500).body(response);
+    }
   }
   @PostMapping("/refresh")
   public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshTokenDto refreshTokenDto) {
