@@ -8,7 +8,7 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface UserRepository extends JpaRepository<User, Long> {
-  List<User> findByCompanyName(String companyName);
+  User findByCompanyName(String companyName);
 
   User findByEmail(String email);
 }
