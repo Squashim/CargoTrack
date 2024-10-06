@@ -1,32 +1,85 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import axios from "axios";
+import { createContext, useState, useEffect } from "react";
 
-interface AuthContextType {
-	token: string | null;
-	setToken: React.Dispatch<React.SetStateAction<string | null>>;
-	loading: boolean;
+interface AuthState {
+	accessToken: string | null;
+	refreshToken: string | null;
+}
+
+interface AuthContextProps {
+	authState: AuthState;
+	setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
 }
 
 interface AuthProviderProps {
-	children: ReactNode;
+	children: React.ReactNode;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-	undefined
-);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [token, setToken] = useState<string | null>(null);
-	const [loading, setLoading] = useState<boolean>(true);
+	const [authState, setAuthState] = useState<AuthState>({
+		accessToken: null,
+		refreshToken: null,
+	});
 
 	useEffect(() => {
-		const storedToken = localStorage.getItem("token");
-		setToken(storedToken);
-		setLoading(false);
-	}, []);
+		const api = axios.create({
+			baseURL: "http://localhost:8080",
+		});
+
+		console.log(authState);
+
+		api.interceptors.request.use(
+			(config) => {
+				if (authState.accessToken) {
+					config.headers["Authorization"] = `Bearer ${authState.accessToken}`;
+				}
+				return config;
+			},
+			(error) => {
+				return Promise.reject(error);
+			}
+		);
+
+		api.interceptors.response.use(
+			(response) => {
+				return response;
+			},
+			async (error) => {
+				const originalRequest = error.config;
+				if (error.response.status === 401 && !originalRequest._retry) {
+					originalRequest._retry = true;
+					const response = await axios.post(
+						"https://localhost:8080/auth/refresh",
+						{
+							token: authState.refreshToken,
+						}
+					);
+					setAuthState({
+						...authState,
+						accessToken: response.data.token,
+					});
+					originalRequest.headers[
+						"Authorization"
+					] = `Bearer ${response.data.token}`;
+					return api(originalRequest);
+				}
+				return Promise.reject(error);
+			}
+		);
+
+		setAuthState((prevState) => ({
+			...prevState,
+			api,
+		}));
+	}, [authState.accessToken, authState.refreshToken]);
 
 	return (
-		<AuthContext.Provider value={{ token, setToken, loading }}>
+		<AuthContext.Provider value={{ authState, setAuthState }}>
 			{children}
 		</AuthContext.Provider>
 	);
 };
+
+export default AuthContext;

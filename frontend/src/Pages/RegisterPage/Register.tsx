@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../LoginPage/Login.module.scss";
 
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -38,23 +38,25 @@ const Register = () => {
 	const {
 		register,
 		handleSubmit,
-		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<FormFields>({
 		resolver: zodResolver(schema),
 	});
+	const navigate = useNavigate();
 
 	const onSubmit: SubmitHandler<FormFields> = async (data) => {
 		try {
 			const { companyName, email, password } = data;
 
 			const response = await axios.post("http://localhost:8080/auth/signup", {
-				email: email,
-				password: password,
-				companyName: companyName,
+				email,
+				password,
+				companyName,
 			});
 
-			console.log(response.data.message);
+			navigate("/logowanie");
+			alert("Zarejestrowano pomyślnie!");
+			console.log(response);
 		} catch (error) {
 			console.log(error);
 			// setError("email", {
