@@ -49,6 +49,7 @@ public class LoginController {
   @PostMapping("/signup")
   public ResponseEntity<String> register(@RequestBody RegisterDto registerUserDto) {
     try {
+      System.out.println("");
       User registeredUser = authenticationService.signup(registerUserDto);
       return ResponseEntity.ok("Zarejestrowano pomyślnie");
     } catch (IllegalArgumentException e) {
