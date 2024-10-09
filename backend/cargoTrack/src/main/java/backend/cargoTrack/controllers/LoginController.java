@@ -1,6 +1,8 @@
 package backend.cargoTrack.controllers;
 
 import backend.cargoTrack.dtos.RefreshTokenDto;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -64,7 +66,7 @@ public class LoginController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginUserDto) {
+  public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginDto loginUserDto, HttpServletResponse response) {
     try {
       User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
@@ -75,21 +77,31 @@ public class LoginController {
       loginResponse.setToken(jwtToken);
       loginResponse.setExpiresIn(jwtService.getExpirationTime());
       loginResponse.setRefreshToken(refreshJwtToken);
+      Cookie cookie = new Cookie("jwt",jwtToken);
+      cookie.setMaxAge(24*60*60);
+      cookie.setPath("/");
+      cookie.setHttpOnly(true);
+      response.addCookie(cookie);
+      Cookie cookie1 = new Cookie("refresh", refreshJwtToken);
+      cookie1.setMaxAge(24*60*7);
+      cookie1.setPath("/");
+      cookie1.setHttpOnly(true);
+      response.addCookie(cookie1);
 
       return ResponseEntity.ok(loginResponse);
 
     } catch (BadCredentialsException e) {
-      LoginResponse response = new LoginResponse();
-      response.setError(e.getMessage());
-      return ResponseEntity.status(401).body(response);
+      LoginResponse lresponse = new LoginResponse();
+      lresponse.setError(e.getMessage());
+      return ResponseEntity.status(401).body(lresponse);
     } catch (IllegalArgumentException e) {
-      LoginResponse response = new LoginResponse();
-      response.setError(e.getMessage());
-      return ResponseEntity.status(400).body(response);
+      LoginResponse lresponse = new LoginResponse();
+      lresponse.setError(e.getMessage());
+      return ResponseEntity.status(400).body(lresponse);
     } catch (Exception e) {
-      LoginResponse response = new LoginResponse();
-      response.setError("Wystąpił błąd podczas logowania");
-      return ResponseEntity.status(500).body(response);
+      LoginResponse lresponse = new LoginResponse();
+      lresponse.setError("Wystąpił błąd podczas logowania");
+      return ResponseEntity.status(500).body(lresponse);
     }
   }
   @PostMapping("/refresh")
