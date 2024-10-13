@@ -2,21 +2,18 @@ package backend.cargoTrack.controllers;
 
 import backend.cargoTrack.dtos.RefreshTokenDto;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import backend.cargoTrack.repositories.UserRepository;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import backend.cargoTrack.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,9 +34,9 @@ public class LoginController {
   private final JwtService jwtService;
 
   private final AuthenticationService authenticationService;
-    @Qualifier("userDetailsService")
-    @Autowired
-    private UserDetailsService userDetailsService;
+  @Qualifier("userDetailsService")
+  @Autowired
+  private UserDetailsService userDetailsService;
 
   public LoginController(JwtService jwtService, AuthenticationService authenticationService) {
     this.jwtService = jwtService;
@@ -106,8 +103,9 @@ public class LoginController {
     }
   }
   @PostMapping("/refresh")
-  public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshTokenDto refreshTokenDto) {
-    String refreshToken = refreshTokenDto.getRefreshToken();
+  public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshTokenDto refreshTokenDto, @CookieValue(value = "refreshJwt", required = true)String refreshToken, HttpServletResponse response) {
+
+
     String username = jwtService.extractUsername(refreshToken);
     User user = userRepo.findByEmail(username);
     if (user == null) {
@@ -116,14 +114,24 @@ public class LoginController {
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
     if(jwtService.isTokenValid(refreshToken, userDetails)){
 
-        String newJwtToken = jwtService.generateRefreshToken(user);
-        String newRefreshJwtToken = jwtService.generateRefreshToken(user);
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(newJwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
-        loginResponse.setRefreshToken(newRefreshJwtToken);
+      String newJwtToken = jwtService.generateRefreshToken(user);
+      String newRefreshJwtToken = jwtService.generateRefreshToken(user);
+      LoginResponse loginResponse = new LoginResponse();
+      loginResponse.setToken(newJwtToken);
+      loginResponse.setExpiresIn(jwtService.getExpirationTime());
+      loginResponse.setRefreshToken(newRefreshJwtToken);
+      Cookie cookie = new Cookie("jwt",newJwtToken);
+      cookie.setMaxAge(24*60*60);
+      cookie.setPath("/");
+      cookie.setHttpOnly(true);
+      response.addCookie(cookie);
+      Cookie cookie1 = new Cookie("refresh", newRefreshJwtToken);
+      cookie1.setMaxAge(24*60*7);
+      cookie1.setPath("/");
+      cookie1.setHttpOnly(true);
+      response.addCookie(cookie1);
       return ResponseEntity.ok(loginResponse);
-      }
+    }
 
 
     else{
