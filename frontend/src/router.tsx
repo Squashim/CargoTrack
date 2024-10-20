@@ -5,23 +5,19 @@ import RegisterPage from "./pages/RegisterPage/Register";
 import LoginPage from "./pages/LoginPage/Login";
 import { AuthProvider } from "./components/AuthContext/AuthContext";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 export const router = createBrowserRouter([
 	{
 		path: "/",
-		element: (
-			<AuthProvider>
-				<App />
-			</AuthProvider>
-		),
+		element: <App />,
 		errorElement: <ErrorPage />,
 	},
 	{
 		path: "/rejestracja",
+
 		element: (
 			<AuthProvider>
-				<RegisterPage />
+				<RegisterPage />,
 			</AuthProvider>
 		),
 	},
@@ -29,7 +25,7 @@ export const router = createBrowserRouter([
 		path: "/logowanie",
 		element: (
 			<AuthProvider>
-				<LoginPage />
+				<LoginPage />,
 			</AuthProvider>
 		),
 	},
@@ -37,9 +33,7 @@ export const router = createBrowserRouter([
 		path: "/panel",
 		element: (
 			<AuthProvider>
-				<ProtectedRoute>
-					<Dashboard />
-				</ProtectedRoute>
+				<Dashboard />
 			</AuthProvider>
 		),
 	},

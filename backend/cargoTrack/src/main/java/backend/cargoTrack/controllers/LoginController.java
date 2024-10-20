@@ -1,6 +1,7 @@
 package backend.cargoTrack.controllers;
 
 import backend.cargoTrack.dtos.RefreshTokenDto;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -121,12 +122,12 @@ public class LoginController {
       loginResponse.setExpiresIn(jwtService.getExpirationTime());
       loginResponse.setRefreshToken(newRefreshJwtToken);
       Cookie cookie = new Cookie("jwt",newJwtToken);
-      cookie.setMaxAge(24*60*60);
+      cookie.setMaxAge(24*60*7);
       cookie.setPath("/");
       cookie.setHttpOnly(true);
       response.addCookie(cookie);
       Cookie cookie1 = new Cookie("refresh", newRefreshJwtToken);
-      cookie1.setMaxAge(24*60*7);
+      cookie1.setMaxAge(24*60*60);
       cookie1.setPath("/");
       cookie1.setHttpOnly(true);
       response.addCookie(cookie1);
@@ -138,4 +139,26 @@ public class LoginController {
       return ResponseEntity.status(401).body(null);
     }
   }
-}
+
+  @PostMapping("/verify")
+  public ResponseEntity<?> verifyToken(@CookieValue(value = "jwt", required = false) String accessToken) {
+    if (accessToken == null) {
+      return ResponseEntity.ok("");
+    }
+    try {
+      // Verify the access token
+      String username = jwtService.extractUsername(accessToken);
+      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+      if (jwtService.isTokenValid(accessToken, userDetails)) {
+        return ResponseEntity.ok().body("Token is valid");
+      } else {
+        return ResponseEntity.status(403).body("Invalid access token");
+      }
+    } catch (ExpiredJwtException e) {
+      return ResponseEntity.status(401).body("Access token expired");
+    } catch (Exception e) {
+      return ResponseEntity.status(403).body("Invalid access token");
+
+    }
+  }}

@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useAuth } from "../../hooks/useAuth";
+import { useLayoutEffect } from "react";
 
 const schema = z.object({
 	email: z.string().email("Niepoprawny adres email"),
@@ -23,8 +24,9 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 const Login = () => {
-	const { setAuthState } = useAuth();
+	const { authState } = useAuth();
 	const navigate = useNavigate();
+
 	const {
 		register,
 		handleSubmit,
@@ -34,25 +36,28 @@ const Login = () => {
 		resolver: zodResolver(schema),
 	});
 
+	useLayoutEffect(() => {
+		if (authState) {
+			navigate("/panel");
+		}
+	}, [authState]);
+
 	const onSubmit: SubmitHandler<FormFields> = async (data) => {
 		try {
 			const { email, password } = data;
 
-			const response = await axios.post("http://localhost:8080/auth/login", {
+			axios.defaults.withCredentials = true;
+
+			await axios.post("http://localhost:8080/auth/login", {
 				email,
 				password,
-			});
-			setAuthState({
-				accessToken: response.data.token,
-				refreshToken: response.data.refreshToken,
 			});
 
 			navigate("/panel");
 			alert("Zalogowano pomyślnie!");
 		} catch (error) {
-			console.log(error);
 			setError("email", {
-				message: "Nieprawidłowe hasło lub email!",
+				message: "Nieprawidłowy email lub hasło",
 			});
 		}
 	};

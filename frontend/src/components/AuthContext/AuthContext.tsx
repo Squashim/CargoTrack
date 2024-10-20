@@ -1,40 +1,52 @@
-import axios from "axios";
-import { createContext, useState, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import axios, { AxiosError } from "axios";
+import { createContext, useEffect, useLayoutEffect, useState } from "react";
 
-interface AuthState {
-	accessToken: string | null;
-	refreshToken: string | null;
-}
-
-interface AuthContextProps {
-	authState: AuthState;
-	setAuthState: React.Dispatch<React.SetStateAction<AuthState>>;
+interface AuthContextType {
+	authState: boolean | null;
+	setAuthState: React.Dispatch<React.SetStateAction<boolean | null>>;
+	logout: () => void;
 }
 
 interface AuthProviderProps {
 	children: React.ReactNode;
 }
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+interface AuthProviderProps {
+	children: React.ReactNode;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [authState, setAuthState] = useState<AuthState>({
-		accessToken: null,
-		refreshToken: null,
+	const [authState, setAuthState] = useState<boolean | null>(null);
+
+	const api = axios.create({
+		baseURL: "http://localhost:8080",
+		withCredentials: true,
 	});
 
 	useEffect(() => {
-		const api = axios.create({
-			baseURL: "http://localhost:8080",
-		});
-
-		console.log(authState);
-
-		api.interceptors.request.use(
-			(config) => {
-				if (authState.accessToken) {
-					config.headers["Authorization"] = `Bearer ${authState.accessToken}`;
+		const verifyUser = async () => {
+			try {
+				const response = await api.post("/auth/verify");
+				if (response.data === "Token is valid") {
+					setAuthState(true);
+				} else {
+					setAuthState(false);
 				}
+			} catch (error) {
+				setAuthState(false);
+				console.log("Użytkownik nie został uwierzytelniony");
+			}
+		};
+
+		verifyUser();
+	}, [authState]);
+
+	useLayoutEffect(() => {
+		const authInterceptor = api.interceptors.request.use(
+			(config) => {
 				return config;
 			},
 			(error) => {
@@ -42,41 +54,51 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			}
 		);
 
-		api.interceptors.response.use(
-			(response) => {
-				return response;
-			},
+		return () => {
+			api.interceptors.request.eject(authInterceptor);
+		};
+	}, []);
+
+	useLayoutEffect(() => {
+		const refreshInterceptor = api.interceptors.response.use(
+			(response) => response,
 			async (error) => {
 				const originalRequest = error.config;
-				if (error.response.status === 401 && !originalRequest._retry) {
+				const axiosErr = error as AxiosError;
+
+				if (axiosErr.response?.status === 401 && !originalRequest._retry) {
 					originalRequest._retry = true;
-					const response = await axios.post(
-						"https://localhost:8080/auth/refresh",
-						{
-							token: authState.refreshToken,
-						}
-					);
-					setAuthState({
-						...authState,
-						accessToken: response.data.token,
-					});
-					originalRequest.headers[
-						"Authorization"
-					] = `Bearer ${response.data.token}`;
-					return api(originalRequest);
+
+					try {
+						await api.post("/auth/refresh");
+						setAuthState(true);
+						return api(originalRequest);
+					} catch (refreshError) {
+						setAuthState(false);
+						console.log("Błąd w pobieraniu tokenu odświeżania");
+					}
 				}
+
 				return Promise.reject(error);
 			}
 		);
 
-		setAuthState((prevState) => ({
-			...prevState,
-			api,
-		}));
-	}, [authState.accessToken, authState.refreshToken]);
+		return () => {
+			api.interceptors.response.eject(refreshInterceptor);
+		};
+	}, []);
+
+	const logout = async () => {
+		try {
+			await api.post("/auth/logout");
+			setAuthState(false);
+		} catch (error) {
+			console.error("Logout failed:", error);
+		}
+	};
 
 	return (
-		<AuthContext.Provider value={{ authState, setAuthState }}>
+		<AuthContext.Provider value={{ authState, setAuthState, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);

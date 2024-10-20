@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 	const { authState } = useAuth();
 
-	if (!authState.accessToken) {
+	if (!authState) {
 		return <Navigate to='/logowanie' replace />;
 	}
 

@@ -8,9 +8,11 @@ import close from "../../assets/icons/close.svg";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 const NavBar = () => {
 	const navigate = useNavigate();
+	const { authState } = useAuth();
 	const [showMenu, setShowMenu] = useState(false);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
@@ -26,6 +28,8 @@ const NavBar = () => {
 			<Link to='/#main' className={styles.logo}>
 				<img src={logo} alt='Cargo Track Logo' />
 			</Link>
+
+			<h1>{authState ? "Zalogowano" : "Niezalogowano"}</h1>
 
 			<div className={`${styles.nav_menu} ${showMenu ? styles.showMenu : ""}`}>
 				<div className={styles.nav_links}>

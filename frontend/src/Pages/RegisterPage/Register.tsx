@@ -5,7 +5,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useLayoutEffect } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 const schema = z
 	.object({
@@ -35,20 +37,28 @@ const schema = z
 type FormFields = z.infer<typeof schema>;
 
 const Register = () => {
+	const { authState } = useAuth();
 	const {
 		register,
 		handleSubmit,
+		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<FormFields>({
 		resolver: zodResolver(schema),
 	});
 	const navigate = useNavigate();
 
+	useLayoutEffect(() => {
+		if (authState) {
+			navigate("/panel");
+		}
+	});
+
 	const onSubmit: SubmitHandler<FormFields> = async (data) => {
 		try {
 			const { companyName, email, password } = data;
 
-			const response = await axios.post("http://localhost:8080/auth/signup", {
+			await axios.post("http://localhost:8080/auth/signup", {
 				email,
 				password,
 				companyName,
@@ -56,12 +66,20 @@ const Register = () => {
 
 			navigate("/logowanie");
 			alert("Zarejestrowano pomyślnie!");
-			console.log(response);
-		} catch (error) {
-			console.log(error);
-			// setError("email", {
-			// 	message: "Istnieje użytkownik o podanym adresie email!",
-			// });
+		} catch (error: unknown) {
+			if (error instanceof AxiosError) {
+				if (error.response?.data.includes("Firma")) {
+					setError("companyName", {
+						message: "Istnieje firma o tej samej nazwie!",
+					});
+				} else {
+					setError("email", {
+						message: "Istnieje użytkownik o podanym adresie email!",
+					});
+				}
+			} else {
+				console.log("An unknown error occurred.");
+			}
 		}
 	};
 
