@@ -161,4 +161,21 @@ public class LoginController {
       return ResponseEntity.status(403).body("Invalid access token");
 
     }
-  }}
+  }
+@PostMapping("/logout")
+  public ResponseEntity<?> logout(HttpServletResponse response) {
+    Cookie cookie = new Cookie("jwt", null);
+    cookie.setMaxAge(0);
+    cookie.setPath("/");
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    response.addCookie(cookie);
+    Cookie cookie1 = new Cookie("refresh", null);
+    cookie1.setMaxAge(0);
+    cookie1.setPath("/");
+    cookie1.setHttpOnly(true);
+    cookie1.setSecure(true);
+    response.addCookie(cookie1);
+    return ResponseEntity.ok("Wylogowano");
+  }
+}
