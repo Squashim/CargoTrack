@@ -82,6 +82,7 @@ public class LoginController {
       loginResponse.setRefreshToken(refreshJwtToken);
       Cookie cookie = new Cookie("jwt",jwtToken);
       cookie.setMaxAge((int)jwtExpiration);
+
       cookie.setPath("/");
       cookie.setHttpOnly(true);
       cookie.setSecure(true);
