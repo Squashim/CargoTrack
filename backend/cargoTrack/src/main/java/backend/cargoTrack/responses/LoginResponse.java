@@ -10,6 +10,10 @@ public class LoginResponse {
     return token;
   }
 
+ public LoginResponse(){}
+ public LoginResponse(String message){
+    this.error = message;
+  }
   public void setToken(String token) {
     this.token = token;
   }

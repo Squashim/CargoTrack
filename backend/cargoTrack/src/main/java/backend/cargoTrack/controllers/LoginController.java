@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import backend.cargoTrack.repositories.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import backend.cargoTrack.model.User;
 import org.springframework.http.ResponseEntity;
@@ -24,23 +23,24 @@ import backend.cargoTrack.services.AuthenticationService;
 import backend.cargoTrack.dtos.RegisterDto;
 import backend.cargoTrack.dtos.LoginDto;
 import backend.cargoTrack.responses.LoginResponse;
+
 @RequestMapping("/auth")
 @RestController
 public class LoginController {
 
   @Autowired
-  UserRepository userRepo;
+  private UserRepository userRepo;
   @Autowired
-  PasswordEncoder passwordEncoder;
+  private PasswordEncoder passwordEncoder;
   @Value("${security.jwt.expiration-time}")
   private long jwtExpiration;
   @Value("${security.jwt.refresh-expiration-time}")
   private long refreshExpiration;
   private final JwtService jwtService;
-
   private final AuthenticationService authenticationService;
-  @Qualifier("userDetailsService")
+
   @Autowired
+  @Qualifier("userDetailsService")
   private UserDetailsService userDetailsService;
 
   public LoginController(JwtService jwtService, AuthenticationService authenticationService) {
@@ -48,21 +48,22 @@ public class LoginController {
     this.authenticationService = authenticationService;
   }
 
+  private void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+    Cookie cookie = new Cookie(name, value);
+    cookie.setMaxAge(maxAge);
+    cookie.setPath("/");
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    response.addCookie(cookie);
+  }
+
   @PostMapping("/signup")
   public ResponseEntity<String> register(@RequestBody RegisterDto registerUserDto) {
     try {
-      System.out.println("");
-      User registeredUser = authenticationService.signup(registerUserDto);
+      authenticationService.signup(registerUserDto);
       return ResponseEntity.ok("Zarejestrowano pomyślnie");
     } catch (IllegalArgumentException e) {
-      String errorMessage = e.getMessage();
-      if (errorMessage.equals("Użytkownik o podanym e-mailu już istnieje")) {
-        return ResponseEntity.status(400).body("Użytkownik o podanym e-mailu już istnieje");
-      } else if (errorMessage.equals("Firma o podanej nazwie już istnieje")) {
-        return ResponseEntity.status(400).body("Firma o podanej nazwie już istnieje");
-      } else {
-        return ResponseEntity.status(400).body(errorMessage);
-      }
+      return ResponseEntity.status(400).body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.status(500).body("Wystąpił błąd podczas rejestracji");
     }
@@ -75,118 +76,75 @@ public class LoginController {
 
       String jwtToken = jwtService.generateToken(authenticatedUser);
       String refreshJwtToken = jwtService.generateRefreshToken(authenticatedUser);
+      int jwtMaxAge = loginUserDto.getIsRememberChecked() ? (int) jwtExpiration * 360 : (int) jwtExpiration;
+      int refreshMaxAge = loginUserDto.getIsRememberChecked() ? (int) refreshExpiration * 360 : (int) refreshExpiration;
+      System.out.println(jwtMaxAge);
+      addCookie(response, "jwt", jwtToken, jwtMaxAge);
+      addCookie(response, "refresh", refreshJwtToken, refreshMaxAge);
 
       LoginResponse loginResponse = new LoginResponse();
       loginResponse.setToken(jwtToken);
-      loginResponse.setExpiresIn(jwtService.getExpirationTime());
+      loginResponse.setExpiresIn(jwtMaxAge);
       loginResponse.setRefreshToken(refreshJwtToken);
-      Cookie cookie = new Cookie("jwt",jwtToken);
-      cookie.setMaxAge((int)jwtExpiration);
-
-      cookie.setPath("/");
-      cookie.setHttpOnly(true);
-      cookie.setSecure(true);
-      response.addCookie(cookie);
-      Cookie cookie1 = new Cookie("refresh", refreshJwtToken);
-      cookie1.setMaxAge((int)refreshExpiration);
-      cookie1.setPath("/");
-      cookie1.setHttpOnly(true);
-      cookie1.setSecure(true);
-      response.addCookie(cookie1);
 
       return ResponseEntity.ok(loginResponse);
 
-    }
-    catch (BadCredentialsException e) {
-      LoginResponse lresponse = new LoginResponse();
-      lresponse.setError(e.getMessage());
-      return ResponseEntity.status(401).body(lresponse);
-    } catch (IllegalArgumentException e) {
-      LoginResponse lresponse = new LoginResponse();
-      lresponse.setError(e.getMessage());
-      return ResponseEntity.status(400).body(lresponse);
+    } catch (BadCredentialsException | IllegalArgumentException e) {
+      return ResponseEntity.status(e instanceof BadCredentialsException ? 401 : 400)
+              .body(new LoginResponse(e.getMessage()));
     } catch (Exception e) {
-      LoginResponse lresponse = new LoginResponse();
-      lresponse.setError("Wystąpił błąd podczas logowania");
-      return ResponseEntity.status(500).body(lresponse);
+      return ResponseEntity.status(500).body(new LoginResponse("Wystąpił błąd podczas logowania"));
     }
   }
+
   @PostMapping("/refresh")
-  public ResponseEntity<LoginResponse> refresh(@CookieValue(value = "refresh", required = true)String refreshToken, HttpServletResponse response) {
+  public ResponseEntity<LoginResponse> refresh(@CookieValue(value = "refresh") String refreshToken, HttpServletResponse response) {
     try {
       String username = jwtService.extractUsername(refreshToken);
       User user = userRepo.findByEmail(username);
-      if (user == null) {
+      if (user == null || !jwtService.isTokenValid(refreshToken, userDetailsService.loadUserByUsername(username))) {
         return ResponseEntity.status(401).body(null);
       }
-      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-      if (jwtService.isTokenValid(refreshToken, userDetails)) {
 
-        String newJwtToken = jwtService.generateRefreshToken(user);
-        String newRefreshJwtToken = jwtService.generateRefreshToken(user);
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(newJwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
-        loginResponse.setRefreshToken(newRefreshJwtToken);
-        Cookie cookie = new Cookie("jwt", newJwtToken);
-        cookie.setMaxAge((int) jwtExpiration);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        response.addCookie(cookie);
-        Cookie cookie1 = new Cookie("refresh", newRefreshJwtToken);
-        cookie.setMaxAge((int) refreshExpiration);
-        cookie1.setPath("/");
-        cookie1.setHttpOnly(true);
-        cookie1.setSecure(true);
-        response.addCookie(cookie1);
-        return ResponseEntity.ok(loginResponse);
-      } else {
-        return ResponseEntity.status(401).body(null);
-      }
-    } catch (ExpiredJwtException e){
-      LoginResponse lResponse = new LoginResponse();
-      lResponse.toString();
-      return ResponseEntity.ok(lResponse);
+      String newJwtToken = jwtService.generateToken(user);
+      String newRefreshJwtToken = jwtService.generateRefreshToken(user);
+
+      addCookie(response, "jwt", newJwtToken, (int) jwtExpiration);
+      addCookie(response, "refresh", newRefreshJwtToken, (int) refreshExpiration);
+
+      LoginResponse loginResponse = new LoginResponse();
+      loginResponse.setToken(newJwtToken);
+      loginResponse.setExpiresIn(jwtService.getExpirationTime());
+      loginResponse.setRefreshToken(newRefreshJwtToken);
+
+      return ResponseEntity.ok(loginResponse);
+
+    } catch (ExpiredJwtException e) {
+      return ResponseEntity.status(401).body(new LoginResponse("Access token expired"));
     }
   }
 
   @PostMapping("/verify")
-  public ResponseEntity<?> verifyToken(@CookieValue(value = "jwt", required = false) String accessToken) {
-    if (accessToken == null) {
-      return ResponseEntity.ok("");
-    }
+  public ResponseEntity<String> verifyToken(@CookieValue(value = "jwt", required = false) String accessToken) {
+    if (accessToken == null) return ResponseEntity.ok("");
     try {
-      // Verify the access token
       String username = jwtService.extractUsername(accessToken);
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
       if (jwtService.isTokenValid(accessToken, userDetails)) {
-        return ResponseEntity.ok().body("Token is valid");
-      } else {
-        return ResponseEntity.status(403).body("Invalid access token");
+        return ResponseEntity.ok("Token is valid");
       }
+      return ResponseEntity.status(403).body("Invalid access token");
     } catch (ExpiredJwtException e) {
       return ResponseEntity.status(401).body("Access token expired");
     } catch (Exception e) {
       return ResponseEntity.status(403).body("Invalid access token");
-
     }
   }
-@PostMapping("/logout")
-  public ResponseEntity<?> logout(HttpServletResponse response) {
-    Cookie cookie = new Cookie("jwt", null);
-    cookie.setMaxAge(0);
-    cookie.setPath("/");
-    cookie.setHttpOnly(true);
-    cookie.setSecure(true);
-    response.addCookie(cookie);
-    Cookie cookie1 = new Cookie("refresh", null);
-    cookie1.setMaxAge(0);
-    cookie1.setPath("/");
-    cookie1.setHttpOnly(true);
-    cookie1.setSecure(true);
-    response.addCookie(cookie1);
+
+  @PostMapping("/logout")
+  public ResponseEntity<String> logout(HttpServletResponse response) {
+    addCookie(response, "jwt", null, 0);
+    addCookie(response, "refresh", null, 0);
     return ResponseEntity.ok("Wylogowano");
   }
 }
