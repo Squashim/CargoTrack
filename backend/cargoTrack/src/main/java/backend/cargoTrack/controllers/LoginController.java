@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,11 +25,13 @@ import backend.cargoTrack.dtos.RegisterDto;
 import backend.cargoTrack.dtos.LoginDto;
 import backend.cargoTrack.responses.LoginResponse;
 
+
 @RequestMapping("/auth")
 @RestController
 public class LoginController {
 
   @Autowired
+  private UserRepository userRepo;
   private UserRepository userRepo;
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -36,8 +39,15 @@ public class LoginController {
   private long jwtExpiration;
   @Value("${security.jwt.refresh-expiration-time}")
   private long refreshExpiration;
+  private PasswordEncoder passwordEncoder;
+  @Value("${security.jwt.expiration-time}")
+  private long jwtExpiration;
+  @Value("${security.jwt.refresh-expiration-time}")
+  private long refreshExpiration;
   private final JwtService jwtService;
   private final AuthenticationService authenticationService;
+
+  @Autowired
 
   @Autowired
   @Qualifier("userDetailsService")
@@ -57,12 +67,23 @@ public class LoginController {
     response.addCookie(cookie);
   }
 
+  private void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+    Cookie cookie = new Cookie(name, value);
+    cookie.setMaxAge(maxAge);
+    cookie.setPath("/");
+    cookie.setHttpOnly(true);
+    cookie.setSecure(true);
+    response.addCookie(cookie);
+  }
+
   @PostMapping("/signup")
   public ResponseEntity<String> register(@RequestBody RegisterDto registerUserDto) {
     try {
       authenticationService.signup(registerUserDto);
+      authenticationService.signup(registerUserDto);
       return ResponseEntity.ok("Zarejestrowano pomyślnie");
     } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(400).body(e.getMessage());
       return ResponseEntity.status(400).body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.status(500).body("Wystąpił błąd podczas rejestracji");
@@ -81,9 +102,15 @@ public class LoginController {
       System.out.println(jwtMaxAge);
       addCookie(response, "jwt", jwtToken, jwtMaxAge);
       addCookie(response, "refresh", refreshJwtToken, refreshMaxAge);
+      int jwtMaxAge = loginUserDto.getIsRememberChecked() ? (int) jwtExpiration * 360 : (int) jwtExpiration;
+      int refreshMaxAge = loginUserDto.getIsRememberChecked() ? (int) refreshExpiration * 360 : (int) refreshExpiration;
+      System.out.println(jwtMaxAge);
+      addCookie(response, "jwt", jwtToken, jwtMaxAge);
+      addCookie(response, "refresh", refreshJwtToken, refreshMaxAge);
 
       LoginResponse loginResponse = new LoginResponse();
       loginResponse.setToken(jwtToken);
+      loginResponse.setExpiresIn(jwtMaxAge);
       loginResponse.setExpiresIn(jwtMaxAge);
       loginResponse.setRefreshToken(refreshJwtToken);
 
@@ -92,10 +119,15 @@ public class LoginController {
     } catch (BadCredentialsException | IllegalArgumentException e) {
       return ResponseEntity.status(e instanceof BadCredentialsException ? 401 : 400)
               .body(new LoginResponse(e.getMessage()));
+    } catch (BadCredentialsException | IllegalArgumentException e) {
+      return ResponseEntity.status(e instanceof BadCredentialsException ? 401 : 400)
+              .body(new LoginResponse(e.getMessage()));
     } catch (Exception e) {
+      return ResponseEntity.status(500).body(new LoginResponse("Wystąpił błąd podczas logowania"));
       return ResponseEntity.status(500).body(new LoginResponse("Wystąpił błąd podczas logowania"));
     }
   }
+
 
   @PostMapping("/refresh")
   public ResponseEntity<LoginResponse> refresh(@CookieValue(value = "refresh") String refreshToken, HttpServletResponse response) {
@@ -105,9 +137,21 @@ public class LoginController {
       if (user == null || !jwtService.isTokenValid(refreshToken, userDetailsService.loadUserByUsername(username))) {
         return ResponseEntity.status(401).body(null);
       }
+  public ResponseEntity<LoginResponse> refresh(@CookieValue(value = "refresh") String refreshToken, HttpServletResponse response) {
+    try {
+      String username = jwtService.extractUsername(refreshToken);
+      User user = userRepo.findByEmail(username);
+      if (user == null || !jwtService.isTokenValid(refreshToken, userDetailsService.loadUserByUsername(username))) {
+        return ResponseEntity.status(401).body(null);
+      }
 
       String newJwtToken = jwtService.generateToken(user);
+      String newJwtToken = jwtService.generateToken(user);
       String newRefreshJwtToken = jwtService.generateRefreshToken(user);
+
+      addCookie(response, "jwt", newJwtToken, (int) jwtExpiration);
+      addCookie(response, "refresh", newRefreshJwtToken, (int) refreshExpiration);
+
 
       addCookie(response, "jwt", newJwtToken, (int) jwtExpiration);
       addCookie(response, "refresh", newRefreshJwtToken, (int) refreshExpiration);
@@ -116,6 +160,7 @@ public class LoginController {
       loginResponse.setToken(newJwtToken);
       loginResponse.setExpiresIn(jwtService.getExpirationTime());
       loginResponse.setRefreshToken(newRefreshJwtToken);
+
 
       return ResponseEntity.ok(loginResponse);
 
@@ -128,12 +173,16 @@ public class LoginController {
   @PostMapping("/verify")
   public ResponseEntity<String> verifyToken(@CookieValue(value = "jwt", required = false) String accessToken) {
     if (accessToken == null) return ResponseEntity.ok("");
+  public ResponseEntity<String> verifyToken(@CookieValue(value = "jwt", required = false) String accessToken) {
+    if (accessToken == null) return ResponseEntity.ok("");
     try {
       String username = jwtService.extractUsername(accessToken);
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
       if (jwtService.isTokenValid(accessToken, userDetails)) {
         return ResponseEntity.ok("Token is valid");
+        return ResponseEntity.ok("Token is valid");
       }
+      return ResponseEntity.status(403).body("Invalid access token");
       return ResponseEntity.status(403).body("Invalid access token");
     } catch (ExpiredJwtException e) {
       return ResponseEntity.status(401).body("Access token expired");
