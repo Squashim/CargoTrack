@@ -9,6 +9,7 @@ import close from "../../assets/icons/close.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import axios from "axios";
 
 const NavBar = () => {
 	const navigate = useNavigate();
@@ -23,13 +24,24 @@ const NavBar = () => {
 		}
 	};
 
+	const logout = async () => {
+		try {
+			axios.defaults.withCredentials = true;
+
+			await axios.post("http://localhost:8080/auth/logout");
+
+			alert("Wylogowano pomyślnie!");
+			window.location.reload();
+		} catch (error) {
+			console.error("Error with logout!");
+		}
+	};
+
 	return (
 		<nav className={styles.nav_container}>
 			<Link to='/#main' className={styles.logo}>
 				<img src={logo} alt='Cargo Track Logo' />
 			</Link>
-
-			<h1>{authState ? "Zalogowano" : "Niezalogowano"}</h1>
 
 			<div className={`${styles.nav_menu} ${showMenu ? styles.showMenu : ""}`}>
 				<div className={styles.nav_links}>
@@ -46,6 +58,7 @@ const NavBar = () => {
 						kontakt
 					</Link>
 				</div>
+
 				<div
 					className={`${styles.nav_buttons} ${
 						showMenu ? styles.showMenu : ""
@@ -53,16 +66,20 @@ const NavBar = () => {
 					<Button
 						size='small'
 						style='secondary'
-						text='Logowanie'
-						onClick={() => navigate("/logowanie")}
+						text={authState ? "Wyloguj się" : "Logowanie"}
+						onClick={authState ? () => logout() : () => navigate("/logowanie")}
 					/>
 					<Button
 						size='small'
 						style='primary'
 						icon={arrow_right}
 						iconType={"icon-right"}
-						text='Dołącz za darmo'
-						onClick={() => navigate("/rejestracja")}
+						text={authState ? "Przejdź do panelu" : "Dołącz za darmo"}
+						onClick={
+							authState
+								? () => navigate("/panel")
+								: () => navigate("/rejestracja")
+						}
 					/>
 				</div>
 			</div>

@@ -16,6 +16,7 @@ import Footer from "../../components/Footer/Footer";
 import { useNavigate } from "react-router";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
+import { useAuth } from "../../hooks/useAuth";
 
 const HomePage = () => {
 	return (
@@ -110,6 +111,7 @@ const Section = ({ children, id }: SectionProps) => {
 
 const Main = () => {
 	const navigate = useNavigate();
+	const { authState } = useAuth();
 	const [isVisible, setIsVisible] = useState(true);
 
 	useEffect(() => {
@@ -143,7 +145,11 @@ const Main = () => {
 					size='big'
 					style='primary'
 					text='Rozpocznij zabawę'
-					onClick={() => navigate("/rejestracja")}
+					onClick={
+						authState
+							? () => navigate("/panel")
+							: () => navigate("/rejestracja")
+					}
 				/>
 				<hr data-content='lub'></hr>
 				<Button

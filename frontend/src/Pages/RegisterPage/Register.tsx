@@ -6,8 +6,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
-import { useLayoutEffect } from "react";
-import { useAuth } from "../../hooks/useAuth";
 
 const schema = z
 	.object({
@@ -37,7 +35,6 @@ const schema = z
 type FormFields = z.infer<typeof schema>;
 
 const Register = () => {
-	const { authState } = useAuth();
 	const {
 		register,
 		handleSubmit,
@@ -47,12 +44,6 @@ const Register = () => {
 		resolver: zodResolver(schema),
 	});
 	const navigate = useNavigate();
-
-	useLayoutEffect(() => {
-		if (authState) {
-			navigate("/panel");
-		}
-	});
 
 	const onSubmit: SubmitHandler<FormFields> = async (data) => {
 		try {
@@ -64,8 +55,8 @@ const Register = () => {
 				companyName,
 			});
 
-			navigate("/logowanie");
 			alert("Zarejestrowano pomyślnie!");
+			navigate("/logowanie");
 		} catch (error: unknown) {
 			if (error instanceof AxiosError) {
 				if (error.response?.data.includes("Firma")) {

@@ -1,11 +1,10 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./Login.module.scss";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useAuth } from "../../hooks/useAuth";
-import { useLayoutEffect } from "react";
+import { useState } from "react";
 
 const schema = z.object({
 	email: z.string().email("Niepoprawny adres email"),
@@ -24,9 +23,6 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 const Login = () => {
-	const { authState } = useAuth();
-	const navigate = useNavigate();
-
 	const {
 		register,
 		handleSubmit,
@@ -35,12 +31,11 @@ const Login = () => {
 	} = useForm<FormFields>({
 		resolver: zodResolver(schema),
 	});
+	const [isRemember, setIsRemember] = useState(false);
 
-	useLayoutEffect(() => {
-		if (authState) {
-			navigate("/panel");
-		}
-	}, [authState]);
+	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setIsRemember(event.target.checked);
+	};
 
 	const onSubmit: SubmitHandler<FormFields> = async (data) => {
 		try {
@@ -48,13 +43,16 @@ const Login = () => {
 
 			axios.defaults.withCredentials = true;
 
-			await axios.post("http://localhost:8080/auth/login", {
+			const response = await axios.post("http://localhost:8080/auth/login", {
 				email,
 				password,
+				isRememberChecked: isRemember,
 			});
 
-			navigate("/panel");
+			console.log(response);
+
 			alert("Zalogowano pomyślnie!");
+			window.location.reload();
 		} catch (error) {
 			setError("email", {
 				message: "Nieprawidłowy email lub hasło",
@@ -80,6 +78,13 @@ const Login = () => {
 					type='password'
 					name='password'
 					placeholder='Hasło'
+				/>
+				<label>Zapamiętaj mnie</label>
+				<input
+					type='checkbox'
+					name='rememberMe'
+					checked={isRemember}
+					onChange={handleCheckboxChange}
 				/>
 
 				<button disabled={isSubmitting} type='submit'>

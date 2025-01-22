@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage/Register";
 import LoginPage from "./pages/LoginPage/Login";
 import { AuthProvider } from "./components/AuthContext/AuthContext";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 export const router = createBrowserRouter([
 	{
@@ -17,7 +18,9 @@ export const router = createBrowserRouter([
 
 		element: (
 			<AuthProvider>
-				<RegisterPage />,
+				<ProtectedRoute needAuth={false} redirectPath='/panel'>
+					<RegisterPage />
+				</ProtectedRoute>
 			</AuthProvider>
 		),
 	},
@@ -25,7 +28,9 @@ export const router = createBrowserRouter([
 		path: "/logowanie",
 		element: (
 			<AuthProvider>
-				<LoginPage />,
+				<ProtectedRoute needAuth={false} redirectPath='/panel'>
+					<LoginPage />
+				</ProtectedRoute>
 			</AuthProvider>
 		),
 	},
@@ -33,7 +38,9 @@ export const router = createBrowserRouter([
 		path: "/panel",
 		element: (
 			<AuthProvider>
-				<Dashboard />
+				<ProtectedRoute>
+					<Dashboard />
+				</ProtectedRoute>
 			</AuthProvider>
 		),
 	},

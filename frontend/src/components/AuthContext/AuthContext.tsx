@@ -4,6 +4,7 @@ import { createContext, useEffect, useLayoutEffect, useState } from "react";
 
 interface AuthContextType {
 	authState: boolean | null;
+	loading: boolean;
 	setAuthState: React.Dispatch<React.SetStateAction<boolean | null>>;
 	logout: () => void;
 }
@@ -20,6 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
 	const [authState, setAuthState] = useState<boolean | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const api = axios.create({
 		baseURL: "http://localhost:8080",
@@ -28,6 +30,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	useEffect(() => {
 		const verifyUser = async () => {
+			setLoading(true);
 			try {
 				const response = await api.post("/auth/verify");
 				if (response.data === "Token is valid") {
@@ -38,6 +41,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			} catch (error) {
 				setAuthState(false);
 				console.log("Użytkownik nie został uwierzytelniony");
+			} finally {
+				setLoading(false);
 			}
 		};
 
@@ -65,6 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			async (error) => {
 				const originalRequest = error.config;
 				const axiosErr = error as AxiosError;
+				setLoading(true);
 
 				if (axiosErr.response?.status === 401 && !originalRequest._retry) {
 					originalRequest._retry = true;
@@ -76,6 +82,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 					} catch (refreshError) {
 						setAuthState(false);
 						console.log("Błąd w pobieraniu tokenu odświeżania");
+					} finally {
+						setLoading(false);
 					}
 				}
 
@@ -98,7 +106,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	};
 
 	return (
-		<AuthContext.Provider value={{ authState, setAuthState, logout }}>
+		<AuthContext.Provider value={{ authState, loading, setAuthState, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);
