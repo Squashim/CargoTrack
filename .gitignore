@@ -19,7 +19,7 @@ output/
 ## Java
 # either the 3rd party diff or IDEA:
 *.java.orig
-
+.env
 # Package Files
 **/build/libs/*.jar
 *.war
