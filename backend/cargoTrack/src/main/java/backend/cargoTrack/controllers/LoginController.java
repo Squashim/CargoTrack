@@ -114,6 +114,7 @@ public class LoginController {
           if (jwtService.isTokenValid(accessToken, userDetails)) {
               return ResponseEntity.ok("Token is valid");
           }
+
       }
       return ResponseEntity.status(401).body("Invalid or missing access token");
   }
