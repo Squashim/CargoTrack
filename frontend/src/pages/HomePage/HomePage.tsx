@@ -17,6 +17,7 @@ import { useNavigate } from "react-router";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useAuth } from "../../hooks/useAuth";
+import ScrollToAnchor from "../../components/ScrollToAnchor";
 
 const HomePage = () => {
 	return (
@@ -93,14 +94,14 @@ const Section = ({ children, id }: SectionProps) => {
 			ref={ref}
 			variants={{
 				hidden: { opacity: 0, translateY: 90 },
-				visible: { opacity: 1, translateY: 0 },
+				visible: { opacity: 1, translateY: 0 }
 			}}
 			transition={{
 				type: "spring",
 				duration: 0.8,
 				damping: 8,
 				delay: 0.2,
-				stiffness: 100,
+				stiffness: 100
 			}}
 			initial='hidden'
 			animate={controls}>
@@ -111,7 +112,7 @@ const Section = ({ children, id }: SectionProps) => {
 
 const Main = () => {
 	const navigate = useNavigate();
-	const { authState } = useAuth();
+	const { authenticated } = useAuth();
 	const [isVisible, setIsVisible] = useState(true);
 
 	useEffect(() => {
@@ -130,56 +131,59 @@ const Main = () => {
 	});
 
 	return (
-		<main className={styles.main} id='main'>
-			<h1>Spróbuj swoich sił w zarządzaniu firmą transportową.</h1>
-			<h2>
-				Nasza strona oferuje symulację działalności przedsiębiorstwa, w którym
-				to użytkownik wciela się w rolę kierownika.
-			</h2>
-			<h3>
-				Kupuj, sprzedawaj, transportuj, zatrudniaj i konkuruj z innymi firmami
-				na rynku.
-			</h3>
-			<div className={styles.btn_group}>
-				<Button
-					size='big'
-					style='primary'
-					text='Rozpocznij zabawę'
-					onClick={
-						authState
-							? () => navigate("/panel")
-							: () => navigate("/rejestracja")
-					}
-				/>
-				<hr data-content='lub'></hr>
-				<Button
-					size='big'
-					style='secondary'
-					text='Sprawdź jak to działa'
-					iconType='icon-right'
-					icon={chevron_down}
-					onClick={() => navigate("/#how")}
-				/>
-			</div>
+		<>
+			<main className={styles.main} id='main'>
+				<h1>Spróbuj swoich sił w zarządzaniu firmą transportową.</h1>
+				<h2>
+					Nasza strona oferuje symulację działalności przedsiębiorstwa, w którym
+					to użytkownik wciela się w rolę kierownika.
+				</h2>
+				<h3>
+					Kupuj, sprzedawaj, transportuj, zatrudniaj i konkuruj z innymi firmami
+					na rynku.
+				</h3>
+				<div className={styles.btn_group}>
+					<Button
+						size='big'
+						style='primary'
+						text='Rozpocznij zabawę'
+						onClick={
+							authenticated
+								? () => navigate("/panel")
+								: () => navigate("/rejestracja")
+						}
+					/>
+					<hr data-content='lub'></hr>
+					<Button
+						size='big'
+						style='secondary'
+						text='Sprawdź jak to działa'
+						iconType='icon-right'
+						icon={chevron_down}
+						onClick={() => navigate("/#how")}
+					/>
+				</div>
 
-			<motion.div
-				className={styles.mouse_scroll}
-				variants={{
-					hidden: { opacity: 0, translateY: 90 },
-					visible: { opacity: 1, translateY: 0 },
-				}}
-				transition={{
-					type: "spring",
-					duration: 0.8,
-					damping: 8,
-					delay: 0.2,
-					stiffness: 100,
-				}}
-				initial='hidden'
-				animate={isVisible ? "visible" : "hidden"}>
-				<img src={chevron_down} alt='chevron_down ikona' />
-			</motion.div>
-		</main>
+				<motion.div
+					className={styles.mouse_scroll}
+					variants={{
+						hidden: { opacity: 0, translateY: 90 },
+						visible: { opacity: 1, translateY: 0 }
+					}}
+					transition={{
+						type: "spring",
+						duration: 0.8,
+						damping: 8,
+						delay: 0.2,
+						stiffness: 100
+					}}
+					initial='hidden'
+					animate={isVisible ? "visible" : "hidden"}>
+					<img src={chevron_down} alt='chevron_down ikona' />
+				</motion.div>
+			</main>
+			<ScrollToAnchor />
+		</>
 	);
 };
 

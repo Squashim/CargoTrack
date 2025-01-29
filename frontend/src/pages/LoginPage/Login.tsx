@@ -12,12 +12,12 @@ const schema = z.object({
 		.string()
 		.min(8, "Hasło musi mieć co najmniej 8 znaków")
 		.regex(/[A-Za-z]/, {
-			message: "Hasło musi zawierać przynajmniej jedną literę",
+			message: "Hasło musi zawierać przynajmniej jedną literę"
 		})
 		.regex(/\d/, { message: "Hasło musi zawierać przynajmniej jedną cyfrę" })
 		.regex(/^[A-Za-z\d]+$/, {
-			message: "Hasło może zawierać tylko litery i cyfry",
-		}),
+			message: "Hasło może zawierać tylko litery i cyfry"
+		})
 });
 
 type FormFields = z.infer<typeof schema>;
@@ -27,9 +27,9 @@ const Login = () => {
 		register,
 		handleSubmit,
 		setError,
-		formState: { errors, isSubmitting },
+		formState: { errors, isSubmitting }
 	} = useForm<FormFields>({
-		resolver: zodResolver(schema),
+		resolver: zodResolver(schema)
 	});
 	const [isRemember, setIsRemember] = useState(false);
 
@@ -38,27 +38,25 @@ const Login = () => {
 	};
 
 	const onSubmit: SubmitHandler<FormFields> = async (data) => {
+		const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+		const { email, password } = data;
+		axios.defaults.withCredentials = true;
+
 		try {
-			const { email, password } = data;
-
-			axios.defaults.withCredentials = true;
-
-			const response = await axios.post("http://localhost:8080/auth/login", {
+			await axios.post(API_BASE_URL + "/auth/login", {
 				email,
 				password,
-				isRememberChecked: isRemember,
+				isRememberChecked: isRemember
 			});
 
-			console.log(response);
-
-			alert("Zalogowano pomyślnie!");
 			window.location.reload();
 		} catch (error) {
 			setError("email", {
-				message: "Nieprawidłowy email lub hasło",
+				message: "Nieprawidłowy email lub hasło"
 			});
 		}
 	};
+
 	return (
 		<main className={styles.main}>
 			<h1>Logowanie</h1>
@@ -79,6 +77,7 @@ const Login = () => {
 					name='password'
 					placeholder='Hasło'
 				/>
+				{errors.password && <p>{errors.password.message}</p>}
 				<label>Zapamiętaj mnie</label>
 				<input
 					type='checkbox'
@@ -91,7 +90,7 @@ const Login = () => {
 					{isSubmitting ? "Ładowanie..." : "Zaloguj się"}
 				</button>
 			</form>
-			<Link to='/rejestracja'>Nie masz konta? Załóż je tutaj</Link>
+			<Link to='/register'>Nie masz konta? Załóż je tutaj</Link>
 		</main>
 	);
 };

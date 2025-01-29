@@ -1,34 +1,19 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-type ProtectedRouteProps = {
-	needAuth?: boolean;
-	redirectPath?: string;
-	children: React.ReactNode;
-};
+const ProtectedRoute = () => {
+	const { authenticated, isLoading } = useAuth();
 
-const ProtectedRoute = ({
-	needAuth = true,
-	redirectPath = "/logowanie",
-	children,
-}: ProtectedRouteProps) => {
-	const { authState, loading } = useAuth();
-
-	if (loading) {
+	if (isLoading) {
 		return <div>Trwa pobieranie danych!</div>;
 	}
 
 	// panel
-	if (!authState && needAuth) {
-		return <Navigate to={redirectPath} replace />;
+	if (!authenticated) {
+		return <Navigate to='/login' replace />;
 	}
 
-	// logowanie/ rejestracja
-	if (authState && !needAuth) {
-		return <Navigate to={redirectPath} replace />;
-	}
-
-	return children;
+	return <Outlet />;
 };
 
 export default ProtectedRoute;

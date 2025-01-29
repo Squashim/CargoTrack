@@ -26,9 +26,7 @@ public class AuthenticationService {
     this.passwordEncoder = passwordEncoder;
   }
 
-  public User signup(RegisterDto input) {
-
-
+  public void signup(RegisterDto input) {
     User existingUserByEmail = userRepository.findByEmail(input.getEmail());
     if (existingUserByEmail != null) {
       throw new IllegalArgumentException("Użytkownik o podanym e-mailu już istnieje");
@@ -44,7 +42,7 @@ public class AuthenticationService {
     user.setPassword(passwordEncoder.encode(input.getPassword()));
     user.setCompanyName(input.getCompanyName());
 
-    return userRepository.save(user);
+    userRepository.save(user);
   }
 
 

@@ -3,6 +3,6 @@ WORKDIR /app
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ .
-eXPOSE 5173
+EXPOSE 5173
 EXPOSE 24678
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

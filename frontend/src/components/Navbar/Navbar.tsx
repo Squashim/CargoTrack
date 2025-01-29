@@ -9,11 +9,10 @@ import close from "../../assets/icons/close.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import axios from "axios";
 
 const NavBar = () => {
 	const navigate = useNavigate();
-	const { authState } = useAuth();
+	const { authenticated, logout } = useAuth();
 	const [showMenu, setShowMenu] = useState(false);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
@@ -21,19 +20,6 @@ const NavBar = () => {
 	const closeMenuOnMobile = () => {
 		if (window.innerWidth <= 1150) {
 			setShowMenu(false);
-		}
-	};
-
-	const logout = async () => {
-		try {
-			axios.defaults.withCredentials = true;
-
-			await axios.post("http://localhost:8080/auth/logout");
-
-			alert("Wylogowano pomyślnie!");
-			window.location.reload();
-		} catch (error) {
-			console.error("Error with logout!");
 		}
 	};
 
@@ -66,19 +52,19 @@ const NavBar = () => {
 					<Button
 						size='small'
 						style='secondary'
-						text={authState ? "Wyloguj się" : "Logowanie"}
-						onClick={authState ? () => logout() : () => navigate("/logowanie")}
+						text={authenticated ? "Wyloguj się" : "Logowanie"}
+						onClick={authenticated ? () => logout() : () => navigate("/login")}
 					/>
 					<Button
 						size='small'
 						style='primary'
 						icon={arrow_right}
 						iconType={"icon-right"}
-						text={authState ? "Przejdź do panelu" : "Dołącz za darmo"}
+						text={authenticated ? "Przejdź do panelu" : "Dołącz za darmo"}
 						onClick={
-							authState
-								? () => navigate("/panel")
-								: () => navigate("/rejestracja")
+							authenticated
+								? () => navigate("/user/dashboard")
+								: () => navigate("/register")
 						}
 					/>
 				</div>
