@@ -121,7 +121,6 @@ public class LoginController {
         System.out.println("User not found: " + username);
         return ResponseEntity.status(401).body("User not found");
       }
-      System.out.println("User found: " + user.getEmail());
 
       if (!jwtService.isTokenValid(refreshToken, userDetailsService.loadUserByUsername(username))) {
         System.out.println("Invalid token for user: " + username);

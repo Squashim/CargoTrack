@@ -1,19 +1,13 @@
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
-
-export default function ErrorPage() {
-	const error = useRouteError();
-
-	if (!isRouteErrorResponse(error)) {
-		return null;
-	}
-
+const ErrorPage = () => {
 	return (
 		<div id='error-page'>
-			<h1>Oops!</h1>
-			<p>Sorry, an unexpected error has occurred.</p>
-			<p>
-				<i>{error.data}</i>
-			</p>
+			<h1>Ojej!</h1>
+			<h2>Błąd 404</h2>
+			<button onClick={() => window.location.replace("/")}>
+				Wróć do strony głównej
+			</button>
 		</div>
 	);
-}
+};
+
+export default ErrorPage;

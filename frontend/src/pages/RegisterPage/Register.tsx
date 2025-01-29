@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 const schema = z
 	.object({
@@ -19,17 +19,17 @@ const schema = z
 			.string()
 			.min(8, "Hasło musi mieć co najmniej 8 znaków")
 			.regex(/[A-Za-z]/, {
-				message: "Hasło musi zawierać przynajmniej jedną literę",
+				message: "Hasło musi zawierać przynajmniej jedną literę"
 			})
 			.regex(/\d/, { message: "Hasło musi zawierać przynajmniej jedną cyfrę" })
 			.regex(/^[A-Za-z\d]+$/, {
-				message: "Hasło może zawierać tylko litery i cyfry",
+				message: "Hasło może zawierać tylko litery i cyfry"
 			}),
-		confirmPassword: z.string().min(8, "Potwierdzenie hasła jest wymagane"),
+		confirmPassword: z.string().min(8, "Potwierdzenie hasła jest wymagane")
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		path: ["confirmPassword"],
-		message: "Hasła muszą być takie same",
+		message: "Hasła muszą być takie same"
 	});
 
 type FormFields = z.infer<typeof schema>;
@@ -39,37 +39,39 @@ const Register = () => {
 		register,
 		handleSubmit,
 		setError,
-		formState: { errors, isSubmitting },
+		formState: { errors, isSubmitting }
 	} = useForm<FormFields>({
-		resolver: zodResolver(schema),
+		resolver: zodResolver(schema)
 	});
 	const navigate = useNavigate();
 
 	const onSubmit: SubmitHandler<FormFields> = async (data) => {
-		try {
-			const { companyName, email, password } = data;
+		const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+		const registerData = {
+			email: data.email,
+			password: data.password,
+			companyName: data.companyName
+		};
 
-			await axios.post("http://localhost:8080/auth/signup", {
-				email,
-				password,
-				companyName,
-			});
+		try {
+			await axios.post(API_BASE_URL + "/auth/signup", registerData);
 
 			alert("Zarejestrowano pomyślnie!");
-			navigate("/logowanie");
-		} catch (error: unknown) {
-			if (error instanceof AxiosError) {
+			navigate("/login");
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
 				if (error.response?.data.includes("Firma")) {
 					setError("companyName", {
-						message: "Istnieje firma o tej samej nazwie!",
+						message: "Istnieje firma o tej samej nazwie!"
 					});
 				} else {
 					setError("email", {
-						message: "Istnieje użytkownik o podanym adresie email!",
+						message: "Istnieje użytkownik o podanym adresie email!"
 					});
 				}
 			} else {
-				console.log("An unknown error occurred.");
+				console.error("Unexpected error:", error);
+				alert("Wystąpił błąd: Spróbuj ponownie.");
 			}
 		}
 	};
@@ -92,6 +94,7 @@ const Register = () => {
 					type='email'
 					name='email'
 					placeholder='Email'
+					autoComplete='new-email'
 				/>
 				{errors.email && <p>{errors.email.message}</p>}
 				<label>hasło:</label>
@@ -100,6 +103,7 @@ const Register = () => {
 					type='password'
 					name='password'
 					placeholder='Hasło'
+					autoComplete='new-password'
 				/>
 				{errors.password && <p>{errors.password.message}</p>}
 				<label>powtórz hasło:</label>
@@ -108,6 +112,7 @@ const Register = () => {
 					type='password'
 					name='confirmPassword'
 					placeholder='Potwierdź hasło'
+					autoComplete='new-password'
 				/>
 				{errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 
@@ -115,9 +120,8 @@ const Register = () => {
 					{isSubmitting ? "Ładowanie..." : "Załóż konto"}
 				</button>
 			</form>
-			<Link to='/logowanie'>Masz już konto? Zaloguj się tutaj</Link>
+			<Link to='/login'>Masz już konto? Zaloguj się tutaj</Link>
 		</main>
 	);
 };
-
 export default Register;
