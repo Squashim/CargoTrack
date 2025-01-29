@@ -3,7 +3,7 @@
 out/
 output/
 **/build/
-
+.vscode/
 **/gradle_build/
 *.iml
 **/*.iml
@@ -36,3 +36,4 @@ output/
 logs/
 
 backend/cargoTrack/src/main/resources/application.properties
+.vscode/settings.json
