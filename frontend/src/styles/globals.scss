@@ -71,6 +71,7 @@ html {
 }
 
 body {
+	min-height: 100dvh;
 	min-height: 100vh;
 	font-family: "Quicksand", sans-serif;
 	font-optical-sizing: auto;
@@ -117,7 +118,8 @@ body {
 }
 
 // Global responsive fonts
-h1 {
+h1,
+legend {
 	font-size: clamp(
 		2rem,
 		1.725rem + 1.375vw,
@@ -157,13 +159,15 @@ h5 {
 
 a,
 button,
-select {
+select,
+input {
 	font-size: 1.125rem; // 18px
 	line-height: 18px;
 	letter-spacing: 0.5px;
 }
 
-p {
+p,
+label {
 	font-size: clamp(0.875rem, 0.85rem + 0.125vw, 1rem); //min -> 14px, max-> 16px
 }
 

@@ -1,5 +1,5 @@
 import AuthProvider from "./context/AuthContext";
-import Routes from "./Routes";
+import Routes from "./components/routing/Routes";
 import "./styles/globals.scss";
 
 function App() {

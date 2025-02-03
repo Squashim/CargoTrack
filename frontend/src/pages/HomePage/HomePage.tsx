@@ -1,33 +1,30 @@
-import Button from "../../components/Button/Button";
-import NavBar from "../../components/Navbar/Navbar";
+import Button from "../../components/ui/Button/Button";
+import Navbar from "../../components/ui/Navbar/Navbar";
 import styles from "./HomePage.module.scss";
 
 import person from "../../assets/icons/person.svg";
 import trending_up from "../../assets/icons/trending_up.svg";
 import trophy from "../../assets/icons/trophy.svg";
 import info from "../../assets/icons/info.svg";
-import Step from "../../components/Step/Step";
+import Step from "../../components/ui/Step/Step";
 import chevron_down from "../../assets/icons/chevron_down.svg";
 import container from "../../assets/icons/container.svg";
 
-import Scoreboard from "../../components/Scoreboard/Scoreboard";
-import Accordion from "../../components/Accordion/Accordion";
-import Footer from "../../components/Footer/Footer";
+import Scoreboard from "../../components/ui/Scoreboard/Scoreboard";
+import Accordion from "../../components/ui/Accordion/Accordion";
+import Footer from "../../components/ui/Footer/Footer";
 import { useNavigate } from "react-router";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useAuth } from "../../hooks/useAuth";
-import ScrollToAnchor from "../../components/ScrollToAnchor";
+import ScrollToAnchor from "../../components/utils/ScrollToAnchor";
 
 const HomePage = () => {
 	return (
 		<>
 			<SVGScrollPath />
-
-			<NavBar />
-
+			<Navbar />
 			<Main />
-
 			<Section id='how'>
 				<h2>Jak to działa?</h2>
 				<Step
@@ -53,17 +50,14 @@ const HomePage = () => {
 					<p>Uwaga! Pieniądze w grze są fikcyjne!</p>
 				</div>
 			</Section>
-
 			<Section id='scoreboard'>
 				<Scoreboard />
 			</Section>
-
 			<Section id='faq'>
 				<h2>FAQ</h2>
 				<h3>Najczęściej zadawane pytania</h3>
 				<Accordion />
 			</Section>
-
 			<Footer />
 		</>
 	);
@@ -149,8 +143,8 @@ const Main = () => {
 						text='Rozpocznij zabawę'
 						onClick={
 							authenticated
-								? () => navigate("/panel")
-								: () => navigate("/rejestracja")
+								? () => navigate("/user/dashboard")
+								: () => navigate("/register")
 						}
 					/>
 					<hr data-content='lub'></hr>

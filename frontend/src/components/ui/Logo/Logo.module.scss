@@ -1,0 +1,14 @@
+.logo {
+	width: 7.5rem;
+	transition: ease-in-out 0.3s scale;
+
+	&:hover {
+		scale: 1.05;
+	}
+}
+
+@media screen and (min-width: 880px) {
+	.logo {
+		width: 8.75rem;
+	}
+}

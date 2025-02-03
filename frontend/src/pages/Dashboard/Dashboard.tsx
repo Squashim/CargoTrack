@@ -1,5 +1,5 @@
-import Map from "../../components/Map/Map";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Map from "../../components/map/Map/Map";
+import Sidebar from "../../components/ui/Sidebar/Sidebar";
 
 const Dashboard = () => {
 	return (

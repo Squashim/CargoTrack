@@ -1,97 +1,109 @@
 import { Link } from "react-router-dom";
-import styles from "./Login.module.scss";
-import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { UseFormSetError } from "react-hook-form";
 import axios from "axios";
+import ChevronLeft from "../../assets/icons/chevron_left.svg";
+
+import {
+	loginFormSchema,
+	type LoginFormSchema
+} from "../../components/forms/Form/formSchemas";
+import { Form } from "../../components/forms/Form/Form";
+import Input from "../../components/forms/Input/Input";
+import Checkbox from "../../components/forms/Checkbox/Checkbox";
+import Button from "../../components/ui/Button/Button";
+import Logo from "../../components/ui/Logo/Logo";
+import styles from "./Login.module.scss";
+import Popup from "../../components/ui/Popup/Popup";
 import { useState } from "react";
 
-const schema = z.object({
-	email: z.string().email("Niepoprawny adres email"),
-	password: z
-		.string()
-		.min(8, "Hasło musi mieć co najmniej 8 znaków")
-		.regex(/[A-Za-z]/, {
-			message: "Hasło musi zawierać przynajmniej jedną literę"
-		})
-		.regex(/\d/, { message: "Hasło musi zawierać przynajmniej jedną cyfrę" })
-		.regex(/^[A-Za-z\d]+$/, {
-			message: "Hasło może zawierać tylko litery i cyfry"
-		})
-});
-
-type FormFields = z.infer<typeof schema>;
-
-const Login = () => {
-	const {
-		register,
-		handleSubmit,
-		setError,
-		formState: { errors, isSubmitting }
-	} = useForm<FormFields>({
-		resolver: zodResolver(schema)
-	});
-	const [isRemember, setIsRemember] = useState(false);
-
-	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setIsRemember(event.target.checked);
+export const Header = () => {
+	const handleRedirect = () => {
+		window.history.back();
 	};
 
-	const onSubmit: SubmitHandler<FormFields> = async (data) => {
+	return (
+		<header className={styles.header}>
+			<div className={styles.header_wrapper}>
+				<Logo />
+				<Button
+					iconType='only-icon'
+					icon={ChevronLeft}
+					style='secondary'
+					onClick={handleRedirect}
+				/>
+			</div>
+		</header>
+	);
+};
+
+const Login = () => {
+	const [showSuccess, setShowSuccess] = useState(false);
+	const onSubmit = async (
+		data: LoginFormSchema,
+		setError: UseFormSetError<LoginFormSchema>
+	) => {
 		const API_BASE_URL = import.meta.env.VITE_BASE_URL;
-		const { email, password } = data;
+		const { email, password, rememberMe } = data;
 		axios.defaults.withCredentials = true;
 
 		try {
 			await axios.post(API_BASE_URL + "/auth/login", {
 				email,
 				password,
-				isRememberChecked: isRemember
+				isRememberChecked: rememberMe
 			});
-
-			window.location.reload();
+			setShowSuccess(true);
 		} catch (error) {
 			setError("email", {
-				message: "Nieprawidłowy email lub hasło"
+				message: "Podano nieprawidłowy adres email lub hasło."
 			});
 		}
 	};
 
 	return (
-		<main className={styles.main}>
-			<h1>Logowanie</h1>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<label>Nazwa firmy:</label>
-				<label>email:</label>
-				<input
-					{...register("email")}
-					type='email'
-					name='email'
-					placeholder='Email'
-				/>
-				{errors.email && <p>{errors.email.message}</p>}
-				<label>hasło:</label>
-				<input
-					{...register("password")}
-					type='password'
-					name='password'
-					placeholder='Hasło'
-				/>
-				{errors.password && <p>{errors.password.message}</p>}
-				<label>Zapamiętaj mnie</label>
-				<input
-					type='checkbox'
-					name='rememberMe'
-					checked={isRemember}
-					onChange={handleCheckboxChange}
-				/>
-
-				<button disabled={isSubmitting} type='submit'>
-					{isSubmitting ? "Ładowanie..." : "Zaloguj się"}
-				</button>
-			</form>
-			<Link to='/register'>Nie masz konta? Załóż je tutaj</Link>
-		</main>
+		<>
+			{showSuccess && (
+				<Popup message='Zalogowano pomyślnie.' redirect='/user/dashboard' />
+			)}
+			<Header />
+			<Form
+				schema={loginFormSchema}
+				onSubmit={onSubmit}
+				title='Zaloguj się do swojego konta'>
+				{({ register, errors, isSubmitting }) => (
+					<>
+						<Input
+							type='email'
+							name='email'
+							placeholder='jan@kowalski.pl'
+							label='Adres email'
+							maxLength={64}
+							register={register}
+							error={errors.email}
+						/>
+						<Input
+							type='password'
+							name='password'
+							placeholder='•••••••••'
+							label='Hasło'
+							maxLength={32}
+							register={register}
+							error={errors.password}
+						/>
+						<Checkbox
+							name='rememberMe'
+							label='Zapamiętaj mnie'
+							register={register}
+						/>
+						<Button type='submit' text='Zaloguj się' isLoading={isSubmitting} />
+						<Link to='/register' className={styles.link}>
+							Nie masz konta?{" "}
+							<span className={styles.link_href}>Załóż teraz</span>
+						</Link>
+					</>
+				)}
+			</Form>
+		</>
 	);
 };
 
