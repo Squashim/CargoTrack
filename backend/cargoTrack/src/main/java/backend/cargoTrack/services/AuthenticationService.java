@@ -41,7 +41,7 @@ public class AuthenticationService {
     user.setEmail(input.getEmail());
     user.setPassword(passwordEncoder.encode(input.getPassword()));
     user.setCompanyName(input.getCompanyName());
-
+    user.setBalance(100000);
     userRepository.save(user);
   }
 

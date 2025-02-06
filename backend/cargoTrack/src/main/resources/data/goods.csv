@@ -1,0 +1,22 @@
+name,weight,base_price,good_subtype_id
+Pszenica,1000,500,1
+Jęczmień,1000,480,1
+Żyto,1000,470,1
+Ryż,1000,600,1
+Owoce,1000,550,3
+Mleko,1000,700,4
+Ser,1000,800,4
+Cement luzem,1000,300,5
+Deski,1000,450,6
+Blachy stalowe,1000,900,7
+Panele szklane,1000,850,8
+Piasek,1000,100,9
+Benzyna,1000,1500,11
+Koparka,10000,50000,14
+Traktor,9000,45000,15
+Odzież robocza,100,120,16
+Wołowina,1000,7000,17
+Woda butelkowana,500,50,18
+Mąka,1000,300,19
+Big Bagi,100,20,20
+Jachty,50000,1000000,21

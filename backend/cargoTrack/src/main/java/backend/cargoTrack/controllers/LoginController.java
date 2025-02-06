@@ -1,11 +1,7 @@
 package backend.cargoTrack.controllers;
 
-import backend.cargoTrack.dtos.RefreshTokenDto;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,12 +18,6 @@ import backend.cargoTrack.services.AuthenticationService;
 import backend.cargoTrack.dtos.RegisterDto;
 import backend.cargoTrack.dtos.LoginDto;
 import backend.cargoTrack.responses.LoginResponse;
-
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.TimeZone;
 
 @RequestMapping("/auth")
 @RestController
