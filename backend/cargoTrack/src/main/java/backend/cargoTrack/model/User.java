@@ -30,6 +30,7 @@ public class User implements UserDetails {
     @Column(name = "balance")
     private double balance;
 
+
     public int getId() {
         return id;
     }
