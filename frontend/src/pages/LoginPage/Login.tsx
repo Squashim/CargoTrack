@@ -75,6 +75,7 @@ const Login = () => {
 						<Input
 							type='email'
 							name='email'
+							autocomplete='email'
 							placeholder='jan@kowalski.pl'
 							label='Adres email'
 							maxLength={64}
@@ -84,6 +85,7 @@ const Login = () => {
 						<Input
 							type='password'
 							name='password'
+							autocomplete='current-password'
 							placeholder='•••••••••'
 							label='Hasło'
 							maxLength={32}

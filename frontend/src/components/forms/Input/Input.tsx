@@ -10,6 +10,7 @@ type InputProps<T extends FieldValues> = {
 	type: "text" | "number" | "email" | "password";
 	label: string;
 	name: Path<T>;
+	autocomplete?: HTMLInputElement["autocomplete"];
 	placeholder: string;
 	disabled?: boolean;
 	register: UseFormRegister<T>;
@@ -22,6 +23,7 @@ const Input = <T extends FieldValues>({
 	label,
 	name,
 	placeholder,
+	autocomplete,
 	disabled,
 	register,
 	error,
@@ -38,6 +40,7 @@ const Input = <T extends FieldValues>({
 				type={type}
 				id={name as string}
 				placeholder={placeholder}
+				autoComplete={autocomplete}
 				disabled={disabled}
 				className={styles.input}
 			/>

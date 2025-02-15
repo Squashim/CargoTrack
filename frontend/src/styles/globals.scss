@@ -167,6 +167,7 @@ input {
 }
 
 p,
+li,
 label {
 	font-size: clamp(0.875rem, 0.85rem + 0.125vw, 1rem); //min -> 14px, max-> 16px
 }

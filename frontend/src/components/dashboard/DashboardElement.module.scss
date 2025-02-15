@@ -1,0 +1,25 @@
+@import "../../styles/variables.scss";
+
+.dashboard_element_wrapper {
+	background: $background;
+	z-index: 1000;
+	position: fixed;
+	top: 0;
+	left: -100%;
+	transition: left 0.3s ease;
+	padding: var(--gap);
+	height: 50vh;
+	gap: var(--gap);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+
+	&.active {
+		left: $sidebar-width;
+
+		&.sidebar_open {
+			left: $sidebar-width-open;
+		}
+	}
+}

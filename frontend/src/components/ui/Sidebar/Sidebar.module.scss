@@ -1,8 +1,289 @@
+@import "../../../styles/variables.scss";
+
 .sidebar {
-	padding: 10px;
-	background: #2a2a2a;
-	overflow: hidden;
+	padding: 1rem;
+	background: $foreground;
 	z-index: 10000;
-	font-size: 20px;
-	font-weight: bold;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: $sidebar-width;
+	transition: width 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	align-items: center;
+
+	&.open {
+		width: $sidebar-width-open;
+		align-items: unset;
+	}
+
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: $header-height;
+
+		&:has(> a) {
+			justify-content: space-between;
+		}
+
+		> a {
+			width: 6rem;
+		}
+	}
+
+	// Sidebar content
+	.sidebar_wrapper {
+		flex: 1;
+
+		ul {
+			list-style: none;
+			height: 100%;
+			position: relative;
+
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.sidebar_item {
+			display: flex;
+			width: 100%;
+			border: 1px solid $border;
+			border-radius: 0.25rem;
+			box-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.3);
+			position: relative;
+			flex-direction: column;
+
+			&.active_item > .sidebar_button {
+				background: hsla(19, 64%, 43%, 0.2);
+				color: $secondary-light;
+				border-radius: 0.25rem 0.25rem 0 0;
+
+				&:hover {
+					color: $copy;
+					background: $secondary-light;
+				}
+			}
+
+			&:has(> .tag) {
+				flex-direction: row;
+			}
+
+			&:nth-last-of-type(2) {
+				margin-top: 1.5rem;
+
+				&::before {
+					content: "";
+					position: absolute;
+					top: -1rem;
+					left: 0;
+					width: 100%;
+					height: 2px;
+					border-radius: 0.25rem;
+					background: $border;
+				}
+			}
+
+			.sidebar_button {
+				white-space: nowrap;
+				overflow: hidden;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.5rem;
+				color: $copy;
+				text-transform: capitalize;
+				font-weight: 500;
+				cursor: pointer;
+				background: none;
+				border: none;
+				transition: all 0.3s ease;
+				opacity: 1;
+				border-radius: 0.25rem;
+
+				&:hover {
+					background: hsla(0, 9%, 77%, 0.1);
+					color: $secondary-light;
+				}
+
+				&:focus-visible {
+					outline: 2px solid $secondary-light;
+					outline-offset: 2px;
+				}
+
+				&:active,
+				&.active {
+					background: hsla(19, 64%, 43%, 0.2);
+					color: $secondary-light;
+
+					&:hover {
+						color: $copy;
+						background: $secondary-light;
+					}
+				}
+
+				&.not_clickable {
+					cursor: auto !important;
+
+					&:hover {
+						background: none;
+						color: $copy;
+					}
+				}
+
+				// Icon
+				.icon {
+					width: 1.75rem;
+					height: 1.75rem;
+				}
+
+				.more_icon {
+					margin-left: auto;
+				}
+			}
+
+			// Optional tag
+			.tag {
+				white-space: nowrap;
+				margin-right: 0.5rem;
+				align-self: center;
+				padding: 0.25rem;
+				width: fit-content;
+				border-radius: 0.25rem;
+				background: $primary;
+				text-transform: capitalize;
+				font-weight: 600;
+			}
+
+			// Optional dropdown
+			.dropdown {
+				list-style: none;
+				overflow: hidden;
+
+				.dropdown_item {
+					width: 100%;
+					display: flex;
+					align-items: center;
+					gap: 0.5rem;
+					padding: 0.5rem;
+					color: $copy;
+					text-transform: capitalize;
+					text-indent: 0.5rem;
+					cursor: pointer;
+					transition: all 0.3s ease;
+					outline: none;
+
+					&:hover,
+					&:focus-visible {
+						background: hsla(0, 9%, 77%, 0.1);
+						color: $secondary-light;
+					}
+
+					&:active,
+					&.active {
+						background: hsla(19, 64%, 43%, 0.2);
+						color: $secondary-light;
+
+						&:hover {
+							color: $copy;
+							background: $secondary-light;
+						}
+					}
+
+					// Optional tag
+					.tag {
+						color: $copy;
+						text-indent: 0;
+						text-align: center;
+						white-space: nowrap;
+						margin-left: auto;
+						margin-right: 0.5rem;
+						padding: 0.25rem;
+						min-width: 1rem;
+						width: fit-content;
+						border-radius: 0.25rem;
+						background: $primary;
+						text-transform: capitalize;
+						font-weight: 600;
+					}
+				}
+			}
+		}
+
+		.sidebar_account {
+			margin-top: auto;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			position: relative;
+
+			&::before {
+				content: "";
+				position: absolute;
+				top: -1rem;
+				left: 0;
+				width: 100%;
+				height: 2px;
+				border-radius: 0.25rem;
+				background: $border;
+			}
+
+			.user_icon {
+				width: 2.5rem;
+				height: 2.5rem;
+			}
+
+			.account_info {
+				display: flex;
+				flex-direction: column;
+
+				p {
+					font-weight: 500;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					max-width: 8rem;
+				}
+				span {
+					color: $copy-light;
+				}
+			}
+		}
+	}
+
+	// Hide on close sidebar
+	&:not(.open) {
+		.sidebar_wrapper .sidebar_item {
+			&.active_item > .sidebar_button {
+				border-radius: 0.25rem;
+			}
+		}
+
+		.sidebar_button {
+			height: 100%;
+			span,
+			.more_icon {
+				display: none;
+			}
+		}
+		.sidebar_item {
+			width: 3rem;
+			aspect-ratio: 1/1;
+
+			.tag {
+				display: none;
+			}
+		}
+		.sidebar_account {
+			.account_info,
+			.user_icon {
+				display: none;
+			}
+		}
+	}
 }

@@ -62,6 +62,7 @@ const Register = () => {
 					<>
 						<Input
 							type='text'
+							autocomplete='organization'
 							name='companyName'
 							placeholder='Kowalski Sp. z o.o.'
 							label='Nazwa firmy'
@@ -72,6 +73,7 @@ const Register = () => {
 						<Input
 							type='email'
 							name='email'
+							autocomplete='email'
 							placeholder='jan@kowalski.pl'
 							label='Adres email'
 							maxLength={64}
@@ -81,6 +83,7 @@ const Register = () => {
 						<Input
 							type='password'
 							name='password'
+							autocomplete='new-password'
 							placeholder='•••••••••'
 							label='Hasło'
 							maxLength={32}
@@ -89,6 +92,7 @@ const Register = () => {
 						/>
 						<Input
 							type='password'
+							autocomplete='new-password'
 							name='confirmPassword'
 							placeholder='•••••••••'
 							label='Potwierdź hasło'

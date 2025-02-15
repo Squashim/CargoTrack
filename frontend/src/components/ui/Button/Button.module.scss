@@ -116,8 +116,19 @@
 	/* ======= ICON ONLY BUTTON ======= */
 
 	&.only_icon {
-		padding: 0.75rem;
 		aspect-ratio: 1/1;
+
+		&.small {
+			padding: 0.5rem;
+		}
+
+		&.normal {
+			padding: 0.75rem;
+		}
+
+		&.big {
+			padding: 1rem;
+		}
 
 		&:active {
 			transform: scale(0.95);
