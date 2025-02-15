@@ -1,11 +1,7 @@
 package backend.cargoTrack.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
 @Entity
 public class Building {
     @Id
@@ -17,7 +13,8 @@ public class Building {
     private Location location;
     @ManyToOne 
     private BuildingType buildingType;
-    @ManyToOne 
+    @ManyToOne
+    @JoinColumn(name = "users_id")
     private User user;
     public int getId() {
         return id;

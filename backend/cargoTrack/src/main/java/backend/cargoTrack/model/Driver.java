@@ -2,6 +2,7 @@ package backend.cargoTrack.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,4 +35,7 @@ public class Driver {
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 }
