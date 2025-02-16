@@ -69,7 +69,8 @@ export const SidebarData: SidebarDataProps[] = [
 			},
 			{
 				name: "Zlecenia zakończone",
-				target: "completed-orders"
+				target: "completed-orders",
+				tag: "ended-orders"
 			},
 			{
 				name: "Wyszukaj zlecenie",

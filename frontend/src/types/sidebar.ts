@@ -21,10 +21,27 @@ export type SidebarItemProps = {
 	index: number;
 	activeDropdown: number | null;
 	setActiveDropdown: (index: number | null) => void;
+	userDetails: UserDetails | null;
 };
 
 export type SidebarTagProps = {
 	type: string;
+	userDetails: UserDetails | null;
+};
+
+export type SidebarAccountProps = {
+	userDetails: UserDetails | null;
+};
+
+export type UserDetails = {
+	accountBalance: number;
+	companyName: string;
+	email: string;
+	numberOfBuildings: number;
+	numberOfDeliveriesInProgress: number;
+	numberOfDrivers: number;
+	numberOfEndedDeliveries: number;
+	numberOfVehicles: number;
 };
 
 // Context

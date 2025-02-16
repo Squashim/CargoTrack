@@ -4,18 +4,24 @@ import ChevronDown from "../../../assets/icons/chevron_down.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useDashboard } from "../../../hooks/useDashboard";
-import { SidebarItemProps, SidebarTagProps } from "../../../types/sidebar";
+import {
+	SidebarAccountProps,
+	SidebarItemProps,
+	SidebarTagProps
+} from "../../../types/sidebar";
 import AccountIcon from "../../../assets/icons/account_circle.svg";
 import LogoutIcon from "../../../assets/icons/logout.svg";
 import Button from "../Button/Button";
 import { useAuth } from "../../../hooks/useAuth";
 import Tooltip from "../Tooltip/Tooltip";
+import { formatCurrency } from "../../utils/Formatters";
 
 const SidebarItem = ({
 	item,
 	index,
 	activeDropdown,
-	setActiveDropdown
+	setActiveDropdown,
+	userDetails
 }: SidebarItemProps) => {
 	const {
 		isSidebarOpen,
@@ -121,7 +127,9 @@ const SidebarItem = ({
 			</button>
 
 			{/* Optional tag */}
-			{item.tag && <SidebarTag type={item.tag} />}
+			{item.tag && userDetails && (
+				<SidebarTag type={item.tag} userDetails={userDetails} />
+			)}
 
 			{/* Optional dropdown menu */}
 			<AnimatePresence>
@@ -151,7 +159,12 @@ const SidebarItem = ({
 								{dropdownItem.name}
 
 								{/* Optional tag */}
-								{dropdownItem.tag && <SidebarTag type={dropdownItem.tag} />}
+								{dropdownItem.tag && userDetails && (
+									<SidebarTag
+										type={dropdownItem.tag}
+										userDetails={userDetails}
+									/>
+								)}
 							</li>
 						))}
 					</motion.ul>
@@ -163,7 +176,7 @@ const SidebarItem = ({
 
 export default SidebarItem;
 
-export const SidebarAccount = () => {
+export const SidebarAccount = ({ userDetails }: SidebarAccountProps) => {
 	const { logout } = useAuth();
 
 	return (
@@ -174,8 +187,8 @@ export const SidebarAccount = () => {
 				className={styles.user_icon}
 			/>
 			<div className={styles.account_info}>
-				<p>Adminowa firma opór</p>
-				<span>admin@admin.com</span>
+				<p>{userDetails && userDetails.companyName}</p>
+				<span>{userDetails && userDetails.email}</span>
 			</div>
 			<Button
 				iconType='only-icon'
@@ -188,30 +201,32 @@ export const SidebarAccount = () => {
 	);
 };
 
-const SidebarTag = ({ type }: SidebarTagProps) => {
-	let data = "";
-
-	// TODO fetch data from API
+const SidebarTag = ({ type, userDetails }: SidebarTagProps) => {
+	let result: string = "";
 
 	switch (type) {
 		case "balance":
-			data = "4 450 000";
+			userDetails && (result = formatCurrency(userDetails.accountBalance));
 			break;
 		case "bought-properties":
-			data = "1";
+			userDetails && (result = userDetails.numberOfBuildings.toString());
 			break;
 		case "workers":
-			data = "2";
+			userDetails && (result = userDetails.numberOfDrivers.toString());
 			break;
 		case "fleet":
-			// data = "4";
+			userDetails && (result = userDetails.numberOfVehicles.toString());
 			break;
 		case "ongoing-orders":
-			data = "1";
+			userDetails &&
+				(result = userDetails.numberOfDeliveriesInProgress.toString());
+			break;
+		case "ended-orders":
+			userDetails && (result = userDetails.numberOfEndedDeliveries.toString());
 			break;
 		default:
 			break;
 	}
 
-	return data !== "" && <span className={styles.tag}>{data}</span>;
+	return result !== "" && <span className={styles.tag}>{result}</span>;
 };

@@ -10,13 +10,13 @@ const loginFormSchema = z.object({
 		.min(1, "Hasło jest wymagane.")
 		.min(8, "Hasło powinno mieć co najmniej 8 znaków.")
 		.max(32, "Hasło może mieć maksymalnie 32 znaki.")
-		.refine((value) => /[A-Za-z]/.test(value), {
+		.refine((value) => /[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]/.test(value), {
 			message: "Hasło musi zawierać przynajmniej jedną literę."
 		})
 		.refine((value) => /\d/.test(value), {
 			message: "Hasło musi zawierać przynajmniej jedną cyfrę."
 		})
-		.refine((value) => /^[A-Za-z\d]+$/.test(value), {
+		.refine((value) => /^[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż\d]+$/.test(value), {
 			message:
 				"Hasło może zawierać tylko litery i cyfry, bez znaków specjalnych."
 		}),
@@ -33,7 +33,7 @@ const registerFormSchema = z
 			.min(3, "Nazwa firmy powinna mieć co najmniej 3 znaki.")
 			.max(25, "Nazwa firmy może mieć maksymalnie 25 znaków.")
 			.regex(
-				/^[A-Za-z\s.]+$/,
+				/^[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż\s.]+$/,
 				"Nazwa firmy może zawierać tylko litery, spacje i kropki."
 			),
 		email: z
@@ -45,11 +45,11 @@ const registerFormSchema = z
 			.min(1, "Hasło jest wymagane.")
 			.min(8, "Hasło powinno mieć co najmniej 8 znaków.")
 			.max(32, "Hasło może mieć maksymalnie 32 znaki.")
-			.regex(/[A-Za-z]/, {
+			.regex(/[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]/, {
 				message: "Hasło musi zawierać przynajmniej jedną literę."
 			})
 			.regex(/\d/, { message: "Hasło musi zawierać przynajmniej jedną cyfrę." })
-			.regex(/^[A-Za-z\d]+$/, {
+			.regex(/^[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż\d]+$/, {
 				message:
 					"Hasło może zawierać tylko litery i cyfry, bez znaków specjalnych."
 			}),
