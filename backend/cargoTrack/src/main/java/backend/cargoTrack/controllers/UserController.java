@@ -1,49 +1,62 @@
 package backend.cargoTrack.controllers;
 
-import backend.cargoTrack.repositories.UserRepository;
 import backend.cargoTrack.responses.UserDetailsResponse;
-import backend.cargoTrack.services.JwtService;
+
 import backend.cargoTrack.services.UserService;
-import backend.cargoTrack.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import backend.cargoTrack.model.Building;
+import backend.cargoTrack.model.Delivery;
+import backend.cargoTrack.model.Driver;
+import backend.cargoTrack.model.Vehicle;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private final UserRepository userRepository;
+  
     private final UserService userService;
-    private final JwtService jwtService;
 
-    @Autowired
-    public UserController(UserRepository userRepository, UserService userService, JwtService jwtService) {
-        this.userRepository = userRepository;
+
+    
+    public UserController(UserService userService) {
+     
         this.userService = userService;
-        this.jwtService = jwtService;
+    
     }
 
     @GetMapping("/details")
-    public ResponseEntity<UserDetailsResponse> getUserDetails(@CookieValue(name = "jwt", required = false) String jwt) {
-        if (jwt == null || jwt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        String username;
-        try {
-            username = jwtService.extractUsername(jwt);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-
-        User user = userRepository.findByEmail(username);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        System.out.println(user.getId());
-        UserDetailsResponse userDetailsResponse = userService.detailsResponse(user.getId());
+    public ResponseEntity<UserDetailsResponse> getUserDetails(@CookieValue(name = "jwt") String jwt) {
+       
+        UserDetailsResponse userDetailsResponse = userService.detailsResponse(jwt);
         return ResponseEntity.ok(userDetailsResponse);
     }
+    @GetMapping("/vehicles")
+    public ResponseEntity<List<Vehicle>> getVehicles(@CookieValue(name = "jwt") String jwt) {
+      List<Vehicle> vehicles = userService.getUserVehicles(jwt);
+        return ResponseEntity.ok(vehicles);
+    }
+    @GetMapping("/buildings")
+    public ResponseEntity<List<Building>> getBuildings(@CookieValue(name = "jwt") String jwt) {
+        List<Building> buildings = userService.getUserBuildings(jwt);
+        return ResponseEntity.ok(buildings);
+    }
+    @GetMapping("/drivers")
+    public ResponseEntity<List<Driver>> getDrivers(@CookieValue(name = "jwt") String jwt) {
+        List<Driver> drivers = userService.getUserDrivers(jwt);
+        return ResponseEntity.ok(drivers);
+    }
+    @GetMapping("/deliveries")
+   public ResponseEntity<List<Delivery>> getDeliveries(@CookieValue(name = "jwt") String jwt){
+        List<Delivery> deliveries = userService.getUserDeliveries(jwt);
+        return ResponseEntity.ok(deliveries);
+    }
+    
+    
 }
 
