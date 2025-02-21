@@ -88,5 +88,6 @@ public class User implements UserDetails {
         return true;
     }
     public void setBalance(double balance) {
+        this.balance = balance;
     }
 }

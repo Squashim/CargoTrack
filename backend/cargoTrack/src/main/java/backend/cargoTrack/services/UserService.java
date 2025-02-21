@@ -11,6 +11,7 @@ import backend.cargoTrack.responses.UserDetailsResponse;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,37 +70,25 @@ public class UserService {
     public List<Vehicle> getUserVehicles(String jwt) {
         User user = getUserByJwt(jwt);
          Optional <List<Vehicle>> vehicles = vehicleRepository.findByUser(user);
-            if(vehicles.isPresent()){
-                return vehicles.get();
-            }else{
-                return null;
-            }
+        return vehicles.orElse(null);
     }
     public List<Building> getUserBuildings(String jwt) {
         User user = getUserByJwt(jwt);
         Optional <List<Building>> buildings = buildingRepository.findByUser(user);
-        if(buildings.isPresent()){
-            return buildings.get();
-        }else{
-            return null;
-        }
+        return buildings.orElse(null);
     }
     public List<Driver> getUserDrivers(String jwt) {
         User user = getUserByJwt(jwt);
         Optional <List<Driver>> drivers = driverRepository.findByUser(user);
-        if(drivers.isPresent()){
-            return drivers.get();
-        }else{
-            return null;
-        }
+        return drivers.orElse(null);
     }
     public List<Delivery> getUserDeliveries(String jwt) {
         User user = getUserByJwt(jwt);
         Optional <List<Delivery>> deliveries = deliveryRepository.findByUser(user);
-        if(deliveries.isPresent()){
-            return deliveries.get();
-        }else{
-            return null;
-        }
+        return deliveries.orElse(null);
+    }
+
+    public void saveUser(User user){
+        userRepository.saveAndFlush(user);
     }
 }

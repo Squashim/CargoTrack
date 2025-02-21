@@ -1,5 +1,6 @@
 package backend.cargoTrack.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,11 +11,13 @@ public class Building {
     @Column(name = "name")
     private String name;
     @ManyToOne
+    @JoinColumn(name = "location_id")
     private Location location;
     @ManyToOne 
     private BuildingType buildingType;
     @ManyToOne
     @JoinColumn(name = "users_id")
+    @JsonIgnore
     private User user;
     public int getId() {
         return id;

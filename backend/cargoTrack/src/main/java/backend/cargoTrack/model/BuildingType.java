@@ -22,7 +22,7 @@ public class BuildingType {
     @Column(name="name")
     private String name;
     @Column(name="radius")
-    private double radius;
+    private Double radius;
     public int getId() {
         return id;
     }
@@ -64,7 +64,7 @@ public class BuildingType {
     }
 
     public double getRadius() {
-        return radius;
+        return radius !=null ? radius:0.0;
     }
 
     public void setRadius(double radius) {
