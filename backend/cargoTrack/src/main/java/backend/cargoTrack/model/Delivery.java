@@ -26,16 +26,19 @@ public class Delivery {
     private ZonedDateTime startTime;
     private ZonedDateTime endTime;
     private BigDecimal fuelUsed;
-    
+
     @ManyToOne
     @JoinColumn(name = "users_id", nullable = false)
     private User user;
-    
+
     @ManyToOne
     @JoinColumn(name = "jobs_id", nullable = false)
     private Job job;
-    
+
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private UserVehicle vehicle;
 }

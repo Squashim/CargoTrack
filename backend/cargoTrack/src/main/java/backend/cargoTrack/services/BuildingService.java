@@ -24,6 +24,9 @@ public class BuildingService {
 
     public List<Location> getAvailableLocations(String province,User user){
         List<Integer> ownedLocationIds = buildingRepository.findLocationsIdByUser(user);
+        if(ownedLocationIds.isEmpty()){
+            return locationRepository.findByProvince(province);
+        }
         return locationRepository.findByProvinceAndIdNotIn(province,ownedLocationIds);
     }
     public double getCost(BuildingType buildingType){

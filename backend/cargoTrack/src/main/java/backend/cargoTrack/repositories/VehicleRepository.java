@@ -12,7 +12,5 @@ import backend.cargoTrack.model.VehicleType;
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
     Vehicle findByModel(String model);
     List<Vehicle> findByVehicleType(VehicleType vehicleType);
-    List<Vehicle> findByVehicleTypeId(Long vehicleTypeId); 
-    Optional<List<Vehicle>> findByUser(User user);
-    int countByUser(User user);
+    List<Vehicle> findByVehicleTypeId(Long vehicleTypeId);
 }

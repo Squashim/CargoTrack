@@ -31,21 +31,16 @@ public class Vehicle {
     private BigDecimal price;
     private String color = "white";
     private String imagePath;
-    private String registerNumber;
-    
-    @ManyToOne
-    @JoinColumn(name = "users_id")
-    private User user;
-    
+
+
+
     @ManyToOne
     @JoinColumn(name = "vehicle_types_id", nullable = false)
     private VehicleType vehicleType;
-    
+
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
-    
-    @ManyToOne
-    @JoinColumn(name = "building_id")
-    private Building building;
+
+
 }

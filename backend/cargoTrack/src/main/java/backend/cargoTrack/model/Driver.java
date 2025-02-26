@@ -27,15 +27,18 @@ public class Driver {
     private String lastName;
     private Integer skills;
     private BigDecimal salary;
-    
+
     @ManyToOne
     @JoinColumn(name = "building_id", nullable = false)
     private Building building;
-    
+
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
     @ManyToOne
     @JsonIgnore
     private User user;
+@ManyToOne
+@JoinColumn(name="user_vehicle_id")
+private UserVehicle userVehicle;
 }

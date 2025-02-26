@@ -13,7 +13,7 @@ public class Building {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
-    @ManyToOne 
+    @ManyToOne
     private BuildingType buildingType;
     @ManyToOne
     @JoinColumn(name = "users_id")

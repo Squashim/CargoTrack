@@ -4,14 +4,13 @@ import backend.cargoTrack.model.Building;
 import backend.cargoTrack.model.Delivery;
 import backend.cargoTrack.model.Driver;
 import backend.cargoTrack.model.User;
-import backend.cargoTrack.model.Vehicle;
+import backend.cargoTrack.model.UserVehicle;
 import backend.cargoTrack.repositories.*;
 import backend.cargoTrack.responses.UserDetailsResponse;
 
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,16 +19,16 @@ public class UserService {
     private final BuildingRepository buildingRepository;
     private final DriverRepository driverRepository;
     private final DeliveryRepository deliveryRepository;
-    private final VehicleRepository vehicleRepository;
+    private final UserVehicleRepository vehicleRepository;
     private final JwtService jwtService;
     public UserService(
             UserRepository userRepository,
             BuildingRepository buildingRepository,
-            VehicleRepository vehicleRepository,
+            UserVehicleRepository vehicleRepository,
             DriverRepository driverRepository,
             DeliveryRepository deliveryRepository,
             JwtService jwtService
-            
+
     ) {
         this.userRepository = userRepository;
         this.buildingRepository = buildingRepository;
@@ -67,9 +66,9 @@ public class UserService {
             return null;
         }
     }
-    public List<Vehicle> getUserVehicles(String jwt) {
+    public List<UserVehicle> getUserVehicles(String jwt) {
         User user = getUserByJwt(jwt);
-         Optional <List<Vehicle>> vehicles = vehicleRepository.findByUser(user);
+         Optional <List<UserVehicle>> vehicles = vehicleRepository.findByUser(user);
         return vehicles.orElse(null);
     }
     public List<Building> getUserBuildings(String jwt) {
