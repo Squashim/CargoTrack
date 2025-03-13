@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 type ButtonProps = {
 	type?: "button" | "submit" | "reset";
-	style?: "primary" | "secondary";
+	style?: "primary" | "secondary" | "tertiary";
 	size?: "small" | "normal" | "big";
 	iconType?: "only-icon" | "icon-left" | "icon-right";
 	icon?: string;
@@ -47,9 +47,8 @@ const Button = ({
 	return (
 		<button
 			type={type}
-			className={`${styles[style]}  ${styles.btn} ${
-				iconType === "only-icon" ? styles.only_icon : ""
-			} ${size && styles[size]}`}
+			className={`${styles[style]}  ${styles.btn} ${iconType === "only-icon" ? styles.only_icon : ""
+				} ${size && styles[size]}`}
 			onClick={onClick}
 			onMouseEnter={showText ? handleMouseEvent : undefined}
 			onMouseLeave={showText ? handleMouseEvent : undefined}

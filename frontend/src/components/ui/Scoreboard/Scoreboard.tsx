@@ -18,8 +18,7 @@ const Scoreboard = () => {
 				setData(result);
 
 				const month = new Date()
-					.toLocaleString("en-US", { month: "long" })
-					.toLowerCase();
+					.toLocaleString("pl-PL", { month: "long" });
 				setSelectedMonth(month);
 			} catch (error) {
 				console.error("Błąd przy pobieraniu danych:", error);
@@ -46,7 +45,11 @@ const Scoreboard = () => {
 					<Select
 						value={selectedMonth}
 						onChange={setSelectedMonth}
-						options={data}></Select>
+						placeholder={selectedMonth}
+						options={data.map((item) => ({
+							label: item.month,
+							value: item.month
+						}))}></Select>
 				)}
 			</div>
 			<div className={styles.podium}>

@@ -1,44 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Select.module.scss";
-
 import chevron_up from "../../../assets/icons/chevron_up.svg";
-import { ScoreData } from "../../../types/types";
+import { type SelectProps } from "../../../types/types";
 
-type SelectProps = {
-	value: string;
-	options: ScoreData[];
-	onChange: (value: string) => void;
-};
-
-const monthTranslation: Record<string, string> = {
-	january: "styczeń",
-	february: "luty",
-	march: "marzec",
-	april: "kwiecień",
-	may: "maj",
-	june: "czerwiec",
-	july: "lipiec",
-	august: "sierpień",
-	september: "wrzesień",
-	october: "październik",
-	november: "listopad",
-	december: "grudzień"
-};
-
-const Select = ({ value, options, onChange }: SelectProps) => {
+const Select = ({ value, options, onChange, placeholder = "Wybierz..." }: SelectProps) => {
 	const [showMenu, setShowMenu] = useState(false);
 	const inputRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		const handler = (e: MouseEvent) => {
+		const handleClickOutside = (e: MouseEvent) => {
 			if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
 				setShowMenu(false);
 			}
 		};
 
-		window.addEventListener("click", handler);
+		window.addEventListener("click", handleClickOutside);
 		return () => {
-			window.removeEventListener("click", handler);
+			window.removeEventListener("click", handleClickOutside);
 		};
 	});
 
@@ -56,7 +34,7 @@ const Select = ({ value, options, onChange }: SelectProps) => {
 				ref={inputRef}
 				onClick={handleInputClick}
 				className={styles.dropdown_input}>
-				<p>{monthTranslation[value]}</p>
+				<p>{options.find((opt) => opt.value === value)?.label || placeholder}</p>
 				<img
 					src={chevron_up}
 					className={!showMenu ? styles.translate : ""}
@@ -68,12 +46,14 @@ const Select = ({ value, options, onChange }: SelectProps) => {
 					{options.map((option) => {
 						return (
 							<div
-								key={option.month}
-								onClick={() => onChange(option.month)}
-								className={`${styles.item} ${
-									isSelected(option.month) && styles.selected
-								}`}>
-								{monthTranslation[option.month]}
+								key={option.value}
+								onClick={() => {
+									onChange(option.value);
+									setShowMenu(false);
+								}}
+								className={`${styles.item} ${isSelected(option.value) && styles.selected
+									}`}>
+								{option.label}
 							</div>
 						);
 					})}

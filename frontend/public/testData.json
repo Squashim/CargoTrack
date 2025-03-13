@@ -1,7 +1,7 @@
 [
 	{
-		"month": "july",
-		"year": "2024",
+		"month": "styczeń",
+		"year": "2025",
 		"scoreboard": [
 			{
 				"companyName": "Polska Logistyka",
@@ -56,8 +56,8 @@
 		]
 	},
 	{
-		"month": "august",
-		"year": "2024",
+		"month": "luty",
+		"year": "2025",
 		"scoreboard": [
 			{
 				"companyName": "Polska Logistyka 2.0",
@@ -112,8 +112,8 @@
 		]
 	},
 	{
-		"month": "september",
-		"year": "2024",
+		"month": "marzec",
+		"year": "2025",
 		"scoreboard": [
 			{
 				"companyName": "Krajowy Transport Spedycyjny",
@@ -128,8 +128,8 @@
 		]
 	},
 	{
-		"month": "october",
-		"year": "2024",
+		"month": "kwiecień",
+		"year": "2025",
 		"scoreboard": []
 	}
 ]

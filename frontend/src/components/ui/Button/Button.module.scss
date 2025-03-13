@@ -113,6 +113,49 @@
 		}
 	}
 
+	/* ======= TERTIARY BUTTON ======= */
+	&.tertiary {
+		font-size: .875rem;
+		background: transparent;
+		color: $copy-light;
+		border: 1px solid $copy-light;
+		position: relative;
+		overflow: hidden;
+		z-index: 1;
+		transition: border-color 0.4s ease-in-out;
+
+		span {
+			position: absolute;
+			top: var(--y);
+			left: var(--x);
+			width: 0;
+			height: 0;
+			background-color: $background;
+			border-radius: 50%;
+			pointer-events: none;
+			transform: translate(-50%, -50%);
+			transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+			z-index: -1;
+		}
+
+		&:hover {
+			border-color: $foreground;
+
+			span {
+				width: 300%;
+				height: 500%;
+			}
+		}
+
+		&:focus-visible {
+			outline: 2px solid $secondary;
+			outline-offset: 2px;
+		}
+		&:active {
+			transform: scale(0.98);
+		}
+	}
+
 	/* ======= ICON ONLY BUTTON ======= */
 
 	&.only_icon {

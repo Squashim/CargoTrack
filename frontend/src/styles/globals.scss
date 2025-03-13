@@ -20,6 +20,8 @@ html:focus-within {
 	scroll-behavior: smooth;
 }
 
+
+
 a:not([class]) {
 	text-decoration-skip-ink: auto;
 }
@@ -179,4 +181,20 @@ span {
 		0.875rem
 	); //min -> 12px, max-> 14px
 	line-height: 16px;
+}
+
+
+
+.leaflet-popup-content-wrapper {
+	background-color: $foreground !important; 
+	color: $copy !important;
+	border-radius: .5rem;
+	padding: .5rem;
+}
+
+.leaflet-popup-tip {
+	background-color: $foreground !important;
+}
+.leaflet-popup-close-button{
+	color: $copy !important;
 }

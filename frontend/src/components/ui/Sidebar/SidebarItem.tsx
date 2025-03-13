@@ -88,22 +88,19 @@ const SidebarItem = ({
 
 	return (
 		<li
-			className={`${styles.sidebar_item} ${
-				item.dropdownItems?.some(
-					(dropdownItem) => dropdownItem.target === activeDashboardElement
-				)
-					? styles.active_item
-					: ""
-			}`}
+			className={`${styles.sidebar_item} ${item.dropdownItems?.some(
+				(dropdownItem) => dropdownItem.target === activeDashboardElement
+			)
+				? styles.active_item
+				: ""
+				}`}
 			onMouseEnter={() => !isSidebarOpen && setShowTooltip(true)}
 			onMouseLeave={() => !isSidebarOpen && setShowTooltip(false)}>
 			{!isSidebarOpen && showTooltip && <Tooltip text={item.name} />}
 			<button
-				className={`${styles.sidebar_button} ${
-					!item.target && !item.dropdownItems && styles.not_clickable
-				} ${
-					item.target && activeDashboardElement === item.target && styles.active
-				}`}
+				className={`${styles.sidebar_button} ${!item.target && !item.dropdownItems && styles.not_clickable
+					} ${item.target && activeDashboardElement === item.target && styles.active
+					}`}
 				onClick={handleItemClick}
 				onKeyDown={handleKeyDown}
 				aria-expanded={isActive}
@@ -147,10 +144,9 @@ const SidebarItem = ({
 						{item.dropdownItems.map((dropdownItem, idx) => (
 							<li
 								key={idx}
-								className={`${styles.dropdown_item} ${
-									dropdownItem.target === activeDashboardElement &&
+								className={`${styles.dropdown_item} ${dropdownItem.target === activeDashboardElement &&
 									styles.active
-								}`}
+									}`}
 								onClick={() => handleDropdownItemClick(dropdownItem.target)}
 								onKeyDown={(e) => handleDropdownKeyDown(e, dropdownItem.target)}
 								role='menuitem'

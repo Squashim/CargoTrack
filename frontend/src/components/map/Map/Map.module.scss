@@ -3,3 +3,19 @@
 	width: 100%;
 	position: absolute;
 }
+
+.popupContent{
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+
+	.popupTitle{
+		font-size: 1.2rem;
+	}
+
+	.popupInfo{
+		display: flex;
+		flex-direction: column;
+		gap: .25rem;
+	}
+}

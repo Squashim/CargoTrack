@@ -4,8 +4,8 @@ import { IDashboardContext, Props } from "../types/sidebar";
 const initialState: IDashboardContext = {
 	isSidebarOpen: true,
 	activeDashboardElement: null,
-	setIsSidebarOpen: () => {},
-	setActiveDashboardElement: () => {}
+	setIsSidebarOpen: () => { },
+	setActiveDashboardElement: () => { },
 };
 
 export const DashboardContext = createContext<IDashboardContext>(initialState);

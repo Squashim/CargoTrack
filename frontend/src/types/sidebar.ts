@@ -44,7 +44,6 @@ export type UserDetails = {
 	numberOfVehicles: number;
 };
 
-// Context
 export interface IDashboardContext {
 	isSidebarOpen: boolean;
 	activeDashboardElement: string | null;

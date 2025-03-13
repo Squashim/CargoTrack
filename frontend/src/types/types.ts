@@ -23,3 +23,15 @@ export type ScoreData = {
 	year: string;
 	scoreboard: Scoreboard[];
 };
+
+export type SelectProps = {
+	value: string;
+	options: SelectOption[];
+	onChange: (value: string) => void;
+	placeholder?: string;
+};
+
+export type SelectOption = {
+	label: string;
+	value: string;
+};

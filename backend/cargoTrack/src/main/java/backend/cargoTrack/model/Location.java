@@ -30,6 +30,9 @@ public class Location {
     @Column(nullable = false)
     private String street;
 
+    @Column(nullable = false)
+    private String number;
+
     // Getters and setters
     // hashCode, equals, toString
 }
