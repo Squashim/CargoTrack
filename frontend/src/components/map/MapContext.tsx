@@ -14,6 +14,7 @@ interface IMapContext {
     setMarkers: (markers: MarkerProps[] | null) => void;
     clearMarkers: () => void;
     openMarkerPopup: (lat: number, lng: number) => void;
+    clearMarkersPopups: () => void;
 }
 
 const initialMapContext: IMapContext = {
@@ -27,6 +28,7 @@ const initialMapContext: IMapContext = {
     setMarkers: () => { },
     clearMarkers: () => { },
     openMarkerPopup: () => { },
+    clearMarkersPopups: () => { },
 };
 
 export const MapContext = createContext<IMapContext>(initialMapContext);
@@ -49,8 +51,6 @@ export const MapProvider = ({ children }: Props) => {
 
     const openMarkerPopup = (lat: number, lng: number) => {
         if (markers) {
-
-
             const markerIndex = markers.findIndex(
                 (marker) => marker.position.toString() === [lat, lng].toString()
             );
@@ -59,8 +59,13 @@ export const MapProvider = ({ children }: Props) => {
             if (markerIndex !== -1) {
                 selectedMarkerRef?.openPopup();
             }
-
         }
+    }
+
+    const clearMarkersPopups = () => {
+        markerRefs.current.forEach((markerRef) => {
+            markerRef?.closePopup();
+        })
     }
 
     const clearMarkers = () => {
@@ -69,7 +74,7 @@ export const MapProvider = ({ children }: Props) => {
     };
 
     return (
-        <MapContext.Provider value={{ mapRef, setMapRef, zoomToMarker, setMarkers, activeMarker, setActiveMarker, markers, clearMarkers, openMarkerPopup, markerRefs }}>
+        <MapContext.Provider value={{ mapRef, setMapRef, zoomToMarker, setMarkers, activeMarker, setActiveMarker, markers, clearMarkers, openMarkerPopup, markerRefs, clearMarkersPopups }}>
             {children}
         </MapContext.Provider>
     );
