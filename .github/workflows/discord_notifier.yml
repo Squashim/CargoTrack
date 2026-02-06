@@ -1,8 +1,7 @@
 name: Discord Notifier
 
 on:
-  pull_request_review:
-    types: [submitted]
+  [push]
 
 jobs:
   notify:
