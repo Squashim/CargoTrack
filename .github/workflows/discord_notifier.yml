@@ -1,20 +1,15 @@
 name: Discord Notifier
 
-on:
-  [push]
+on: [push]
 
 jobs:
   notify:
-    
-    if: contains(github.event.review.body, '!discord')
     runs-on: ubuntu-latest
     steps:
       - name: Send notification
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          content: "Nowa notka w PR! Autor: ${{ github.actor }}"
-          title: "CR MACHEN"
-          description: "${{ github.event.review.body }}"
-          url: ${{ github.event.pull_request.html_url }}
-          color: 0x00ff00
+          content: "Test połączenia! Jeśli to widzisz, to znaczy że Webhook działa."
+          title: "TEST"
+          color: 0xffff00
