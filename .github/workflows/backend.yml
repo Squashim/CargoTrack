@@ -1,0 +1,18 @@
+name: Backend Build
+on:
+  push:
+    branches: [ "develop" ]
+    paths:
+      - 'backend/**'           
+      - 'docker-compose.yml'
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend  
+          push: true
+          tags: ghcr.io/twojanazwa/cargotrack-backend:develop
