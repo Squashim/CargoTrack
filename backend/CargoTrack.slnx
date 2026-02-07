@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CargoTrack.API/CargoTrack.API.csproj" />
+  <Project Path="CargoTrack.Modules.Fleet/CargoTrack.Modules.Fleet.csproj" />
+  <Project Path="CargoTrack.Modules.Identity/CargoTrack.Modules.Identity.csproj" />
+  <Project Path="CargoTrack.Modules.Transport/CargoTrack.Modules.Transport.csproj" />
+</Solution>

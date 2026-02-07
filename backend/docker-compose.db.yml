@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: cargotrack_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: cargo_password
+      POSTGRES_DB: CargoTrack
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cargo-net
+
+volumes:
+  postgres_data:
+
+networks:
+  cargo-net:
