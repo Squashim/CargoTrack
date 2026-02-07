@@ -1,70 +1,39 @@
 version: '3.8'
+
 services:
-  frontend:
+  api:
+
     build:
-      context: .
-      dockerfile: frontend.Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
-      - "5173:5173"
-      - "24678:24678"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "5000:8080"
     environment:
-      - CHOKIDAR_USEPOLLING=${CHOKIDAR_USEPOLLING}
-      - WDS_SOCKET_PORT=${WDS_SOCKET_PORT}
-      - VITE_HMR_PORT=${VITE_HMR_PORT}
-    restart: unless-stopped
-    networks:
-      - app-network
-
-  backend:
-   build:
-    context: .
-    dockerfile: backend.Dockerfile
-   ports:
-    - "8080:8080"
-   volumes:
-    - ./backend/cargoTrack:/app
-    - /app/target
-   environment:
-    - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-    - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-    - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-   depends_on:
-    - db
-   networks:
-    - app-network
-
-
-  db:
-    image: postgres:15-alpine
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
-    ports:
-      - "5050:80"
+      - ConnectionStrings__DefaultConnection=Host=db;Database=CargoTrack;Username=postgres;Password=cargo_password
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       - db
     networks:
-      - app-network
+      - cargo-net
+  # DATABASE
+  db:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: cargotrack_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: cargo_password
+      POSTGRES_DB: CargoTrack
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cargo-net
 
 volumes:
   postgres_data:
 
+
 networks:
-  app-network:
-    driver: bridge
+  cargo-net:

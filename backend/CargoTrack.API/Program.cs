@@ -16,7 +16,7 @@ builder.Services.AddControllers();
 var secretKey = builder.Configuration["Auth:SecretKey"];
 
 if (string.IsNullOrEmpty(secretKey))
-    throw new Exception("Brak klucza 'Auth:SecretKey' w appsettings.json!");
+    throw new Exception("Missing SecretKey");
 
 builder.Services.AddAuthentication(options =>
 {
