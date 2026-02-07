@@ -1,0 +1,49 @@
+## .NET Core / .NET
+[Bb]in/
+[Oo]bj/
+.config/
+*.user
+*.userosscache
+*.sln.docstates
+*.http
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userprefs
+*.launchsettings.json
+
+## Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## Rider
+.idea/
+*.sln.iml
+
+## Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+## Docker
+docker-compose.override.yml
+.env
+
+## Environment variables & Secrets
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+## OS Specific (Linux/Mac/Windows)
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## Logs
+*.log
