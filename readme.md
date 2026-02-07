@@ -2,7 +2,7 @@
 
 | Method | Endpoint                        | Description |
 |--------|---------------------------------|-------------|
-| POST   | `/auth/login`                   | Logowanie uzytkownika |
+| POST   | `/auth/login`                   | Logowanie uzytkownikaa |
 | POST   | `/auth/logout`                  | Wylogowanie uzytkownika |
 | POST   | `/auth/refresh`                 | Odswiezenie tokenu jwt |
 | POST   | `/auth/signup`                  | Rejestracja uzytkownika |
