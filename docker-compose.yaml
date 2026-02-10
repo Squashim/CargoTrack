@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:8080"
+    env_file:
+      - ./.env
     environment:
       - ConnectionStrings__DefaultConnection=Host=db;Database=CargoTrack;Username=postgres;Password=cargo_password
       - ASPNETCORE_URLS=http://+:8080
@@ -35,7 +37,7 @@ services:
     container_name: cargotrack_osrm
     restart: always
     ports:
-      - "5001:5000" # Na zewnątrz 5001 (żeby nie gryzło się z API na 5000), wewnątrz 5000
+      - "5001:5000"
     volumes:
       - ./osrm-data:/data
     command: "osrm-routed --algorithm mld /data/poland-latest.osrm"
@@ -44,6 +46,7 @@ services:
 
 volumes:
   postgres_data:
+
 
 networks:
   cargo-net:

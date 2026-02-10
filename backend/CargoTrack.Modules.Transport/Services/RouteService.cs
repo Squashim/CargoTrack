@@ -36,7 +36,7 @@ public class RouteService
         var data = JObject.Parse(json);
 
         var route = data["routes"]?[0];
-        if (route == null) throw new Exception("Nie znaleziono trasy!");
+        if (route == null) throw new Exception("Route not found");
 
         double distance = route["distance"]?.Value<double>() ?? 0;
         double duration = route["duration"]?.Value<double>() ?? 0;
