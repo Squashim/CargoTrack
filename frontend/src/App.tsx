@@ -1,13 +1,12 @@
-import AuthProvider from "./context/AuthContext";
-import Routes from "./components/routing/Routes";
-import "./styles/globals.scss";
+import { Outlet } from 'react-router';
 
-function App() {
-	return (
-		<AuthProvider>
-			<Routes />
-		</AuthProvider>
-	);
+export function App() {
+  /* Global page layout */
+  return (
+    <>
+      <Outlet />
+    </>
+  );
 }
 
 export default App;
