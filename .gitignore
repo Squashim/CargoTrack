@@ -38,3 +38,9 @@ logs/
 backend/cargoTrack/src/main/resources/application.properties
 .vscode/settings.json
 backend/cargoTrack/src/main/resources/data/busy/script.py
+
+# OSRM Data
+osrm-data/
+*.osrm
+*.pbf
+*.tiling
