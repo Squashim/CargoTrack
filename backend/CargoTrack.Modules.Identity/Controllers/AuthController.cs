@@ -1,5 +1,6 @@
 using CargoTrack.Modules.Identity.DTOs;
-using CargoTrack.Modules.Identity.Services;
+using CargoTrack.Modules.Identity.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CargoTrack.Modules.Identity.Controllers;
@@ -8,14 +9,15 @@ namespace CargoTrack.Modules.Identity.Controllers;
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
-    private readonly AuthService _authService;
+    private readonly IAuthService _authService;
 
-    public AuthController(AuthService authService)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         try
@@ -30,12 +32,15 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         try
         {
             var (accessToken, refreshToken) = await _authService.LoginAsync(request.Email, request.Password);
-            return Ok(new AuthResponse(accessToken, refreshToken, Guid.Empty));
+            AuthCookieHelper.SetAccessTokenCookie(HttpContext, accessToken);
+            AuthCookieHelper.SetRefreshTokenCookie(HttpContext, refreshToken);
+            return Ok();
         }
         catch (Exception)
         {
@@ -44,11 +49,13 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("refresh")]
+    [AllowAnonymous]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
         try
         {
             var accessToken = await _authService.RefreshTokenAsync(request.RefreshToken);
+            AuthCookieHelper.SetAccessTokenCookie(HttpContext, accessToken);
             return Ok(new { AccessToken = accessToken });
         }
         catch (Exception ex)
@@ -58,12 +65,18 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] RefreshTokenRequest request)
+    public async Task<IActionResult> Logout()
     {
         try
         {
-            await _authService.LogoutAsync(request.RefreshToken);
-            return Ok(new { Message = "Logged out successfully" });
+            if (HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
+            {
+                await _authService.LogoutAsync(refreshToken);
+                AuthCookieHelper.ClearAccessTokenCookie(HttpContext);
+                AuthCookieHelper.ClearRefreshTokenCookie(HttpContext);
+                return Ok(new { Message = "Logged out successfully" });
+            }
+            return BadRequest(new { Error = "Refresh token not found" });
         }
         catch (Exception ex)
         {

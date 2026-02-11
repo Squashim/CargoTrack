@@ -4,13 +4,14 @@ using System.Security.Cryptography;
 using System.Text;
 using CargoTrack.Modules.Identity.Database;
 using CargoTrack.Modules.Identity.Entities;
+using CargoTrack.Modules.Identity.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration; // Do pobrania SecretKey
 using Microsoft.IdentityModel.Tokens;
 
 namespace CargoTrack.Modules.Identity.Services;
 
-public class AuthService
+public class AuthService : IAuthService
 {
     private readonly IdentityDbContext _db;
     private readonly PasswordService _passwordService;
