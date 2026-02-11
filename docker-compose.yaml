@@ -1,13 +1,14 @@
-version: '3.8'
+version: "3.8"
 
 services:
   api:
-
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - "5000:8080"
+    env_file:
+      - ./.env
     environment:
       - ConnectionStrings__DefaultConnection=Host=db;Database=CargoTrack;Username=postgres;Password=cargo_password
       - ASPNETCORE_URLS=http://+:8080
@@ -28,6 +29,18 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cargo-net
+
+  osrm:
+    image: osrm/osrm-backend
+    container_name: cargotrack_osrm
+    restart: always
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./osrm-data:/data
+    command: "osrm-routed --algorithm mld /data/poland-latest.osrm"
     networks:
       - cargo-net
 

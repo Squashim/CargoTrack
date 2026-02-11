@@ -1,6 +1,18 @@
 version: "3.8"
 
 services:
+  osrm:
+    image: osrm/osrm-backend
+    container_name: cargotrack_osrm
+    restart: always
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./osrm-data:/data
+    command: "osrm-routed --algorithm mld /data/poland-latest.osrm"
+    networks:
+      - cargo-net
+
   db:
     image: postgis/postgis:15-3.3-alpine
     container_name: cargotrack_db

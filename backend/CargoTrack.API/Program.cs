@@ -1,17 +1,21 @@
 using CargoTrack.Modules.Identity;
 using CargoTrack.Modules.Identity.Database;
+using CargoTrack.Modules.Transport;
+using CargoTrack.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddIdentityModule(builder.Configuration);
-
+builder.Services.AddTransportModule(builder.Configuration);
 
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, SignalRUserIdProvider>();
 
 var secretKey = builder.Configuration["Auth:SecretKey"];
 
@@ -36,6 +40,26 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = "CargoTrack",
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                context.Token = accessToken;
+            }
+            if (string.IsNullOrEmpty(context.Token))
+            {
+                if (context.Request.Cookies.TryGetValue("access_token", out var cookieToken))
+                {
+                    context.Token = cookieToken;
+                }
+
+            }
+            return Task.CompletedTask;
+        },
+    };
 });
 
 builder.Services.AddAuthorization();
@@ -47,6 +71,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
 
 if (app.Environment.IsDevelopment())
 {
@@ -65,5 +94,5 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
     dbContext.Database.Migrate();
 }
-
+app.MapHub<CargoTrack.Modules.Transport.Hubs.SimulationHub>("/hubs/transport");
 app.Run();
