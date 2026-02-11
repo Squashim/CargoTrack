@@ -15,7 +15,8 @@ internal class RegisterRequestValidator : AbstractValidator<RegisterRequest>
         RuleFor(x => x.Password).NotEmpty().MinimumLength(8).Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
         .WithMessage("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
 
-        RuleFor(x => x.UserName).NotEmpty().MinimumLength(3).MustAsync(async (userName, cancelation) => !await dbContext.Users.AnyAsync(u => u.UserName == userName, cancelation))
+        RuleFor(x => x.UserName).NotEmpty().MinimumLength(3)
+        .MustAsync(async (userName, cancelation) => !await dbContext.Users.AnyAsync(u => u.UserName == userName, cancelation))
         .WithMessage("Username is already in use.");
     }
 
