@@ -2,6 +2,7 @@ using CargoTrack.Modules.Identity;
 using CargoTrack.Modules.Identity.Database;
 using CargoTrack.Modules.Transport;
 using CargoTrack.API.Services;
+using CargoTrack.Modules.Transport.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -91,8 +92,9 @@ app.UseAuthorization();
 app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-    dbContext.Database.Migrate();
+    var services = scope.ServiceProvider;
+    services.GetRequiredService<IdentityDbContext>().Database.Migrate();
+    services.GetRequiredService<TransportDbContext>().Database.Migrate();
 }
 app.MapHub<CargoTrack.Modules.Transport.Hubs.SimulationHub>("/hubs/transport");
 app.Run();

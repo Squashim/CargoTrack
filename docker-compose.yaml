@@ -14,7 +14,8 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - cargo-net
   # DATABASE
@@ -31,6 +32,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - cargo-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   osrm:
     image: osrm/osrm-backend
