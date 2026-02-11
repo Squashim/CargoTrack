@@ -1,0 +1,26 @@
+# dependencies
+node_modules
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# build output
+dist
+build
+coverage
+
+# Vite cache
+.vite
+
+# environment files
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+
+# generated files
+*.min.js
+*.map
+**/*.d.ts
