@@ -45,18 +45,19 @@ builder.Services.AddAuthentication(options =>
     {
         OnMessageReceived = context =>
         {
-            var accessToken = context.Request.Query["access_token"];
-            if (!string.IsNullOrEmpty(accessToken))
+            if (context.HttpContext.Items.TryGetValue("AccessToken", out var refreshedTokenObj) &&
+                refreshedTokenObj is string refreshedToken &&
+                !string.IsNullOrWhiteSpace(refreshedToken))
             {
-                context.Token = accessToken;
+                context.Token = refreshedToken;
+                return Task.CompletedTask;
             }
             if (string.IsNullOrEmpty(context.Token))
             {
-                if (context.Request.Cookies.TryGetValue("access_token", out var cookieToken))
+                if (context.Request.Cookies.TryGetValue("accessToken", out var cookieToken))
                 {
                     context.Token = cookieToken;
                 }
-
             }
             return Task.CompletedTask;
         },
@@ -85,7 +86,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<JwtRefreshMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

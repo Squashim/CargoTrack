@@ -1,4 +1,5 @@
 using CargoTrack.Modules.Identity.Database;
+using CargoTrack.Modules.Identity.Interfaces;
 using CargoTrack.Modules.Identity.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,12 +12,12 @@ public static class IdentityModule
     public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        
+
         services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(connectionString));
 
         services.AddScoped<PasswordService>();
-        services.AddScoped<AuthService>();
+        services.AddScoped<IAuthService, AuthService>();
 
         return services;
     }
