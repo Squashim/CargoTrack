@@ -1,6 +1,8 @@
+using System.Reflection;
 using CargoTrack.Modules.Identity.Database;
 using CargoTrack.Modules.Identity.Interfaces;
 using CargoTrack.Modules.Identity.Services;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,8 @@ public static class IdentityModule
             options.UseNpgsql(connectionString));
 
         services.AddScoped<PasswordService>();
+
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         services.AddScoped<IAuthService, AuthService>();
 
         return services;
