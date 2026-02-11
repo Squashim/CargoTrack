@@ -4,7 +4,7 @@ namespace CargoTrack.Modules.Identity;
 
 public static class AuthCookieHelper
 {
-    public static readonly TimeSpan AccessTokenTtl = TimeSpan.FromSeconds(1);
+    public static readonly TimeSpan AccessTokenTtl = TimeSpan.FromMinutes(15);
     public static readonly TimeSpan RefreshTokenTtl = TimeSpan.FromDays(7);
 
     public static void SetAccessTokenCookie(HttpContext context, string accessToken)
