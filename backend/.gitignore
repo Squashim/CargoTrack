@@ -1,5 +1,7 @@
 ## .NET Core / .NET
 [Bb]in/
+[Bb]in\Debug/
+[Bb]in\\Debug/
 [Oo]bj/
 .config/
 *.user

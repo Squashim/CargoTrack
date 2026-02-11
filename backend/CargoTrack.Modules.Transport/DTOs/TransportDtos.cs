@@ -1,0 +1,2 @@
+public record StartTransportRequest(Guid TruckId, double StartLat, double StartLon, double EndLat, double EndLon);
+public record TruckPositionDto(Guid TruckId, Guid UserId, double Latitude, double Longitude, double Progress);
