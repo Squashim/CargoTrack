@@ -8,16 +8,20 @@ internal class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
     public RegisterRequestValidator(IdentityDbContext dbContext)
     {
-        RuleFor(x => x.Email).NotEmpty().EmailAddress()
+        RuleFor(x => x.Email).NotEmpty().WithErrorCode("EMAIL_EMPTY")
+        .EmailAddress().WithErrorCode("EMAIL_INVALID")
         .MustAsync(async (email, cancelation) => !await dbContext.Users.AnyAsync(u => u.Email == email, cancelation))
-        .WithMessage("Email is already in use.");
+        .WithErrorCode("EMAIL_TAKEN");
 
-        RuleFor(x => x.Password).NotEmpty().MinimumLength(8).Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
-        .WithMessage("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
+        RuleFor(x => x.Password).NotEmpty().WithErrorCode("PASSWORD_EMPTY")
+        .MinimumLength(8).WithErrorCode("PASSWORD_LENGTH")
+        .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")
+        .WithErrorCode("PASSWORD_WEAK");
 
-        RuleFor(x => x.UserName).NotEmpty().MinimumLength(3)
+        RuleFor(x => x.UserName).NotEmpty().WithErrorCode("USERNAME_EMPTY")
+        .MinimumLength(3).WithErrorCode("USERNAME_LENGTH")
         .MustAsync(async (userName, cancelation) => !await dbContext.Users.AnyAsync(u => u.UserName == userName, cancelation))
-        .WithMessage("Username is already in use.");
+        .WithErrorCode("USERNAME_TAKEN");
     }
 
 }
@@ -26,7 +30,9 @@ internal class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
     public LoginRequestValidator()
     {
-        RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.Password).NotEmpty();
+        RuleFor(x => x.Email).NotEmpty().WithErrorCode("EMAIL_EMPTY")
+        .EmailAddress().WithErrorCode("EMAIL_INVALID");
+
+        RuleFor(x => x.Password).NotEmpty().WithErrorCode("PASSWORD_EMPTY");
     }
 }

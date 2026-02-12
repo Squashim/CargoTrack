@@ -44,7 +44,7 @@ public class ValidationExceptionMiddleware
                 .GroupBy(e => e.PropertyName)
                 .ToDictionary(
                     g => g.Key,
-                    g => g.Select(e => e.ErrorMessage).ToArray()
+                    g => g.Select(e => e.ErrorCode).ToArray()
                 );
 
             response = new ValidationProblemDetails(errors)
@@ -53,6 +53,20 @@ public class ValidationExceptionMiddleware
                 Title = title,
                 Status = statusCode,
                 Detail = "See the errors property for more details."
+            };
+        }
+        else if (exception is UnauthorizedAccessException)
+        {
+            var errors = new Dictionary<string, string[]>
+            {
+                {"Authorization", new[] { exception.Message }}
+            };
+            response = new ValidationProblemDetails(errors)
+            {
+                Type = "https://tools.ietf.org/html/rfc7235#section-3.1",
+                Title = title,
+                Status = statusCode,
+                Detail = "Access is denied due to invalid credentials.",
             };
         }
         else
