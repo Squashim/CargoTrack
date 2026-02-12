@@ -20,49 +20,25 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        try
-        {
-            var userId = await _authService.RegisterAsync(request.Email, request.Password);
-            return Ok(new { UserId = userId });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { Error = ex.Message });
-        }
+
+        var userId = await _authService.RegisterAsync(request.Email, request.Password, request.UserName);
+        return Ok(new { UserId = userId });
+
+
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        try
-        {
-            var (accessToken, refreshToken) = await _authService.LoginAsync(request.Email, request.Password);
-            AuthCookieHelper.SetAccessTokenCookie(HttpContext, accessToken);
-            AuthCookieHelper.SetRefreshTokenCookie(HttpContext, refreshToken);
-            return Ok();
-        }
-        catch (Exception)
-        {
-            return Unauthorized(new { Error = "Invalid Credentials" });
-        }
+
+        var (accessToken, refreshToken) = await _authService.LoginAsync(request.Email, request.Password);
+        AuthCookieHelper.SetAccessTokenCookie(HttpContext, accessToken);
+        AuthCookieHelper.SetRefreshTokenCookie(HttpContext, refreshToken);
+        return Ok();
+
     }
 
-    [HttpPost("refresh")]
-    [AllowAnonymous]
-    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
-    {
-        try
-        {
-            var accessToken = await _authService.RefreshTokenAsync(request.RefreshToken);
-            AuthCookieHelper.SetAccessTokenCookie(HttpContext, accessToken);
-            return Ok(new { AccessToken = accessToken });
-        }
-        catch (Exception ex)
-        {
-            return Unauthorized(new { Error = ex.Message });
-        }
-    }
 
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()

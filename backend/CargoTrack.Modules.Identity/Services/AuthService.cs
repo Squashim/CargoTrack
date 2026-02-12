@@ -3,8 +3,10 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using CargoTrack.Modules.Identity.Database;
+using CargoTrack.Modules.Identity.DTOs;
 using CargoTrack.Modules.Identity.Entities;
 using CargoTrack.Modules.Identity.Interfaces;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration; // Do pobrania SecretKey
 using Microsoft.IdentityModel.Tokens;
@@ -16,25 +18,31 @@ public class AuthService : IAuthService
     private readonly IdentityDbContext _db;
     private readonly PasswordService _passwordService;
     private readonly IConfiguration _config;
+    private readonly IValidator<RegisterRequest> _registerValidator;
+    private readonly IValidator<LoginRequest> _loginValidator;
 
-    public AuthService(IdentityDbContext db, PasswordService passwordService, IConfiguration config)
+    public AuthService(IdentityDbContext db, PasswordService passwordService, IConfiguration config, IValidator<RegisterRequest> registerValidator, IValidator<LoginRequest> loginValidator)
     {
         _db = db;
         _passwordService = passwordService;
         _config = config;
+        _registerValidator = registerValidator;
+        _loginValidator = loginValidator;
     }
 
-    public async Task<Guid> RegisterAsync(string email, string password)
+    public async Task<Guid> RegisterAsync(string email, string password, string userName)
     {
-        if (await _db.Users.AnyAsync(u => u.Email == email))
+        var result = await _registerValidator.ValidateAsync(new RegisterRequest(email, password, userName));
+        if (!result.IsValid)
         {
-            throw new Exception("Email exists");
+            throw new ValidationException(result.Errors);
         }
 
         var user = new User
         {
             Id = Guid.NewGuid(),
             Email = email,
+            UserName = userName,
             PasswordHash = _passwordService.Hash(password),
             Role = UserRole.Player
         };
@@ -47,13 +55,18 @@ public class AuthService : IAuthService
 
     public async Task<(string AccessToken, string RefreshToken)> LoginAsync(string email, string password)
     {
+        var result = await _loginValidator.ValidateAsync(new LoginRequest(email, password));
+        if (!result.IsValid)
+        {
+            throw new ValidationException(result.Errors);
+        }
         var user = await _db.Users
             .Include(u => u.RefreshTokens)
             .FirstOrDefaultAsync(u => u.Email == email);
 
         if (user is null || !_passwordService.Verify(user.PasswordHash, password))
         {
-            throw new Exception("Invalid Credentials");
+            throw new UnauthorizedAccessException("Invalid Credentials");
         }
 
         var accessToken = GenerateJwt(user);

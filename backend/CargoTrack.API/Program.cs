@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CargoTrack.API.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityModule(builder.Configuration);
@@ -89,7 +90,7 @@ app.UseHttpsRedirection();
 app.UseMiddleware<JwtRefreshMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<ValidationExceptionMiddleware>();
 app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
