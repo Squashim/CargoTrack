@@ -66,7 +66,7 @@ public class AuthService : IAuthService
 
         if (user is null || !_passwordService.Verify(user.PasswordHash, password))
         {
-            throw new UnauthorizedAccessException("Invalid Credentials");
+            throw new UnauthorizedAccessException("INVALID_CREDENTIALS");
         }
 
         var accessToken = GenerateJwt(user);
