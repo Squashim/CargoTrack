@@ -1,11 +1,10 @@
 import { Outlet } from 'react-router';
 
 export function App() {
-  /* Global page layout */
   return (
-    <>
+    <div className="w-full min-h-dvh">
       <Outlet />
-    </>
+    </div>
   );
 }
 
