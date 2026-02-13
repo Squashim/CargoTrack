@@ -1,4 +1,6 @@
+import i18n from '@/i18n';
 import type { ApiErrorResponse } from '@/types/api-types';
+import type { TranslationKeys } from '@/types/translation-keys';
 import { isAxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import type { FieldValues, Path, UseFormSetError } from 'react-hook-form';
@@ -14,18 +16,28 @@ export function handleApiError<T extends FieldValues>(error: unknown, setError?:
     const { data } = error.response;
 
     if (data.Error) {
-      toast.error(data.Error);
+      const translatedMessage = i18n.t(`apiErrors.${data.Error}`, data.Error);
+      toast.error(translatedMessage);
       return;
     }
 
     if (data.errors && setError) {
       Object.entries(data.errors).forEach(([field, messages]) => {
         const fieldName = (field.charAt(0).toLowerCase() + field.slice(1)) as Path<T>;
-        setError(fieldName, { type: 'server', message: messages[0] });
+        const errorCode = messages[0];
+
+        const translatedMessage = i18n.t(`apiErrors.${errorCode}`, errorCode);
+        setError(fieldName, { type: 'server', message: translatedMessage });
       });
       return;
     }
   }
 
-  toast.error('An unexpected error occurred. Please try again.');
+  toast.error(i18n.t('apiErrors.UNKNOWN_ERROR'));
+}
+
+type ZodI18nParams = Record<string, string | number>;
+
+export function tZod(key: TranslationKeys, params?: ZodI18nParams) {
+  return JSON.stringify({ key, ...params });
 }

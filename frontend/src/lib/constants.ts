@@ -10,8 +10,3 @@ export const ROUTES = {
     DASHBOARD: '/user/dashboard',
   },
 };
-
-export const API_ERRORS = {
-  emailTaken: 'EMAIL_TAKEN',
-  usernameTaken: 'USERNAME_TAKEN',
-};

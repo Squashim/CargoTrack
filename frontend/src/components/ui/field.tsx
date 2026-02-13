@@ -1,11 +1,12 @@
 'use client';
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { useMemo } from 'react';
 
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 function FieldSet({ className, ...props }: React.ComponentProps<'fieldset'>) {
   return (
@@ -166,6 +167,7 @@ function FieldError({
 }: React.ComponentProps<'div'> & {
   errors?: Array<{ message?: string } | undefined>;
 }) {
+  const { t } = useTranslation();
   const content = useMemo(() => {
     if (children) {
       return children;
@@ -175,18 +177,33 @@ function FieldError({
       return null;
     }
 
+    const getTranslatedMessage = (msg?: string): string | null => {
+      if (!msg) return null;
+      try {
+        const parsedError = JSON.parse(msg);
+        if (parsedError && typeof parsedError === 'object' && parsedError.key) {
+          return t(parsedError.key, parsedError) as string;
+        }
+      } catch {
+        // Skip parsing
+      }
+      return t(msg) as string;
+    };
+
     const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
     if (uniqueErrors?.length == 1) {
-      return uniqueErrors[0]?.message;
+      return getTranslatedMessage(uniqueErrors[0]?.message);
     }
 
     return (
       <ul className="ml-4 flex list-disc flex-col gap-1">
-        {uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
+        {uniqueErrors.map(
+          (error, index) => error?.message && <li key={index}>{getTranslatedMessage(error.message)}</li>
+        )}
       </ul>
     );
-  }, [children, errors]);
+  }, [children, errors, t]);
 
   if (!content) {
     return null;

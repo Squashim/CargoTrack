@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router';
 import { Toaster } from './components/ui/sonner';
 import { TooltipProvider } from './components/ui/tooltip';
+import './i18n';
 import './index.css';
 import router from './router';
 

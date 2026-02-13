@@ -1,3 +1,4 @@
+import i18n from '@/i18n';
 import { ROUTES } from '@/lib/constants';
 import { handleApiError } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
@@ -17,7 +18,7 @@ export function useRegister({ setError }: UseRegisterProps = {}) {
   const registerMutation = useMutation({
     mutationFn: register,
     onSuccess: () => {
-      toast.success("You've successfully registered! You can now log in with your new account.");
+      toast.success(i18n.t('success.register'));
       navigate(ROUTES.AUTH.LOGIN);
     },
     onError: (error) => handleApiError(error, setError),

@@ -1,3 +1,4 @@
+import { ROUTES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { SVGProps } from 'react';
@@ -89,7 +90,7 @@ function Logo({
 
   return redirect ? (
     <a
-      href="/"
+      href={ROUTES.HOME}
       className="focus-visible:border-ring focus-visible:ring-ring/50 rounded-xl border border-transparent focus-visible:ring-[3px] transition-all shrink-0 [&_svg]:shrink-0 outline-none select-none"
     >
       {logoSvg}

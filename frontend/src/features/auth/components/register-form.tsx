@@ -5,6 +5,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { ROUTES } from '@/lib/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
+import { Trans, useTranslation } from 'react-i18next';
 import { useRegister } from '../queries/use-register';
 import {
   REGISTER_CONSTRAINTS,
@@ -18,6 +19,7 @@ const RegisterForm = () => {
     resolver: zodResolver(registerSchema),
     defaultValues: registerDefaultValues,
   });
+  const { t } = useTranslation();
   const { register } = useRegister({ setError });
 
   function onSubmit(data: RegisterFormValues) {
@@ -32,8 +34,8 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-username">Username</FieldLabel>
-              <FieldDescription>Must be at least 3 characters.</FieldDescription>
+              <FieldLabel htmlFor="form-signup-username">{t('form.signup.username.label')}</FieldLabel>
+              <FieldDescription>{t('form.signup.username.description')}</FieldDescription>
               <Input
                 {...field}
                 id="form-signup-username"
@@ -41,7 +43,7 @@ const RegisterForm = () => {
                 minLength={REGISTER_CONSTRAINTS.USERNAME_MIN_LENGTH}
                 maxLength={REGISTER_CONSTRAINTS.USERNAME_MAX_LENGTH}
                 aria-invalid={fieldState.invalid}
-                placeholder="tomsmith"
+                placeholder={t('form.signup.username.placeholder')}
                 autoComplete="username"
                 disabled={register.isPending}
               />
@@ -54,14 +56,14 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-email">Email</FieldLabel>
+              <FieldLabel htmlFor="form-signup-email"> {t('form.signup.email.label')}</FieldLabel>
               <Input
                 {...field}
                 id="form-signup-email"
                 type="email"
                 maxLength={REGISTER_CONSTRAINTS.EMAIL_MAX_LENGTH}
                 aria-invalid={fieldState.invalid}
-                placeholder="tomsmith@gmail.com"
+                placeholder={t('form.signup.email.placeholder')}
                 autoComplete="email"
                 disabled={register.isPending}
               />
@@ -74,10 +76,8 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-password">Password</FieldLabel>
-              <FieldDescription>
-                Must be at least 8 characters and include uppercase, lowercase, number and special character.
-              </FieldDescription>
+              <FieldLabel htmlFor="form-signup-password"> {t('form.signup.password.label')}</FieldLabel>
+              <FieldDescription>{t('form.signup.password.description')}</FieldDescription>
               <Input
                 {...field}
                 id="form-signup-password"
@@ -96,15 +96,18 @@ const RegisterForm = () => {
         />
         <Field>
           <FieldDescription className="text-center">
-            By clicking submit, you agree to our <a href={ROUTES.HOME}>Terms of Service</a> and{' '}
-            <a href={ROUTES.HOME}>Privacy Policy</a>.
+            <Trans
+              t={t}
+              i18nKey="form.signup.terms"
+              components={[<a href={ROUTES.HOME}>Terms</a>, <a href={ROUTES.HOME}>Privacy policy</a>]}
+            />
           </FieldDescription>
           <Button type="submit" form="form-signup" size="lg" disabled={register.isPending}>
             {register.isPending && <Spinner data-icon="inline-start" />}
-            {register.isPending ? 'Submitting...' : 'Submit'}
+            {register.isPending ? t('actions.signup.pending') : t('actions.signup.base')}
           </Button>
           <FieldDescription className="max-w-sm text-center mx-auto text-base pt-4">
-            Already have an account? <a href={ROUTES.AUTH.LOGIN}>Log in</a>.
+            <Trans t={t} i18nKey="form.signup.haveAccount" components={[<a href={ROUTES.AUTH.LOGIN}>Log in</a>]} />
           </FieldDescription>
         </Field>
       </FieldGroup>

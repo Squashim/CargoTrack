@@ -1,0 +1,75 @@
+{
+  "validation": {
+    "signup": {
+      "invalidEmail": "Proszę wprowadzić poprawny adres e-mail.",
+      "emailMaxLength": "Email musi mieć maksymalnie {{count}} znaków.",
+      "usernameRequired": "Nazwa użytkownika jest wymagana.",
+      "usernameMinLength": "Nazwa użytkownika musi mieć co najmniej {{count}} znaki.",
+      "usernameMaxLength": "Nazwa użytkownika musi mieć maksymalnie {{count}} znaków.",
+      "passwordRequired": "Hasło jest wymagane.",
+      "passwordMinLength": "Hasło musi mieć co najmniej {{count}} znaków.",
+      "passwordUppercase": "Hasło musi zawierać co najmniej jedną wielką literę.",
+      "passwordLowercase": "Hasło musi zawierać co najmniej jedną małą literę.",
+      "passwordNumber": "Hasło musi zawierać co najmniej jedną cyfrę.",
+      "passwordSpecial": "Hasło musi zawierać co najmniej jeden znak specjalny."
+    }
+  },
+  "form": {
+    "signup": {
+      "username": {
+        "label": "Nazwa użytkownika",
+        "placeholder": "jacek12",
+        "description": "Musi mieć co najmniej 3 znaki."
+      },
+      "email": {
+        "label": "Adres e-mail",
+        "placeholder": "jacek@wp.pl"
+      },
+      "password": {
+        "label": "Hasło",
+        "description": "Musi mieć co najmniej 8 znaków i zawierać wielką literę, małą literę, cyfrę oraz znak specjalny."
+      },
+      "terms": "Klikając załóż konto, zgadzasz się z naszymi <0>Warunkami korzystania</0> i <1>Polityką prywatności</1>.",
+      "haveAccount": "Masz już konto? <0>Zaloguj się</0>."
+    }
+  },
+  "themes": {
+    "switchToDark": "Przełącz na ciemny motyw",
+    "switchToLight": "Przełącz na jasny motyw",
+    "switchTheme": "Przełącz motyw"
+  },
+  "actions": {
+    "signup": {
+      "base": "Załóż konto",
+      "pending": "Zakładanie konta...",
+      "navbar": "Dołącz do nas"
+    },
+    "login": {
+      "base": "Zaloguj się",
+      "pending": "Logowanie...",
+      "navbar": "Logowanie"
+    },
+    "loading": "Ładowanie"
+  },
+  "success": {
+    "register": "Pomyślnie zarejestrowano! Możesz teraz zalogować się na swoje nowe konto."
+  },
+  "pages": {
+    "register": {
+      "title": "Zarządzaj i buduj swoją wymarzoną firmę transportową",
+      "description": "Wprowadź poniższe informacje, aby utworzyć swoje konto"
+    }
+  },
+  "languages": {
+    "en": "Angielski",
+    "pl": "Polski",
+    "unknown": "Nieznany",
+    "choose": "Wybierz język"
+  },
+  "apiErrors": {
+    "EMAIL_TAKEN": "Ten adres e-mail jest już zajęty.",
+    "USERNAME_TAKEN": "Ta nazwa użytkownika jest już zajęta.",
+    "INVALID_CREDENTIALS": "Nieprawidłowy e-mail lub hasło.",
+    "UNKNOWN_ERROR": "Wystąpił nieoczekiwany błąd serwera."
+  }
+}

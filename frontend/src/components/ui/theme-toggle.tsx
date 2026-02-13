@@ -1,12 +1,14 @@
 import { useTheme } from '@/features/theme/use-theme';
 import { Moon, Sun } from 'lucide-react';
 import { useEffect, useEffectEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from './button';
 import { Kbd } from './kbd';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const { t } = useTranslation();
   const userTheme =
     theme === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme;
 
@@ -53,7 +55,7 @@ function ThemeToggle() {
             size="icon-lg"
             variant="outline"
             onClick={toggleTheme}
-            aria-label={userTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label={userTheme === 'dark' ? t('themes.switchToLight') : t('themes.switchToDark')}
           >
             <Sun
               className="absolute size-5 scale-0 rotate-90  transition-all dark:scale-100 dark:rotate-0"
@@ -68,7 +70,7 @@ function ThemeToggle() {
       ></TooltipTrigger>
       <TooltipContent side="bottom" className="pr-1.5">
         <div className="flex items-center gap-2">
-          Toggle theme <Kbd>D</Kbd>
+          {t('themes.switchTheme')} <Kbd>D</Kbd>
         </div>
       </TooltipContent>
     </Tooltip>

@@ -1,0 +1,75 @@
+{
+  "validation": {
+    "signup": {
+      "invalidEmail": "Please enter a valid email address.",
+      "emailMaxLength": "Email must be at most {{count}} characters.",
+      "usernameRequired": "Username is required.",
+      "usernameMinLength": "Username must be at least {{count}} characters.",
+      "usernameMaxLength": "Username must be at most {{count}} characters.",
+      "passwordRequired": "Password is required.",
+      "passwordMinLength": "Password must be at least {{count}} characters.",
+      "passwordUppercase": "Password must contain at least one uppercase letter.",
+      "passwordLowercase": "Password must contain at least one lowercase letter.",
+      "passwordNumber": "Password must contain at least one number.",
+      "passwordSpecial": "Password must contain at least one special character."
+    }
+  },
+  "form": {
+    "signup": {
+      "username": {
+        "label": "Username",
+        "placeholder": "tomsmith2",
+        "description": "Must be at least 3 characters."
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "tomsmith@gmail.com"
+      },
+      "password": {
+        "label": "Password",
+        "description": "Must be at least 8 characters and include uppercase, lowercase, number and special character."
+      },
+      "terms": "By clicking sign up, you agree to our <0>Terms of Service</0> and <1>Privacy Policy</1>.",
+      "haveAccount": "Already have an account? <0>Log in</0>."
+    }
+  },
+  "themes": {
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme",
+    "switchTheme": "Switch theme"
+  },
+  "actions": {
+    "signup": {
+      "base": "Sign Up",
+      "pending": "Signing Up...",
+      "navbar": "Join Us"
+    },
+    "login": {
+      "base": "Log In",
+      "pending": "Logging In...",
+      "navbar": "Log In"
+    },
+    "loading": "Loading"
+  },
+  "success": {
+    "register": "You've successfully registered! You can now log in with your new account."
+  },
+  "pages": {
+    "register": {
+      "title": "Manage and build your dream transport company",
+      "description": "Enter information below to create your account"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "pl": "Polish",
+    "unknown": "Unknown",
+    "choose": "Choose language"
+  },
+  "apiErrors": {
+    "EMAIL_TAKEN": "This email address is already taken.",
+    "USERNAME_TAKEN": "This username is already taken.",
+    "INVALID_CREDENTIALS": "Invalid email or password.",
+    "UNKNOWN_ERROR": "An unexpected server error occurred."
+  }
+}

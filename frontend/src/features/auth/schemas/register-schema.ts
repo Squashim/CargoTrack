@@ -1,3 +1,4 @@
+import { tZod } from '@/lib/utils';
 import z from 'zod';
 
 const REGISTER_CONSTRAINTS = {
@@ -10,27 +11,39 @@ const REGISTER_CONSTRAINTS = {
 
 const registerSchema = z.object({
   email: z
-    .email('Please enter a valid email address.')
-    .max(REGISTER_CONSTRAINTS.EMAIL_MAX_LENGTH, 'Email must be at most 254 characters.'),
+    .email(tZod('validation.signup.invalidEmail'))
+    .max(
+      REGISTER_CONSTRAINTS.EMAIL_MAX_LENGTH,
+      tZod('validation.signup.emailMaxLength', { count: REGISTER_CONSTRAINTS.EMAIL_MAX_LENGTH })
+    ),
   userName: z
     .string()
-    .nonempty('Username is required.')
-    .min(REGISTER_CONSTRAINTS.USERNAME_MIN_LENGTH, 'Username must be at least 3 characters.')
-    .max(REGISTER_CONSTRAINTS.USERNAME_MAX_LENGTH, 'Username must be at most 128 characters.'),
+    .nonempty(tZod('validation.signup.usernameRequired'))
+    .min(
+      REGISTER_CONSTRAINTS.USERNAME_MIN_LENGTH,
+      tZod('validation.signup.usernameMinLength', { count: REGISTER_CONSTRAINTS.USERNAME_MIN_LENGTH })
+    )
+    .max(
+      REGISTER_CONSTRAINTS.USERNAME_MAX_LENGTH,
+      tZod('validation.signup.usernameMaxLength', { count: REGISTER_CONSTRAINTS.USERNAME_MAX_LENGTH })
+    ),
   password: z
     .string()
-    .nonempty('Password is required.')
-    .min(REGISTER_CONSTRAINTS.PASSWORD_MIN_LENGTH, 'Password must be at least 8 characters.')
-    .regex(/(?=.*[A-Z])/, 'Password must contain at least one uppercase letter.')
-    .regex(/(?=.*[a-z])/, 'Password must contain at least one lowercase letter.')
-    .regex(/(?=.*\d)/, 'Password must contain at least one number.')
-    .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, 'Password must contain at least one special character.'),
+    .nonempty(tZod('validation.signup.passwordRequired'))
+    .min(
+      REGISTER_CONSTRAINTS.PASSWORD_MIN_LENGTH,
+      tZod('validation.signup.passwordMinLength', { count: REGISTER_CONSTRAINTS.PASSWORD_MIN_LENGTH })
+    )
+    .regex(/(?=.*[A-Z])/, tZod('validation.signup.passwordUppercase'))
+    .regex(/(?=.*[a-z])/, tZod('validation.signup.passwordLowercase'))
+    .regex(/(?=.*\d)/, tZod('validation.signup.passwordNumber'))
+    .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, tZod('validation.signup.passwordSpecial')),
 });
 
 const registerDefaultValues: RegisterFormValues = {
-  email: 'admin@admin.com',
-  userName: 'admin',
-  password: 'Admin12345678!',
+  email: '',
+  userName: '',
+  password: '',
 };
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
