@@ -5,6 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import type { TranslationKeys } from '@/types/translation-keys';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -182,12 +183,12 @@ function FieldError({
       try {
         const parsedError = JSON.parse(msg);
         if (parsedError && typeof parsedError === 'object' && parsedError.key) {
-          return t(parsedError.key, parsedError) as string;
+          return t(parsedError.key as TranslationKeys, parsedError) as string;
         }
       } catch {
         // Skip parsing
       }
-      return t(msg) as string;
+      return t(msg as TranslationKeys) as string;
     };
 
     const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
