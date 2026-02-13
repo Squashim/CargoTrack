@@ -1,6 +1,6 @@
 {
   "validation": {
-    "signup": {
+    "auth": {
       "invalidEmail": "Proszę wprowadzić poprawny adres e-mail.",
       "emailMaxLength": "Email musi mieć maksymalnie {{count}} znaków.",
       "usernameRequired": "Nazwa użytkownika jest wymagana.",
@@ -15,7 +15,7 @@
     }
   },
   "form": {
-    "signup": {
+    "auth": {
       "username": {
         "label": "Nazwa użytkownika",
         "placeholder": "jacek12",
@@ -30,7 +30,8 @@
         "description": "Musi mieć co najmniej 8 znaków i zawierać wielką literę, małą literę, cyfrę oraz znak specjalny."
       },
       "terms": "Klikając załóż konto, zgadzasz się z naszymi <0>Warunkami korzystania</0> i <1>Polityką prywatności</1>.",
-      "haveAccount": "Masz już konto? <0>Zaloguj się</0>."
+      "haveAccount": "Masz już konto? <0>Zaloguj się</0>.",
+      "dontHaveAccount": "Nie masz konta? <0>Dołącz do nas</0>."
     }
   },
   "themes": {
@@ -52,12 +53,17 @@
     "loading": "Ładowanie"
   },
   "success": {
-    "register": "Pomyślnie zarejestrowano! Możesz teraz zalogować się na swoje nowe konto."
+    "register": "Pomyślnie zarejestrowano! Możesz teraz zalogować się na swoje nowe konto.",
+    "login": "Pomyślnie zalogowano!"
   },
   "pages": {
     "register": {
       "title": "Zarządzaj i buduj swoją wymarzoną firmę transportową",
       "description": "Wprowadź poniższe informacje, aby utworzyć swoje konto"
+    },
+    "login": {
+      "title": "Zaloguj się do swojego konta",
+      "description": "Wprowadź dane, aby uzyskać dostęp do swojego konta"
     }
   },
   "languages": {

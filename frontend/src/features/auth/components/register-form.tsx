@@ -7,12 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { useRegister } from '../queries/use-register';
-import {
-  REGISTER_CONSTRAINTS,
-  registerDefaultValues,
-  registerSchema,
-  type RegisterFormValues,
-} from '../schemas/register-schema';
+import { AUTH_CONSTRAINTS } from '../schemas/constants';
+import { registerDefaultValues, registerSchema, type RegisterFormValues } from '../schemas/register-schema';
 
 const RegisterForm = () => {
   const { setError, ...form } = useForm<RegisterFormValues>({
@@ -34,16 +30,16 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-username">{t('form.signup.username.label')}</FieldLabel>
-              <FieldDescription>{t('form.signup.username.description')}</FieldDescription>
+              <FieldLabel htmlFor="form-signup-username">{t('form.auth.username.label')}</FieldLabel>
+              <FieldDescription>{t('form.auth.username.description')}</FieldDescription>
               <Input
                 {...field}
                 id="form-signup-username"
                 type="text"
-                minLength={REGISTER_CONSTRAINTS.USERNAME_MIN_LENGTH}
-                maxLength={REGISTER_CONSTRAINTS.USERNAME_MAX_LENGTH}
+                minLength={AUTH_CONSTRAINTS.USERNAME_MIN_LENGTH}
+                maxLength={AUTH_CONSTRAINTS.USERNAME_MAX_LENGTH}
                 aria-invalid={fieldState.invalid}
-                placeholder={t('form.signup.username.placeholder')}
+                placeholder={t('form.auth.username.placeholder')}
                 autoComplete="username"
                 disabled={register.isPending}
               />
@@ -56,14 +52,14 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-email"> {t('form.signup.email.label')}</FieldLabel>
+              <FieldLabel htmlFor="form-signup-email"> {t('form.auth.email.label')}</FieldLabel>
               <Input
                 {...field}
                 id="form-signup-email"
                 type="email"
-                maxLength={REGISTER_CONSTRAINTS.EMAIL_MAX_LENGTH}
+                maxLength={AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH}
                 aria-invalid={fieldState.invalid}
-                placeholder={t('form.signup.email.placeholder')}
+                placeholder={t('form.auth.email.placeholder')}
                 autoComplete="email"
                 disabled={register.isPending}
               />
@@ -76,15 +72,15 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-password"> {t('form.signup.password.label')}</FieldLabel>
-              <FieldDescription>{t('form.signup.password.description')}</FieldDescription>
+              <FieldLabel htmlFor="form-signup-password"> {t('form.auth.password.label')}</FieldLabel>
+              <FieldDescription>{t('form.auth.password.description')}</FieldDescription>
               <Input
                 {...field}
                 id="form-signup-password"
                 type="password"
                 aria-invalid={fieldState.invalid}
-                minLength={REGISTER_CONSTRAINTS.PASSWORD_MIN_LENGTH}
-                maxLength={REGISTER_CONSTRAINTS.PASSWORD_MAX_LENGTH}
+                minLength={AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH}
+                maxLength={AUTH_CONSTRAINTS.PASSWORD_MAX_LENGTH}
                 placeholder="••••••••••••"
                 autoComplete="new-password"
                 disabled={register.isPending}
@@ -98,7 +94,7 @@ const RegisterForm = () => {
           <FieldDescription className="text-center">
             <Trans
               t={t}
-              i18nKey="form.signup.terms"
+              i18nKey="form.auth.terms"
               components={[<a href={ROUTES.HOME}>Terms</a>, <a href={ROUTES.HOME}>Privacy policy</a>]}
             />
           </FieldDescription>
@@ -107,7 +103,7 @@ const RegisterForm = () => {
             {register.isPending ? t('actions.signup.pending') : t('actions.signup.base')}
           </Button>
           <FieldDescription className="max-w-sm text-center mx-auto text-base pt-4">
-            <Trans t={t} i18nKey="form.signup.haveAccount" components={[<a href={ROUTES.AUTH.LOGIN}>Log in</a>]} />
+            <Trans t={t} i18nKey="form.auth.haveAccount" components={[<a href={ROUTES.AUTH.LOGIN}>Log in</a>]} />
           </FieldDescription>
         </Field>
       </FieldGroup>

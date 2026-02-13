@@ -12,6 +12,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function handleApiError<T extends FieldValues>(error: unknown, setError?: UseFormSetError<T>) {
+  const LOGIN_API_ERROR = 'INVALID_CREDENTIALS';
+
   if (isAxiosError<ApiErrorResponse>(error) && error.response?.data) {
     const { data } = error.response;
 
@@ -26,8 +28,12 @@ export function handleApiError<T extends FieldValues>(error: unknown, setError?:
         const fieldName = (field.charAt(0).toLowerCase() + field.slice(1)) as Path<T>;
         const errorCode = messages[0];
 
-        const translatedMessage = i18n.t(`apiErrors.${errorCode}`, errorCode);
-        setError(fieldName, { type: 'server', message: translatedMessage });
+        if (errorCode === LOGIN_API_ERROR) {
+          setError('root', { type: 'server', message: tZod('apiErrors.INVALID_CREDENTIALS') });
+          return;
+        }
+
+        setError(fieldName, { type: 'server', message: tZod(`apiErrors.${errorCode}` as never) });
       });
       return;
     }

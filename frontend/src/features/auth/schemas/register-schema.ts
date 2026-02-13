@@ -1,43 +1,36 @@
 import { tZod } from '@/lib/utils';
 import z from 'zod';
-
-const REGISTER_CONSTRAINTS = {
-  USERNAME_MIN_LENGTH: 3,
-  USERNAME_MAX_LENGTH: 128,
-  EMAIL_MAX_LENGTH: 254,
-  PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_MAX_LENGTH: 128,
-};
+import { AUTH_CONSTRAINTS } from './constants';
 
 const registerSchema = z.object({
   email: z
-    .email(tZod('validation.signup.invalidEmail'))
+    .email(tZod('validation.auth.invalidEmail'))
     .max(
-      REGISTER_CONSTRAINTS.EMAIL_MAX_LENGTH,
-      tZod('validation.signup.emailMaxLength', { count: REGISTER_CONSTRAINTS.EMAIL_MAX_LENGTH })
+      AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH,
+      tZod('validation.auth.emailMaxLength', { count: AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH })
     ),
   userName: z
     .string()
-    .nonempty(tZod('validation.signup.usernameRequired'))
+    .nonempty(tZod('validation.auth.usernameRequired'))
     .min(
-      REGISTER_CONSTRAINTS.USERNAME_MIN_LENGTH,
-      tZod('validation.signup.usernameMinLength', { count: REGISTER_CONSTRAINTS.USERNAME_MIN_LENGTH })
+      AUTH_CONSTRAINTS.USERNAME_MIN_LENGTH,
+      tZod('validation.auth.usernameMinLength', { count: AUTH_CONSTRAINTS.USERNAME_MIN_LENGTH })
     )
     .max(
-      REGISTER_CONSTRAINTS.USERNAME_MAX_LENGTH,
-      tZod('validation.signup.usernameMaxLength', { count: REGISTER_CONSTRAINTS.USERNAME_MAX_LENGTH })
+      AUTH_CONSTRAINTS.USERNAME_MAX_LENGTH,
+      tZod('validation.auth.usernameMaxLength', { count: AUTH_CONSTRAINTS.USERNAME_MAX_LENGTH })
     ),
   password: z
     .string()
-    .nonempty(tZod('validation.signup.passwordRequired'))
+    .nonempty(tZod('validation.auth.passwordRequired'))
     .min(
-      REGISTER_CONSTRAINTS.PASSWORD_MIN_LENGTH,
-      tZod('validation.signup.passwordMinLength', { count: REGISTER_CONSTRAINTS.PASSWORD_MIN_LENGTH })
+      AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH,
+      tZod('validation.auth.passwordMinLength', { count: AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH })
     )
-    .regex(/(?=.*[A-Z])/, tZod('validation.signup.passwordUppercase'))
-    .regex(/(?=.*[a-z])/, tZod('validation.signup.passwordLowercase'))
-    .regex(/(?=.*\d)/, tZod('validation.signup.passwordNumber'))
-    .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, tZod('validation.signup.passwordSpecial')),
+    .regex(/(?=.*[A-Z])/, tZod('validation.auth.passwordUppercase'))
+    .regex(/(?=.*[a-z])/, tZod('validation.auth.passwordLowercase'))
+    .regex(/(?=.*\d)/, tZod('validation.auth.passwordNumber'))
+    .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, tZod('validation.auth.passwordSpecial')),
 });
 
 const registerDefaultValues: RegisterFormValues = {
@@ -48,4 +41,4 @@ const registerDefaultValues: RegisterFormValues = {
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export { REGISTER_CONSTRAINTS, registerDefaultValues, registerSchema, type RegisterFormValues };
+export { registerDefaultValues, registerSchema, type RegisterFormValues };
