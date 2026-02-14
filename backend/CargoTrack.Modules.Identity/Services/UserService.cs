@@ -19,7 +19,7 @@ public class UserService : IUserService
         var user = await _dbContext.Users.FindAsync(userId);
         if (user == null)
         {
-            throw new Exception("User not found");
+            throw new Exception("USER_NOT_FOUND");
         }
         return new UserInfoDto(user.Email, user.UserName);
     }
