@@ -44,3 +44,4 @@ osrm-data/
 *.osrm
 *.pbf
 *.tiling
+backend/Directory.Build.props
