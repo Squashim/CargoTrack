@@ -9,13 +9,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CargoTrack.API.Middleware;
+using CargoTrack.Modules.Shared.Interfaces;
+using CargoTrack.Modules.Shared.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddTransportModule(builder.Configuration);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+.AddApplicationPart(typeof(IdentityModule).Assembly)
+    .AddApplicationPart(typeof(TransportModule).Assembly);
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, SignalRUserIdProvider>();
 
@@ -66,8 +70,8 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
-
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContext, UserContext>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

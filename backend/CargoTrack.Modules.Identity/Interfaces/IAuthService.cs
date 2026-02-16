@@ -8,5 +8,7 @@ namespace CargoTrack.Modules.Identity.Interfaces
         Task<Guid> RegisterAsync(string email, string password, string userName);
         Task<string> RefreshTokenAsync(string refreshToken);
         Task LogoutAsync(string refreshToken);
+
+
     }
 }

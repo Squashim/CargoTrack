@@ -22,7 +22,7 @@ public class TransportController : ControllerBase
         var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         if (!Guid.TryParse(userIdString, out var userId))
         {
-            return Unauthorized("Błędny token ID");
+            return Unauthorized("INVALID_ACCESS");
         }
 
         var id = await _simulationService.StartTransportAsync(
