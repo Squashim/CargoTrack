@@ -9,10 +9,8 @@ public class TransportDbContext : DbContext
     {
     }
 
-    // 1. SYMULACJA (Ruch) - To już miałeś
     public DbSet<TransportJob> Transports { get; set; } = null!;
 
-    // 2. MAJĄTEK (Assets) - To dodajemy
     public DbSet<Company> Companies { get; set; } = null!;
     public DbSet<Garage> Garages { get; set; } = null!;
     public DbSet<Truck> Trucks { get; set; } = null!;
@@ -37,7 +35,7 @@ public class TransportDbContext : DbContext
         {
             entity.ToTable("Companies", "game");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Balance).HasPrecision(18, 2); // Dla walut (decimal)
+            entity.Property(e => e.Balance).HasPrecision(18, 2); 
         });
 
         modelBuilder.Entity<Garage>(entity =>
