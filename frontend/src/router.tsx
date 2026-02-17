@@ -1,4 +1,4 @@
-import { AuthGuard } from '@/features/auth/auth-guard';
+import { AuthGuard } from '@/features/auth/components/auth-guard';
 import { DashboardPage } from '@/pages/dashboard';
 import { ErrorPage } from '@/pages/error';
 import { LoginPage } from '@/pages/login';
@@ -13,8 +13,9 @@ const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
     Component: App,
+    errorElement: <ErrorPage />,
     children: [
-      { index: true, Component: WelcomePage },
+      { element: <AuthGuard allowMode="public" />, children: [{ index: true, element: <WelcomePage /> }] },
       {
         path: ROUTES.AUTH.BASE,
         element: <AuthGuard allowMode="unauthenticated" />,
@@ -33,10 +34,6 @@ const router = createBrowserRouter([
         path: ROUTES.USER.BASE,
         element: <AuthGuard allowMode="authenticated" />,
         children: [{ path: ROUTES.USER.DASHBOARD, Component: DashboardPage }],
-      },
-      {
-        path: '*',
-        Component: ErrorPage,
       },
     ],
   },

@@ -8,3 +8,8 @@ export interface LoginPayload {
   email: string;
   password: string;
 }
+
+export interface UserAuthResponse {
+  email: string;
+  userName: string;
+}

@@ -6,6 +6,7 @@
       "usernameRequired": "Username is required.",
       "usernameMinLength": "Username must be at least {{count}} characters.",
       "usernameMaxLength": "Username must be at most {{count}} characters.",
+      "invalidPassword": "Please enter a valid password.",
       "passwordRequired": "Password is required.",
       "passwordMinLength": "Password must be at least {{count}} characters.",
       "passwordUppercase": "Password must contain at least one uppercase letter.",
@@ -50,11 +51,25 @@
       "pending": "Logging In...",
       "navbar": "Log In"
     },
-    "loading": "Loading"
+    "password": {
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "retry": "Try again",
+    "refreshPage": "Refresh page",
+    "loading": "Loading",
+    "goHome": "Go Home"
   },
   "success": {
     "register": "You've successfully registered! You can now log in with your new account.",
-    "login": "You've successfully logged in!"
+    "login": "You've successfully logged in!",
+    "logout": "You've successfully logged out!"
+  },
+  "errors": {
+    "sessionExpired": "Session expired. Please login again.",
+    "unknownError": "Something went wrong. Please try again later.",
+    "networkError": "Unable to connect to the server.",
+    "pageNotFound": "Page not found."
   },
   "pages": {
     "register": {
@@ -76,6 +91,6 @@
     "EMAIL_TAKEN": "This email address is already taken.",
     "USERNAME_TAKEN": "This username is already taken.",
     "INVALID_CREDENTIALS": "Invalid email or password.",
-    "UNKNOWN_ERROR": "An unexpected server error occurred."
+    "UNKNOWN_ERROR": "An unexpected server error occurred. Try again later."
   }
 }

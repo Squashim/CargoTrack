@@ -1,16 +1,18 @@
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useLogout } from '@/features/auth/queries/use-logout';
 
 const DashboardPage = () => {
+  const { logout } = useLogout();
+  const { user } = useAuth();
+
   return (
-    <Button
-      variant="outline"
-      onClick={() => {
-        toast.success('test');
-      }}
-    >
-      Dashboard
-    </Button>
+    <>
+      <Button variant="outline" onClick={() => logout.mutate()}>
+        Logout
+      </Button>
+      <p>{JSON.stringify(user)}</p>
+    </>
   );
 };
 

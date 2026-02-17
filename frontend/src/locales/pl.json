@@ -6,6 +6,7 @@
       "usernameRequired": "Nazwa użytkownika jest wymagana.",
       "usernameMinLength": "Nazwa użytkownika musi mieć co najmniej {{count}} znaki.",
       "usernameMaxLength": "Nazwa użytkownika musi mieć maksymalnie {{count}} znaków.",
+      "invalidPassword": "Proszę wprowadzić poprawne hasło.",
       "passwordRequired": "Hasło jest wymagane.",
       "passwordMinLength": "Hasło musi mieć co najmniej {{count}} znaków.",
       "passwordUppercase": "Hasło musi zawierać co najmniej jedną wielką literę.",
@@ -50,11 +51,25 @@
       "pending": "Logowanie...",
       "navbar": "Logowanie"
     },
-    "loading": "Ładowanie"
+    "password": {
+      "show": "Pokaż hasło",
+      "hide": "Ukryj hasło"
+    },
+    "retry": "Spróbuj ponownie",
+    "refreshPage": "Odśwież stronę",
+    "loading": "Ładowanie",
+    "goHome": "Wróć do strony głównej"
   },
   "success": {
     "register": "Pomyślnie zarejestrowano! Możesz teraz zalogować się na swoje nowe konto.",
-    "login": "Pomyślnie zalogowano!"
+    "login": "Pomyślnie zalogowano!",
+    "logout": "Pomyślnie wylogowano!"
+  },
+  "errors": {
+    "sessionExpired": "Sesja wygasła. Proszę zalogować się ponownie.",
+    "unknownError": "Coś poszło nie tak. Spróbuj ponownie później.",
+    "networkError": "Nie można połączyć się z serwerem.",
+    "pageNotFound": "Strona nie została znaleziona."
   },
   "pages": {
     "register": {
@@ -76,6 +91,6 @@
     "EMAIL_TAKEN": "Ten adres e-mail jest już zajęty.",
     "USERNAME_TAKEN": "Ta nazwa użytkownika jest już zajęta.",
     "INVALID_CREDENTIALS": "Nieprawidłowy e-mail lub hasło.",
-    "UNKNOWN_ERROR": "Wystąpił nieoczekiwany błąd serwera."
+    "UNKNOWN_ERROR": "Wystąpił nieoczekiwany błąd serwera. Spróbuj ponownie później."
   }
 }

@@ -17,7 +17,7 @@ export function useRegister({ setError }: UseRegisterProps = {}) {
 
   const registerMutation = useMutation({
     mutationFn: register,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(i18n.t('success.register'));
       navigate(ROUTES.AUTH.LOGIN);
     },

@@ -1,7 +1,7 @@
 import { API } from '@/config/api-client';
 import type { ApiResponse } from '@/types/api-types';
 import { AUTH_ENDPOINTS } from './endpoints';
-import type { LoginPayload, RegisterPayload } from './types';
+import type { LoginPayload, RegisterPayload, UserAuthResponse } from './types';
 
 const register = async (payload: RegisterPayload) => {
   const { data } = await API.post<ApiResponse>(AUTH_ENDPOINTS.REGISTER, payload);
@@ -13,4 +13,14 @@ const login = async (payload: LoginPayload) => {
   return data;
 };
 
-export { login, register };
+const getUser = async () => {
+  const { data } = await API.get<UserAuthResponse | null>(AUTH_ENDPOINTS.GET_USER);
+  return data;
+};
+
+const logout = async () => {
+  const { data } = await API.post<ApiResponse>(AUTH_ENDPOINTS.LOGOUT);
+  return data;
+};
+
+export { getUser, login, logout, register };

@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router';
+import { AuthProvider } from './features/auth/components/auth-provider';
 
 export function App() {
   return (
-    <div className="w-full min-h-dvh">
-      <Outlet />
-    </div>
+    <AuthProvider>
+      <div className="w-full min-h-dvh">
+        <Outlet />
+      </div>
+    </AuthProvider>
   );
 }
 

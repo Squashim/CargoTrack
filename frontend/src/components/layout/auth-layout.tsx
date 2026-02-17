@@ -15,7 +15,7 @@ const AuthLayout = () => {
   const navigateText = isLoginPage ? t('actions.signup.navbar') : t('actions.login.navbar');
 
   return (
-    <main className="w-full min-h-dvh bg-radial from-primary/30 to-background flex flex-col backdrop-blur-sm">
+    <div className="w-full min-h-dvh bg-radial from-primary/30 to-background flex flex-col">
       <div className="w-full mx-auto container flex flex-col flex-1 items-center p-4">
         <nav className="w-full flex items-center py-4 md:py-6 justify-between">
           <Logo size="lg" redirect />
@@ -31,7 +31,7 @@ const AuthLayout = () => {
           <LanguageSelect />
         </footer>
       </div>
-    </main>
+    </div>
   );
 };
 

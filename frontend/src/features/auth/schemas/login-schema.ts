@@ -14,7 +14,7 @@ const loginSchema = z.object({
     .nonempty(tZod('validation.auth.passwordRequired'))
     .min(
       AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH,
-      tZod('validation.auth.passwordMinLength', { count: AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH })
+      tZod('validation.auth.invalidPassword', { count: AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH })
     ),
 });
 
