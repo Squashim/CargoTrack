@@ -1,12 +1,17 @@
+const PATHS = {
+  AUTH: '/auth',
+  USER: '/user',
+};
+
 export const ROUTES = {
   HOME: '/',
   AUTH: {
-    BASE: '/auth',
-    LOGIN: '/auth/login',
-    REGISTER: '/auth/register',
+    BASE: PATHS.AUTH,
+    LOGIN: PATHS.AUTH + '/login',
+    REGISTER: PATHS.AUTH + '/register',
   },
   USER: {
-    BASE: '/user',
-    DASHBOARD: '/user/dashboard',
+    BASE: PATHS.USER,
+    DASHBOARD: PATHS.USER + '/dashboard',
   },
 };
