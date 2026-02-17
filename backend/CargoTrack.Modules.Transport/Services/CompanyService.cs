@@ -7,31 +7,30 @@ using CargoTrack.Modules.Transport.Domain;
 using CargoTrack.Modules.Transport.DTOs;
 using CargoTrack.Modules.Transport.Interfaces;
 using CargoTrack.Modules.Shared.Interfaces;
+using FluentValidation;
 
 public class CompanyService : ICompanyService
 {
     private readonly CompanyFactory _companyFactory; 
     private readonly IUserContext   _userContext;
     private readonly TransportDbContext _dbContext;
-    public CompanyService(CompanyFactory companyFactory, IUserContext userContext, TransportDbContext dbContext)
+    private readonly IValidator<CompanyDto> _companyValidator;
+    public CompanyService(CompanyFactory companyFactory, IUserContext userContext, TransportDbContext dbContext, IValidator<CompanyDto> companyValidator)
     {
         _companyFactory = companyFactory;
         _userContext = userContext;
         _dbContext = dbContext;
+        _companyValidator = companyValidator;
     }
     public async Task<CompanyResponseDto> CreateCompanyAsync(CompanyDto companyDto)
     {
+        var validationResult = await _companyValidator.ValidateAsync(companyDto);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+
         var userId = _userContext.UserId;
-
-        if (await _dbContext.Companies.AnyAsync(c => c.UserId == userId))
-        {
-            throw new InvalidOperationException("USER_ALREADY_HAS_COMPANY");
-        }
-
-        if (companyDto.Latitude == 0 && companyDto.Longitude == 0)
-        {
-            throw new ArgumentException("LOCATION_EMPTY", nameof(companyDto));
-        }
 
         var (company, garage, truck, trailer, driver) = _companyFactory.CreateStarterPack(
             userId, companyDto.Name, companyDto.Color, companyDto.Latitude, companyDto.Longitude
