@@ -14,12 +14,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="NetTopologySuite.IO.GeoJSON4STJ" Version="4.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CargoTrack.Modules.Identity\CargoTrack.Modules.Identity.csproj" />
-    <ProjectReference Include="..\CargoTrack.Modules.Fleet\CargoTrack.Modules.Fleet.csproj" />
     <ProjectReference Include="..\CargoTrack.Modules.Transport\CargoTrack.Modules.Transport.csproj" />
     <ProjectReference Include="..\CargoTrack.Modules.Shared\CargoTrack.Modules.Shared.csproj" />
   </ItemGroup>

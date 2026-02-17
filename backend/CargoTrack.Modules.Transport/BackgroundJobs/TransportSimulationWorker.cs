@@ -18,25 +18,25 @@ public class TransportSimulationWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var simulationService = scope.ServiceProvider.GetRequiredService<Services.SimulationService>();
+        // while (!stoppingToken.IsCancellationRequested)
+        // {
+        //     using (var scope = _serviceProvider.CreateScope())
+        //     {
+        //         var simulationService = scope.ServiceProvider.GetRequiredService<Services.SimulationService>();
 
-                var positions = await simulationService.CalculateCurrentPositionsAsync();
-                if (positions.Any())
-                {
-                    foreach (var userGroup in positions.GroupBy(p => p.UserId))
-                    {
-                        var groupName = $"User_{userGroup.Key}";
-                        await _hubContext.Clients.Group(groupName)
-                            .SendAsync("ReceivePositions", userGroup.ToList(), stoppingToken);
-                    }
-                }
+        //         var positions = await simulationService.CalculateCurrentPositionsAsync();
+        //         if (positions.Any())
+        //         {
+        //             foreach (var userGroup in positions.GroupBy(p => p.UserId))
+        //             {
+        //                 var groupName = $"User_{userGroup.Key}";
+        //                 await _hubContext.Clients.Group(groupName)
+        //                     .SendAsync("ReceivePositions", userGroup.ToList(), stoppingToken);
+        //             }
+        //         }
 
-                await Task.Delay(1000, stoppingToken);
-            }
-        }
+        //         await Task.Delay(1000, stoppingToken);
+        //     }
+        // }
     }
 }
