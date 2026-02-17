@@ -1,9 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
 import { Spinner } from '@/components/ui/spinner';
 import { ROUTES } from '@/lib/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { useRegister } from '../queries/use-register';
@@ -11,12 +14,17 @@ import { AUTH_CONSTRAINTS } from '../schemas/constants';
 import { registerDefaultValues, registerSchema, type RegisterFormValues } from '../schemas/register-schema';
 
 const RegisterForm = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { setError, ...form } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: registerDefaultValues,
   });
   const { t } = useTranslation();
   const { register } = useRegister({ setError });
+
+  function togglePasswordVisibility() {
+    setIsPasswordVisible((prev) => !prev);
+  }
 
   function onSubmit(data: RegisterFormValues) {
     register.mutate(data);
@@ -74,18 +82,30 @@ const RegisterForm = () => {
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="form-signup-password"> {t('form.auth.password.label')}</FieldLabel>
               <FieldDescription>{t('form.auth.password.description')}</FieldDescription>
-              <Input
-                {...field}
-                id="form-signup-password"
-                type="password"
-                aria-invalid={fieldState.invalid}
-                minLength={AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH}
-                maxLength={AUTH_CONSTRAINTS.PASSWORD_MAX_LENGTH}
-                placeholder="••••••••••••"
-                autoComplete="new-password"
-                disabled={register.isPending}
-              />
-
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="form-signup-password"
+                  type={isPasswordVisible ? 'text' : 'password'}
+                  aria-invalid={fieldState.invalid}
+                  minLength={AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH}
+                  maxLength={AUTH_CONSTRAINTS.PASSWORD_MAX_LENGTH}
+                  placeholder="••••••••••••"
+                  autoComplete="new-password"
+                  disabled={register.isPending}
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    onClick={togglePasswordVisibility}
+                    type="button"
+                    disabled={register.isPending}
+                    aria-label={isPasswordVisible ? t('actions.password.hide') : t('actions.password.show')}
+                    title={isPasswordVisible ? t('actions.password.hide') : t('actions.password.show')}
+                  >
+                    {isPasswordVisible ? <Eye /> : <EyeOff />}
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

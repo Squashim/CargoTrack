@@ -70,7 +70,6 @@ function LoginForm() {
                 id="form-login-password"
                 type="password"
                 aria-invalid={fieldState.invalid}
-                minLength={AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH}
                 maxLength={AUTH_CONSTRAINTS.PASSWORD_MAX_LENGTH}
                 placeholder="••••••••••••"
                 autoComplete="current-password"
