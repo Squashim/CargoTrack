@@ -43,20 +43,14 @@ public class AuthController : ControllerBase
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
-        try
+        if (HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
         {
-            if (HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
-            {
-                await _authService.LogoutAsync(refreshToken);
-                AuthCookieHelper.ClearAccessTokenCookie(HttpContext);
-                AuthCookieHelper.ClearRefreshTokenCookie(HttpContext);
-                return Ok(new { Message = "Logged out successfully" });
-            }
-            return BadRequest(new { Error = "Refresh token not found" });
+            await _authService.LogoutAsync(refreshToken);
         }
-        catch (Exception ex)
-        {
-            return BadRequest(new { Error = ex.Message });
-        }
+
+        AuthCookieHelper.ClearAccessTokenCookie(HttpContext);
+        AuthCookieHelper.ClearRefreshTokenCookie(HttpContext);
+        
+        return Ok(new { Message = "Logged out successfully" });
     }
 }
