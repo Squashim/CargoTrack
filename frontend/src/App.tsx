@@ -1,11 +1,13 @@
 import { Outlet } from 'react-router';
+import { AuthProvider } from './features/auth/components/auth-provider';
 
 export function App() {
-  /* Global page layout */
   return (
-    <>
-      <Outlet />
-    </>
+    <AuthProvider>
+      <div className="w-full min-h-dvh">
+        <Outlet />
+      </div>
+    </AuthProvider>
   );
 }
 
