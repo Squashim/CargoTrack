@@ -4,7 +4,6 @@ WORKDIR /src
 COPY ["CargoTrack.slnx", "./"]
 COPY ["CargoTrack.API/CargoTrack.API.csproj", "CargoTrack.API/"]
 COPY ["CargoTrack.Modules.Identity/CargoTrack.Modules.Identity.csproj", "CargoTrack.Modules.Identity/"]
-COPY ["CargoTrack.Modules.Fleet/CargoTrack.Modules.Fleet.csproj", "CargoTrack.Modules.Fleet/"]
 COPY ["CargoTrack.Modules.Transport/CargoTrack.Modules.Transport.csproj", "CargoTrack.Modules.Transport/"]
 COPY ["CargoTrack.Modules.Shared/CargoTrack.Modules.Shared.csproj", "CargoTrack.Modules.Shared/"]
 
