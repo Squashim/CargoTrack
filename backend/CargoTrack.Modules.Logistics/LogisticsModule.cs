@@ -1,6 +1,8 @@
 using System.Reflection;
 using CargoTrack.Modules.Logistics.Database;
 using CargoTrack.Modules.Logistics.Services;
+using CargoTrack.Modules.Logistics.PublicApi;
+using CargoTrack.Modules.Shared.Services;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +24,10 @@ public static class LogisticsModule
         services.AddScoped<LogisticDataSeeder>(); 
         services.AddScoped<JobGeneratorService>(); 
         services.AddHostedService<JobGenerationWorker>();
+        services.AddHttpClient<RouteService>();
+        services.AddScoped<RouteService>();
+        
+        services.AddScoped<ILogisticsModuleApi, LogisticsModuleApi>();
 
         return services;
     }

@@ -3,7 +3,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using Newtonsoft.Json.Linq;
 
-namespace CargoTrack.Modules.Transport.Services;
+namespace CargoTrack.Modules.Shared.Services;
 
 public class RouteService
 {
@@ -16,30 +16,34 @@ public class RouteService
         _osrmUrl = configuration["OsrmUrl"] ?? "http://localhost:5001";
     }
 
-    public async Task<(LineString Geometry, double DistanceMeters, double DurationSeconds)> GetRouteAsync(double startLat, double startLon, double endLat, double endLon)
+    public async Task<(LineString Geometry, double DistanceMeters, double DurationSeconds)> GetRouteAsync(
+        double startLat,
+        double startLon,
+        double endLat,
+        double endLon)
     {
         var culture = System.Globalization.CultureInfo.InvariantCulture;
 
         var coordinates = $"{startLon.ToString(culture)},{startLat.ToString(culture)};{endLon.ToString(culture)},{endLat.ToString(culture)}";
-
         var url = $"{_osrmUrl}/route/v1/driving/{coordinates}?overview=full&geometries=geojson";
 
-
         var response = await _httpClient.GetAsync(url);
-
         var json = await response.Content.ReadAsStringAsync();
 
-
         if (!response.IsSuccessStatusCode)
-            throw new Exception($"Błąd OSRM: {response.StatusCode} - {json}");
+        {
+            throw new Exception($"OSRM error: {response.StatusCode} - {json}");
+        }
 
         var data = JObject.Parse(json);
-
         var route = data["routes"]?[0];
-        if (route == null) throw new Exception("Route not found");
+        if (route == null)
+        {
+            throw new Exception("Route not found");
+        }
 
-        double distance = route["distance"]?.Value<double>() ?? 0;
-        double duration = route["duration"]?.Value<double>() ?? 0;
+        var distance = route["distance"]?.Value<double>() ?? 0;
+        var duration = route["duration"]?.Value<double>() ?? 0;
 
         var geometryJson = route["geometry"]?.ToString();
         var reader = new GeoJsonReader();
@@ -48,5 +52,4 @@ public class RouteService
 
         return (geometry, distance, duration);
     }
-
 }

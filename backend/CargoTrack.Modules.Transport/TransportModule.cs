@@ -4,6 +4,7 @@ using CargoTrack.Modules.Transport.Database;
 using CargoTrack.Modules.Transport.Domain;
 using CargoTrack.Modules.Transport.Interfaces;
 using CargoTrack.Modules.Transport.Services;
+using CargoTrack.Modules.Shared.Services;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
