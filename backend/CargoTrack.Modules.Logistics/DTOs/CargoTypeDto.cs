@@ -1,3 +1,5 @@
+namespace CargoTrack.Modules.Logistics.DTOs;
+
 public class CargoTypeDto 
 {
     public string Id { get; set; }

@@ -1,5 +1,6 @@
 using System.Reflection;
 using CargoTrack.Modules.Logistics.Database;
+using CargoTrack.Modules.Logistics.Services;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,10 +19,12 @@ public static class LogisticsModule
                 o => o.UseNetTopologySuite()));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
-
-        // Dodaj tutaj swoje serwisy
-        // services.AddScoped<ILogisticsService, LogisticsService>();
+        services.AddScoped<LogisticDataSeeder>(); 
+        services.AddScoped<JobGeneratorService>(); 
+        services.AddHostedService<JobGenerationWorker>();
 
         return services;
     }
+
+  
 }

@@ -1,4 +1,6 @@
-class DepotDto { 
+namespace CargoTrack.Modules.Logistics.DTOs;
+
+public class DepotDto { 
     public string CompanyId { get; set; } 
     public string City { get; set; } 
     public double Latitude { get; set; }

@@ -2,6 +2,8 @@ using CargoTrack.Modules.Identity;
 using CargoTrack.Modules.Identity.Database;
 using CargoTrack.Modules.Transport;
 using CargoTrack.Modules.Logistics;
+using CargoTrack.Modules.Logistics.Database;
+using CargoTrack.Modules.Logistics.Services;
 using CargoTrack.API.Services;
 using CargoTrack.Modules.Transport.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -109,6 +111,10 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     services.GetRequiredService<IdentityDbContext>().Database.Migrate();
     services.GetRequiredService<TransportDbContext>().Database.Migrate();
+    services.GetRequiredService<LogisticsDbContext>().Database.Migrate();
+    
+    var seeder = services.GetRequiredService<LogisticDataSeeder>();
+    await seeder.SeedAsync();
 }
 app.MapHub<CargoTrack.Modules.Transport.Hubs.SimulationHub>("/hubs/transport");
 app.Run();

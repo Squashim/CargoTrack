@@ -1,5 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using NetTopologySuite.Geometries;
+using CargoTrack.Modules.Logistics.Constants;
+
+namespace CargoTrack.Modules.Logistics.Entities;
 
 [Table("Depots", Schema = "logistics")]
 public class Depot

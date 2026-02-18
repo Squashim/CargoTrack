@@ -24,4 +24,12 @@
     <ProjectReference Include="..\CargoTrack.Modules.Shared\CargoTrack.Modules.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Link>Modules\Logistics\Data\%(Filename)%(Extension)</Link>
+    </None>
+  </ItemGroup>
+
 </Project>

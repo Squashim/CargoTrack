@@ -1,21 +1,34 @@
 using System.Text.Json;
 using CargoTrack.Modules.Logistics.Database;
+using CargoTrack.Modules.Logistics.Entities;
+using CargoTrack.Modules.Logistics.DTOs;
+using CargoTrack.Modules.Logistics.Constants;
+using CargoTrack.Modules.Shared.Constants;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+
+namespace CargoTrack.Modules.Logistics.Services;
+
 public class LogisticDataSeeder
 {
     private readonly LogisticsDbContext _dbContext;
+    private readonly string _basePath;
+    
     public LogisticDataSeeder(LogisticsDbContext dbContext)
     {
         _dbContext = dbContext;
+        _basePath = AppContext.BaseDirectory;
     }
     
     public async Task SeedAsync()
     {
+        var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        
         if  (!await _dbContext.NpcCompanies.AnyAsync())
         {
-            var companiesJson = await File.ReadAllTextAsync("Modules/Logistics/Data/company.json");
-            var companiesDto = JsonSerializer.Deserialize<List<NpcCompanyDto>>(companiesJson);
+            var companiesJson = await File.ReadAllTextAsync(Path.Combine(_basePath, "Modules/Logistics/Data/company.json"));
+            var companiesDto = JsonSerializer.Deserialize<List<NpcCompanyDto>>(companiesJson, jsonOptions);
+            if (companiesDto == null) return;
 
             var companies = companiesDto.Select(c => new NpcCompany
             {
@@ -30,8 +43,9 @@ public class LogisticDataSeeder
 
         if (!await _dbContext.Depots.AnyAsync())
         {
-            var depotsJson = await File.ReadAllTextAsync("Modules/Logistics/Data/depot.json");
-            var depotsDto = JsonSerializer.Deserialize<List<DepotDto>>(depotsJson);
+            var depotsJson = await File.ReadAllTextAsync(Path.Combine(_basePath, "Modules/Logistics/Data/depot.json"));
+            var depotsDto = JsonSerializer.Deserialize<List<DepotDto>>(depotsJson, jsonOptions);
+            if (depotsDto == null) return;
             
             var companyMap = await _dbContext.NpcCompanies.ToDictionaryAsync(c => c.Code, c => c.Id);
 
@@ -56,24 +70,23 @@ public class LogisticDataSeeder
             await _dbContext.SaveChangesAsync();
         }
 
-                if (!await _dbContext.CargoTypes.AnyAsync())
-{var cargosJson = await File.ReadAllTextAsync("Modules/Logistics/Data/cargos.json");
-    var cargosDto = JsonSerializer.Deserialize<List<CargoTypeDto>>(cargosJson);
+        if (!await _dbContext.CargoTypes.AnyAsync())
+        {
+            var cargosJson = await File.ReadAllTextAsync(Path.Combine(_basePath, "Modules/Logistics/Data/cargos.json"));
+            var cargosDto = JsonSerializer.Deserialize<List<CargoTypeDto>>(cargosJson, jsonOptions);
+            if (cargosDto == null) return;
 
-    var cargos = cargosDto.Select(c => new CargoType
-    {
-        Id = Guid.NewGuid(),
-        
-        Code = c.Id,        
-        
-        Name = c.Name,
-        BasePrice = c.BasePrice,
-        RequiredTrailer = Enum.Parse<TrailerType>(c.RequiredTrailer)
-    });
+            var cargos = cargosDto.Select(c => new CargoType
+            {
+                Id = Guid.NewGuid(),
+                Code = c.Id,
+                Name = c.Name,
+                BasePrice = c.BasePrice,
+                RequiredTrailer = Enum.Parse<TrailerType>(c.RequiredTrailer)
+            });
 
-    _dbContext.CargoTypes.AddRange(cargos);
-    await _dbContext.SaveChangesAsync();
-}
+            _dbContext.CargoTypes.AddRange(cargos);
+            await _dbContext.SaveChangesAsync();
+        }
     }
-    
 }

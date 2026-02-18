@@ -5,6 +5,7 @@ COPY ["CargoTrack.slnx", "./"]
 COPY ["CargoTrack.API/CargoTrack.API.csproj", "CargoTrack.API/"]
 COPY ["CargoTrack.Modules.Identity/CargoTrack.Modules.Identity.csproj", "CargoTrack.Modules.Identity/"]
 COPY ["CargoTrack.Modules.Transport/CargoTrack.Modules.Transport.csproj", "CargoTrack.Modules.Transport/"]
+COPY ["CargoTrack.Modules.Logistics/CargoTrack.Modules.Logistics.csproj", "CargoTrack.Modules.Logistics/"]
 COPY ["CargoTrack.Modules.Shared/CargoTrack.Modules.Shared.csproj", "CargoTrack.Modules.Shared/"]
 
 RUN dotnet restore "CargoTrack.slnx"

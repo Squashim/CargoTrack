@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace CargoTrack.Modules.Logistics.Entities;
+
 [Table("NpcCompanies", Schema = "logistics")]
 public class NpcCompany
 {

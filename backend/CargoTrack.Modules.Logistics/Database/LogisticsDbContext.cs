@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using CargoTrack.Modules.Logistics.Entities;
 
 namespace CargoTrack.Modules.Logistics.Database;
 
