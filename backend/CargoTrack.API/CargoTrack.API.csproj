@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CargoTrack.Modules.Identity\CargoTrack.Modules.Identity.csproj" />
     <ProjectReference Include="..\CargoTrack.Modules.Transport\CargoTrack.Modules.Transport.csproj" />
+    <ProjectReference Include="..\CargoTrack.Modules.Logistics\CargoTrack.Modules.Logistics.csproj" />
     <ProjectReference Include="..\CargoTrack.Modules.Shared\CargoTrack.Modules.Shared.csproj" />
   </ItemGroup>
 

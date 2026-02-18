@@ -1,6 +1,7 @@
 using CargoTrack.Modules.Identity;
 using CargoTrack.Modules.Identity.Database;
 using CargoTrack.Modules.Transport;
+using CargoTrack.Modules.Logistics;
 using CargoTrack.API.Services;
 using CargoTrack.Modules.Transport.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,11 +17,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddTransportModule(builder.Configuration);
+builder.Services.AddLogisticsModule(builder.Configuration);
 
 
 builder.Services.AddControllers()
 .AddApplicationPart(typeof(IdentityModule).Assembly)
     .AddApplicationPart(typeof(TransportModule).Assembly)
+    .AddApplicationPart(typeof(LogisticsModule).Assembly)
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new GeoJsonConverterFactory());
