@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Drawing;
+using NetTopologySuite.Geometries;
 
 [Table("Depots", Schema = "logistics")]
 public class Depot
@@ -9,7 +9,7 @@ public class Depot
     public NpcCompany NpcCompany { get; set; } = null!;
     [Column(TypeName = "geometry(Point, 4326)")]
     public Point Location { get; set; } 
-    public string Name { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
     public DepotType Type { get; set; }
 
 }

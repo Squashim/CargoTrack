@@ -1,0 +1,1 @@
+public enum DepotType { Factory, Store, Warehouse, Port }

@@ -1,6 +1,6 @@
 namespace CargoTrack.Modules.Transport.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
-using CargoTrack.Modules.Transport.Constants;
+
 
 [Table("Trailers", Schema = "game")]
 public class Trailer

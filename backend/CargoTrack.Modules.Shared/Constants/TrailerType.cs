@@ -1,4 +1,3 @@
-namespace CargoTrack.Modules.Transport.Constants;
 
 public enum TrailerType
 {

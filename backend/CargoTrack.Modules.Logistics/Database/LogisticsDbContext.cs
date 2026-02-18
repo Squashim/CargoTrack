@@ -8,19 +8,18 @@ public class LogisticsDbContext : DbContext
     {
     }
 
-    // Dodaj tutaj swoje DbSety
-    // public DbSet<Order> Orders { get; set; } = null!;
-    // public DbSet<Warehouse> Warehouses { get; set; } = null!;
-
+   public DbSet<NpcCompany> NpcCompanies { get; set; }
+    public DbSet<Depot> Depots { get; set; }
+    public DbSet<JobOffer> JobOffers { get; set; }
+    public DbSet<CargoType> CargoTypes { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("logistics");
         modelBuilder.HasPostgresExtension("postgis");
-
-        // Konfiguracja encji tutaj
-        // modelBuilder.Entity<Order>(entity =>
-        // {
-        //     entity.ToTable("Orders", "logistics");
-        //     entity.HasKey(e => e.Id);
-        // });
-    }
+        
+        modelBuilder.Entity<NpcCompany>().HasIndex(c => c.Code).IsUnique();
+        
+        modelBuilder.Entity<Depot>().Property(x => x.Location).HasColumnType("geography(Point, 4326)");
+        modelBuilder.Entity<CargoType>().HasIndex(c => c.Code).IsUnique();
+}
 }

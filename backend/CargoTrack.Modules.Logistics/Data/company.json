@@ -1,0 +1,52 @@
+[
+  {
+    "id": "comp-ikea",
+    "name": "IKEA",
+    "industry": "Retail"
+  },
+  {
+    "id": "comp-amazon",
+    "name": "Amazon",
+    "industry": "Ecommerce"
+  },
+  {
+    "id": "comp-orlen",
+    "name": "Orlen",
+    "industry": "Fuel"
+  },
+  {
+    "id": "comp-logistics",
+    "name": "Global Logistics",
+    "industry": "Transport"
+  },
+  {
+    "id": "comp-biedronka",
+    "name": "Biedronka",
+    "industry": "Retail"
+  },
+  {
+    "id": "comp-fortaco",
+    "name": "Fortaco",
+    "industry": "Heavy Industry"
+  },
+  {
+    "id": "comp-stock",
+    "name": "Stock Spirits",
+    "industry": "Food"
+  },
+  {
+    "id": "comp-bosch",
+    "name": "Bosch / BSH",
+    "industry": "Electronics"
+  },
+  {
+    "id": "comp-abb",
+    "name": "ABB",
+    "industry": "Technology"
+  },
+  {
+    "id": "comp-factory",
+    "name": "FLT Kraśnik",
+    "industry": "Heavy Industry"
+  }
+]
