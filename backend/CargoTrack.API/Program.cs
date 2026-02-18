@@ -11,6 +11,7 @@ using System.Text;
 using CargoTrack.API.Middleware;
 using CargoTrack.Modules.Shared.Interfaces;
 using CargoTrack.Modules.Shared.Services;
+using NetTopologySuite.IO.Converters;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityModule(builder.Configuration);
@@ -19,7 +20,11 @@ builder.Services.AddTransportModule(builder.Configuration);
 
 builder.Services.AddControllers()
 .AddApplicationPart(typeof(IdentityModule).Assembly)
-    .AddApplicationPart(typeof(TransportModule).Assembly);
+    .AddApplicationPart(typeof(TransportModule).Assembly)
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new GeoJsonConverterFactory());
+    });
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, SignalRUserIdProvider>();
 

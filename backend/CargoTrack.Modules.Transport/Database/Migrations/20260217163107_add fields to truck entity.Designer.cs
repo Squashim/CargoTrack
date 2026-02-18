@@ -3,6 +3,7 @@ using System;
 using CargoTrack.Modules.Transport.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CargoTrack.Modules.Transport.Database.Migrations
 {
     [DbContext(typeof(TransportDbContext))]
-    partial class TransportDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260217163107_add fields to truck entity")]
+    partial class addfieldstotruckentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,8 +117,6 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Garages", "game");
                 });
@@ -250,19 +251,8 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                         .WithMany()
                         .HasForeignKey("AssignedTruckId");
 
-                    b.HasOne("CargoTrack.Modules.Transport.Entities.Company", "Company")
-                        .WithMany("Drivers")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("CargoTrack.Modules.Transport.Entities.Garage", b =>
-                {
                     b.HasOne("CargoTrack.Modules.Transport.Entities.Company", null)
-                        .WithMany("Garages")
+                        .WithMany("Drivers")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -274,7 +264,7 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                         .WithOne("CurrentTrailer")
                         .HasForeignKey("CargoTrack.Modules.Transport.Entities.Trailer", "AttachedTruckId");
 
-                    b.HasOne("CargoTrack.Modules.Transport.Entities.Company", "Company")
+                    b.HasOne("CargoTrack.Modules.Transport.Entities.Company", null)
                         .WithMany("Trailers")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -287,13 +277,11 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                         .IsRequired();
 
                     b.Navigation("AttachedTruck");
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("CargoTrack.Modules.Transport.Entities.Truck", b =>
                 {
-                    b.HasOne("CargoTrack.Modules.Transport.Entities.Company", "Company")
+                    b.HasOne("CargoTrack.Modules.Transport.Entities.Company", null)
                         .WithMany("Trucks")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -304,15 +292,11 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                         .HasForeignKey("GarageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("CargoTrack.Modules.Transport.Entities.Company", b =>
                 {
                     b.Navigation("Drivers");
-
-                    b.Navigation("Garages");
 
                     b.Navigation("Trailers");
 

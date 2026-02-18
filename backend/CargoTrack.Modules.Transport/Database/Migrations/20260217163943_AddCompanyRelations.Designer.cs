@@ -3,6 +3,7 @@ using System;
 using CargoTrack.Modules.Transport.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CargoTrack.Modules.Transport.Database.Migrations
 {
     [DbContext(typeof(TransportDbContext))]
-    partial class TransportDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260217163943_AddCompanyRelations")]
+    partial class AddCompanyRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,8 +117,6 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Garages", "game");
                 });
@@ -259,15 +260,6 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("CargoTrack.Modules.Transport.Entities.Garage", b =>
-                {
-                    b.HasOne("CargoTrack.Modules.Transport.Entities.Company", null)
-                        .WithMany("Garages")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CargoTrack.Modules.Transport.Entities.Trailer", b =>
                 {
                     b.HasOne("CargoTrack.Modules.Transport.Entities.Truck", "AttachedTruck")
@@ -311,8 +303,6 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
             modelBuilder.Entity("CargoTrack.Modules.Transport.Entities.Company", b =>
                 {
                     b.Navigation("Drivers");
-
-                    b.Navigation("Garages");
 
                     b.Navigation("Trailers");
 
