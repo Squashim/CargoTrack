@@ -2,7 +2,6 @@ using CargoTrack.Modules.Logistics.Database;
 using CargoTrack.Modules.Logistics.DTOs;
 using CargoTrack.Modules.Logistics.PublicApi;
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
 
 namespace CargoTrack.Modules.Logistics.Services;
 
@@ -52,8 +51,8 @@ public class LogisticsModuleApi : ILogisticsModuleApi
 
         return new JobDetailsDto(
             job.Id,
-            job.SourceDepot.Location.Y, // Lat
-            job.SourceDepot.Location.X, // Lon
+            job.SourceDepot.Location.Y, 
+            job.SourceDepot.Location.X,
             job.TargetDepot.Location.Y,
             job.TargetDepot.Location.X,
             job.CargoName,

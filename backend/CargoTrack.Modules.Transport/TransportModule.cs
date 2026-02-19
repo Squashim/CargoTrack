@@ -23,6 +23,7 @@ public static class TransportModule
         services.AddHttpClient<RouteService>();
         services.AddScoped<RouteService>();
         services.AddScoped<SimulationService>();
+        services.AddSingleton<ConnectionTrackerService>();
         services.AddHostedService<TransportSimulationWorker>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         services.AddScoped<ICompanyService, CompanyService>();
