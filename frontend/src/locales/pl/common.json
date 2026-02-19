@@ -1,0 +1,49 @@
+{
+  "themes": {
+    "switchToDark": "Przełącz na ciemny motyw",
+    "switchToLight": "Przełącz na jasny motyw",
+    "switchTheme": "Przełącz motyw"
+  },
+  "actions": {
+    "signup": {
+      "base": "Załóż konto",
+      "pending": "Zakładanie konta...",
+      "navbar": "Dołącz do nas"
+    },
+    "login": {
+      "base": "Zaloguj się",
+      "pending": "Logowanie...",
+      "navbar": "Logowanie"
+    },
+    "logout": {
+      "base": "Wyloguj się",
+      "pending": "Wylogowywanie..."
+    },
+    "password": {
+      "show": "Pokaż hasło",
+      "hide": "Ukryj hasło"
+    },
+    "retry": "Spróbuj ponownie",
+    "refreshPage": "Odśwież stronę",
+    "loading": "Ładowanie",
+    "goHome": "Wróć do strony głównej"
+  },
+  "info": {
+    "hello": "Witaj"
+  },
+  "success": {
+    "register": "Pomyślnie zarejestrowano! Możesz teraz zalogować się na swoje nowe konto.",
+    "login": "Pomyślnie zalogowano!",
+    "logout": "Pomyślnie wylogowano!"
+  },
+  "errors": {
+    "sessionExpired": "Sesja wygasła. Proszę zalogować się ponownie.",
+    "unknownError": "Coś poszło nie tak. Spróbuj ponownie później.",
+    "networkError": "Nie można połączyć się z serwerem.",
+    "pageNotFound": "Strona nie została znaleziona."
+  },
+  "languages": {
+    "unknown": "Nieznany",
+    "choose": "Wybierz język"
+  }
+}

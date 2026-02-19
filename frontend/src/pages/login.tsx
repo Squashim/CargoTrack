@@ -3,7 +3,7 @@ import { LoginForm } from '@/features/auth/components/login-form';
 import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth']);
 
   return (
     <Card>

@@ -4,33 +4,33 @@ import { AUTH_CONSTRAINTS } from './constants';
 
 const registerSchema = z.object({
   email: z
-    .email(tZod('validation.auth.invalidEmail'))
+    .email(tZod('validation:auth.invalidEmail'))
     .max(
       AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH,
-      tZod('validation.auth.emailMaxLength', { count: AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH })
+      tZod('validation:auth.emailMaxLength', { count: AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH })
     ),
   userName: z
     .string()
-    .nonempty(tZod('validation.auth.usernameRequired'))
+    .nonempty(tZod('validation:auth.usernameRequired'))
     .min(
       AUTH_CONSTRAINTS.USERNAME_MIN_LENGTH,
-      tZod('validation.auth.usernameMinLength', { count: AUTH_CONSTRAINTS.USERNAME_MIN_LENGTH })
+      tZod('validation:auth.usernameMinLength', { count: AUTH_CONSTRAINTS.USERNAME_MIN_LENGTH })
     )
     .max(
       AUTH_CONSTRAINTS.USERNAME_MAX_LENGTH,
-      tZod('validation.auth.usernameMaxLength', { count: AUTH_CONSTRAINTS.USERNAME_MAX_LENGTH })
+      tZod('validation:auth.usernameMaxLength', { count: AUTH_CONSTRAINTS.USERNAME_MAX_LENGTH })
     ),
   password: z
     .string()
-    .nonempty(tZod('validation.auth.passwordRequired'))
+    .nonempty(tZod('validation:auth.passwordRequired'))
     .min(
       AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH,
-      tZod('validation.auth.passwordMinLength', { count: AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH })
+      tZod('validation:auth.passwordMinLength', { count: AUTH_CONSTRAINTS.PASSWORD_MIN_LENGTH })
     )
-    .regex(/(?=.*[A-Z])/, tZod('validation.auth.passwordUppercase'))
-    .regex(/(?=.*[a-z])/, tZod('validation.auth.passwordLowercase'))
-    .regex(/(?=.*\d)/, tZod('validation.auth.passwordNumber'))
-    .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, tZod('validation.auth.passwordSpecial')),
+    .regex(/(?=.*[A-Z])/, tZod('validation:auth.passwordUppercase'))
+    .regex(/(?=.*[a-z])/, tZod('validation:auth.passwordLowercase'))
+    .regex(/(?=.*\d)/, tZod('validation:auth.passwordNumber'))
+    .regex(/[$&+,:;=?@#|'<>.^*()%!-]/, tZod('validation:auth.passwordSpecial')),
 });
 
 const registerDefaultValues: RegisterFormValues = {

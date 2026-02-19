@@ -21,7 +21,7 @@ function LoginForm() {
     resolver: zodResolver(loginSchema),
     defaultValues: loginDefaultValues,
   });
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common', 'validation', 'auth']);
   const { login } = useLogin({ setError });
 
   function onSubmit(data: LoginFormValues) {
@@ -44,14 +44,14 @@ function LoginForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-login-email"> {t('form.auth.email.label')}</FieldLabel>
+              <FieldLabel htmlFor="form-login-email"> {t('auth:form.email.label')}</FieldLabel>
               <Input
                 {...field}
                 id="form-login-email"
                 type="email"
                 maxLength={AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH}
                 aria-invalid={fieldState.invalid}
-                placeholder={t('form.auth.email.placeholder')}
+                placeholder={t('auth:form.email.placeholder')}
                 autoComplete="email"
                 disabled={login.isPending}
               />
@@ -64,7 +64,7 @@ function LoginForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-login-password"> {t('form.auth.password.label')}</FieldLabel>
+              <FieldLabel htmlFor="form-login-password"> {t('auth:form.password.label')}</FieldLabel>
               <Input
                 {...field}
                 id="form-login-password"
@@ -86,7 +86,7 @@ function LoginForm() {
             {login.isPending ? t('actions.login.pending') : t('actions.login.base')}
           </Button>
           <FieldDescription className="max-w-sm text-center mx-auto text-base pt-4">
-            <Trans t={t} i18nKey="form.auth.dontHaveAccount" components={[<a href={ROUTES.AUTH.REGISTER}>Sign </a>]} />
+            <Trans t={t} i18nKey="auth:form.dontHaveAccount" components={[<a href={ROUTES.AUTH.REGISTER}>Sign </a>]} />
           </FieldDescription>
         </Field>
       </FieldGroup>

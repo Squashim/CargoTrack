@@ -19,7 +19,7 @@ const RegisterForm = () => {
     resolver: zodResolver(registerSchema),
     defaultValues: registerDefaultValues,
   });
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common', 'auth']);
   const { register } = useRegister({ setError });
 
   function togglePasswordVisibility() {
@@ -38,8 +38,8 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-username">{t('form.auth.username.label')}</FieldLabel>
-              <FieldDescription>{t('form.auth.username.description')}</FieldDescription>
+              <FieldLabel htmlFor="form-signup-username">{t('auth:form.username.label')}</FieldLabel>
+              <FieldDescription>{t('auth:form.username.description')}</FieldDescription>
               <Input
                 {...field}
                 id="form-signup-username"
@@ -47,7 +47,7 @@ const RegisterForm = () => {
                 minLength={AUTH_CONSTRAINTS.USERNAME_MIN_LENGTH}
                 maxLength={AUTH_CONSTRAINTS.USERNAME_MAX_LENGTH}
                 aria-invalid={fieldState.invalid}
-                placeholder={t('form.auth.username.placeholder')}
+                placeholder={t('auth:form.username.placeholder')}
                 autoComplete="username"
                 disabled={register.isPending}
               />
@@ -60,14 +60,14 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-email"> {t('form.auth.email.label')}</FieldLabel>
+              <FieldLabel htmlFor="form-signup-email"> {t('auth:form.email.label')}</FieldLabel>
               <Input
                 {...field}
                 id="form-signup-email"
                 type="email"
                 maxLength={AUTH_CONSTRAINTS.EMAIL_MAX_LENGTH}
                 aria-invalid={fieldState.invalid}
-                placeholder={t('form.auth.email.placeholder')}
+                placeholder={t('auth:form.email.placeholder')}
                 autoComplete="email"
                 disabled={register.isPending}
               />
@@ -80,8 +80,8 @@ const RegisterForm = () => {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="form-signup-password"> {t('form.auth.password.label')}</FieldLabel>
-              <FieldDescription>{t('form.auth.password.description')}</FieldDescription>
+              <FieldLabel htmlFor="form-signup-password"> {t('auth:form.password.label')}</FieldLabel>
+              <FieldDescription>{t('auth:form.password.description')}</FieldDescription>
               <InputGroup>
                 <InputGroupInput
                   {...field}
@@ -114,7 +114,7 @@ const RegisterForm = () => {
           <FieldDescription className="text-center">
             <Trans
               t={t}
-              i18nKey="form.auth.terms"
+              i18nKey="auth:form.terms"
               components={[<a href={ROUTES.HOME}>Terms</a>, <a href={ROUTES.HOME}>Privacy policy</a>]}
             />
           </FieldDescription>
@@ -123,7 +123,7 @@ const RegisterForm = () => {
             {register.isPending ? t('actions.signup.pending') : t('actions.signup.base')}
           </Button>
           <FieldDescription className="max-w-sm text-center mx-auto text-base pt-4">
-            <Trans t={t} i18nKey="form.auth.haveAccount" components={[<a href={ROUTES.AUTH.LOGIN}>Log in</a>]} />
+            <Trans t={t} i18nKey="auth:form.haveAccount" components={[<a href={ROUTES.AUTH.LOGIN}>Log in</a>]} />
           </FieldDescription>
         </Field>
       </FieldGroup>

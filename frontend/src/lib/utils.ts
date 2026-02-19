@@ -1,6 +1,6 @@
 import i18n from '@/i18n';
 import type { ApiErrorResponse } from '@/types/api-types';
-import type { TranslationKeys } from '@/types/translation-keys';
+import type { AllowedKeys } from '@/types/common';
 import { isAxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import type { FieldValues, Path, UseFormSetError } from 'react-hook-form';
@@ -18,7 +18,7 @@ export function handleApiError<T extends FieldValues>(error: unknown, setError?:
     const { data } = error.response;
 
     if (data.Error) {
-      const translatedMessage = i18n.t(`apiErrors.${data.Error}`, data.Error);
+      const translatedMessage = i18n.t(`auth:apiErrors.${data.Error}`, data.Error);
       toast.error(translatedMessage);
       return;
     }
@@ -29,21 +29,19 @@ export function handleApiError<T extends FieldValues>(error: unknown, setError?:
         const errorCode = messages[0];
 
         if (errorCode === LOGIN_API_ERROR) {
-          setError('root', { type: 'server', message: tZod('apiErrors.INVALID_CREDENTIALS') });
+          setError('root', { type: 'server', message: tZod('auth:apiErrors.INVALID_CREDENTIALS') });
           return;
         }
 
-        setError(fieldName, { type: 'server', message: tZod(`apiErrors.${errorCode}` as never) });
+        setError(fieldName, { type: 'server', message: tZod(`auth:apiErrors.${errorCode}` as never) });
       });
       return;
     }
   }
 
-  toast.error(i18n.t('apiErrors.UNKNOWN_ERROR'));
+  toast.error(i18n.t('auth:apiErrors.UNKNOWN_ERROR'));
 }
 
-type ZodI18nParams = Record<string, string | number>;
-
-export function tZod(key: TranslationKeys, params?: ZodI18nParams) {
+export function tZod(key: AllowedKeys, params?: Record<string, string | number>) {
   return JSON.stringify({ key, ...params });
 }

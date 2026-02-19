@@ -3,7 +3,7 @@ import { RegisterForm } from '@/features/auth/components/register-form';
 import { useTranslation } from 'react-i18next';
 
 const RegisterPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth']);
 
   return (
     <Card>

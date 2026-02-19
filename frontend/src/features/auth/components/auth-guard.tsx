@@ -1,14 +1,13 @@
 import { ROUTES } from '@/lib/constants';
 import { ErrorPage } from '@/pages/error';
+import type { AuthAccess } from '@/types/common';
 import { useQueryClient } from '@tanstack/react-query';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import { useAuth } from '../hooks/use-auth';
 import { authKeys } from '../utils/query-keys';
 
-type AuthAllowMode = 'authenticated' | 'unauthenticated' | 'public';
-
 interface AuthGuardProps {
-  allowMode: AuthAllowMode;
+  allowMode: AuthAccess;
 }
 
 function AuthGuard({ allowMode }: AuthGuardProps) {
