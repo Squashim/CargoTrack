@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using CargoTrack.Modules.Transport.Entities; // Upewnij się, że masz ten using
+using CargoTrack.Modules.Transport.Entities; 
 
 namespace CargoTrack.Modules.Transport.Database;
 

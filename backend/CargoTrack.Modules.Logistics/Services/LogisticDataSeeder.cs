@@ -57,7 +57,7 @@ public class LogisticDataSeeder
                     depots.Add(new Depot
                     {
                         Id = Guid.NewGuid(),
-                        NpcCompanyId = realGuid, // Przypisujemy prawdziwy GUID z bazy
+                        NpcCompanyId = realGuid, 
                         City = dto.City,
                         Type = Enum.Parse<DepotType>(dto.Type),
                         Location = new Point(dto.Longitude, dto.Latitude) { SRID = 4326 }
