@@ -1,12 +1,14 @@
 import { useTheme } from '@/features/theme/use-theme';
 import { Moon, Sun } from 'lucide-react';
-import { useEffect, useEffectEvent } from 'react';
+import { useEffect, useEffectEvent, type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from './button';
 import { Kbd } from './kbd';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 
-function ThemeToggle() {
+type ThemeToggleProps = ComponentProps<typeof Button>;
+
+function ThemeToggle({ size, variant, ...props }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
   const { t } = useTranslation();
   const userTheme =
@@ -52,8 +54,9 @@ function ThemeToggle() {
       <TooltipTrigger
         render={
           <Button
-            size="icon-lg"
-            variant="outline"
+            {...props}
+            size={size || 'icon-lg'}
+            variant={variant || 'outline'}
             onClick={toggleTheme}
             aria-label={userTheme === 'dark' ? t('themes.switchToLight') : t('themes.switchToDark')}
           >

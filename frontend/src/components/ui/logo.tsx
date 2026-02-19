@@ -2,6 +2,8 @@ import { ROUTES } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { SVGProps } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 
 const logoVariants = cva('transition-all duration-300 ease-in-out ', {
   variants: {
@@ -31,6 +33,7 @@ function Logo({
   VariantProps<typeof logoVariants> & {
     redirect?: boolean;
   }) {
+  const { t } = useTranslation();
   const colorClass = fill ? '' : `text-[${LOGO_COLORS.light}] dark:text-[${LOGO_COLORS.dark}]`;
 
   const logoSvg = (
@@ -89,12 +92,14 @@ function Logo({
   );
 
   return redirect ? (
-    <a
-      href={ROUTES.HOME}
+    <Link
+      to={ROUTES.HOME}
+      aria-label={t('actions.goHome')}
+      title={t('actions.goHome')}
       className="focus-visible:border-ring focus-visible:ring-ring/50 rounded-xl border border-transparent focus-visible:ring-[3px] transition-all shrink-0 [&_svg]:shrink-0 outline-none select-none"
     >
       {logoSvg}
-    </a>
+    </Link>
   ) : (
     logoSvg
   );
