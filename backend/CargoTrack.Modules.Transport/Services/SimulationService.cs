@@ -1,5 +1,6 @@
 using CargoTrack.Modules.Transport.Database;
 using CargoTrack.Modules.Transport.Entities;
+using CargoTrack.Modules.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.LinearReferencing;

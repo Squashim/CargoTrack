@@ -1,6 +1,7 @@
 using NetTopologySuite.Geometries;
 using CargoTrack.Modules.Transport.Entities;
-using CargoTrack.Modules.Transport.Constants;
+using CargoTrack.Modules.Shared.Constants;
+
 
 namespace CargoTrack.Modules.Transport.Domain;
 

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cargo-furniture",
+    "name": "Meble w paczkach",
+    "basePrice": 2.5,
+    "requiredTrailer": "Curtain"
+  },
+  {
+    "id": "cargo-electronics",
+    "name": "Elektronika AGD",
+    "basePrice": 4.0,
+    "requiredTrailer": "Curtain"
+  },
+  {
+    "id": "cargo-steel",
+    "name": "Elementy Stalowe",
+    "basePrice": 3.0,
+    "requiredTrailer": "Flatbed"
+  },
+  {
+    "id": "cargo-alcohol",
+    "name": "Palety z Alkoholem",
+    "basePrice": 3.5,
+    "requiredTrailer": "Curtain"
+  },
+  {
+    "id": "cargo-fuel",
+    "name": "Paliwo (Diesel)",
+    "basePrice": 4.5,
+    "requiredTrailer": "Tanker"
+  },
+  {
+    "id": "cargo-sand",
+    "name": "Piach / Kruszywo",
+    "basePrice": 1.2,
+    "requiredTrailer": "Dumper"
+  },
+  {
+    "id": "cargo-food",
+    "name": "Mrożona Żywność",
+    "basePrice": 2.8,
+    "requiredTrailer": "Refrigerated"
+  }
+]

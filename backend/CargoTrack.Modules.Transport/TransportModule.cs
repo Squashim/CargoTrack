@@ -4,6 +4,7 @@ using CargoTrack.Modules.Transport.Database;
 using CargoTrack.Modules.Transport.Domain;
 using CargoTrack.Modules.Transport.Interfaces;
 using CargoTrack.Modules.Transport.Services;
+using CargoTrack.Modules.Shared.Services;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,7 @@ public static class TransportModule
         services.AddHttpClient<RouteService>();
         services.AddScoped<RouteService>();
         services.AddScoped<SimulationService>();
+        services.AddSingleton<ConnectionTrackerService>();
         services.AddHostedService<TransportSimulationWorker>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         services.AddScoped<ICompanyService, CompanyService>();

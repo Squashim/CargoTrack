@@ -1,6 +1,9 @@
 using CargoTrack.Modules.Identity;
 using CargoTrack.Modules.Identity.Database;
 using CargoTrack.Modules.Transport;
+using CargoTrack.Modules.Logistics;
+using CargoTrack.Modules.Logistics.Database;
+using CargoTrack.Modules.Logistics.Services;
 using CargoTrack.API.Services;
 using CargoTrack.Modules.Transport.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,11 +19,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddTransportModule(builder.Configuration);
+builder.Services.AddLogisticsModule(builder.Configuration);
 
 
 builder.Services.AddControllers()
 .AddApplicationPart(typeof(IdentityModule).Assembly)
     .AddApplicationPart(typeof(TransportModule).Assembly)
+    .AddApplicationPart(typeof(LogisticsModule).Assembly)
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new GeoJsonConverterFactory());
@@ -106,6 +111,10 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     services.GetRequiredService<IdentityDbContext>().Database.Migrate();
     services.GetRequiredService<TransportDbContext>().Database.Migrate();
+    services.GetRequiredService<LogisticsDbContext>().Database.Migrate();
+    
+    var seeder = services.GetRequiredService<LogisticDataSeeder>();
+    await seeder.SeedAsync();
 }
 app.MapHub<CargoTrack.Modules.Transport.Hubs.SimulationHub>("/hubs/transport");
 app.Run();

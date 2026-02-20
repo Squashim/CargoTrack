@@ -1,4 +1,4 @@
-using CargoTrack.Modules.Transport.Constants;
+using CargoTrack.Modules.Shared.Constants;
 
 namespace CargoTrack.Modules.Transport.DTOs;
 

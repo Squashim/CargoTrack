@@ -1,0 +1,171 @@
+[
+  {
+    "companyId": "comp-ikea",
+    "city": "Warszawa (Janki)",
+    "latitude": 52.0864,
+    "longitude": 20.8944,
+    "type": "Store",
+    "name": "IKEA Janki"
+  },
+  {
+    "companyId": "comp-ikea",
+    "city": "Wrocław",
+    "latitude": 51.0520,
+    "longitude": 16.9670,
+    "type": "Store",
+    "name": "IKEA Wrocław"
+  },
+  {
+    "companyId": "comp-ikea",
+    "city": "Gdańsk",
+    "latitude": 54.3768,
+    "longitude": 18.5342,
+    "type": "Store",
+    "name": "IKEA Gdańsk"
+  },
+  {
+    "companyId": "comp-ikea",
+    "city": "Katowice",
+    "latitude": 50.2740,
+    "longitude": 19.0665,
+    "type": "Store",
+    "name": "IKEA Katowice"
+  },
+  {
+    "companyId": "comp-ikea",
+    "city": "Lublin",
+    "latitude": 51.2858,
+    "longitude": 22.5714,
+    "type": "Store",
+    "name": "IKEA Lublin"
+  },
+  {
+    "companyId": "comp-amazon",
+    "city": "Wrocław (Bielany)",
+    "latitude": 51.0433,
+    "longitude": 16.9610,
+    "type": "Factory",
+    "name": "Amazon Fulfillment WRO1"
+  },
+  {
+    "companyId": "comp-amazon",
+    "city": "Poznań (Sady)",
+    "latitude": 52.4437,
+    "longitude": 16.7371,
+    "type": "Factory",
+    "name": "Amazon POZ1"
+  },
+  {
+    "companyId": "comp-amazon",
+    "city": "Szczecin (Kołbaskowo)",
+    "latitude": 53.3361,
+    "longitude": 14.4447,
+    "type": "Factory",
+    "name": "Amazon SZZ1"
+  },
+  {
+    "companyId": "comp-orlen",
+    "city": "Płock",
+    "latitude": 52.5654,
+    "longitude": 19.6865,
+    "type": "Factory",
+    "name": "Rafineria Płocka"
+  },
+  {
+    "companyId": "comp-orlen",
+    "city": "Gdańsk",
+    "latitude": 54.3563,
+    "longitude": 18.7231,
+    "type": "Factory",
+    "name": "Rafineria Gdańska"
+  },
+  {
+    "companyId": "comp-logistics",
+    "city": "Stryków",
+    "latitude": 51.8911,
+    "longitude": 19.6025,
+    "type": "Warehouse",
+    "name": "Centrum Logistyczne Stryków"
+  },
+  {
+    "companyId": "comp-logistics",
+    "city": "Gliwice",
+    "latitude": 50.3184,
+    "longitude": 18.6366,
+    "type": "Warehouse",
+    "name": "Panattoni Park Gliwice"
+  },
+  {
+    "companyId": "comp-logistics",
+    "city": "Pruszków",
+    "latitude": 52.1581,
+    "longitude": 20.7818,
+    "type": "Warehouse",
+    "name": "Millennium Logistic Park"
+  },
+  {
+    "companyId": "comp-logistics",
+    "city": "Głuchowo (Poznań)",
+    "latitude": 52.3610,
+    "longitude": 16.7640,
+    "type": "Warehouse",
+    "name": "DHL Hub Poznań"
+  },
+  {
+    "companyId": "comp-biedronka",
+    "city": "Ruda Śląska",
+    "latitude": 50.2970,
+    "longitude": 18.8530,
+    "type": "Warehouse",
+    "name": "Centrum Dystrybucyjne Jeronimo"
+  },
+  {
+    "companyId": "comp-biedronka",
+    "city": "Wyszków",
+    "latitude": 52.5932,
+    "longitude": 21.4587,
+    "type": "Warehouse",
+    "name": "Centrum Dystrybucyjne Wyszków"
+  },
+  {
+    "companyId": "comp-biedronka",
+    "city": "Lubartów",
+    "latitude": 51.4645,
+    "longitude": 22.6062,
+    "type": "Warehouse",
+    "name": "Centrum Dystrybucyjne Lubartów"
+  },
+  {
+    "companyId": "comp-factory",
+    "city": "Kraśnik",
+    "latitude": 50.9167,
+    "longitude": 22.2167,
+    "type": "Factory",
+    "name": "Fabryka Łożysk Tocznych Kraśnik"
+  },
+
+  {
+    "companyId": "comp-bosch",
+    "city": "Łódź",
+    "latitude": 51.7592,
+    "longitude": 19.4560,
+    "type": "Factory",
+    "name": "BSH Sprzęt Gospodarstwa Domowego"
+  },
+  {
+    "companyId": "comp-stock",
+    "city": "Lublin",
+    "latitude": 51.2384,
+    "longitude": 22.5802,
+    "type": "Factory",
+    "name": "Stock Polska - Zakład Lublin"
+  },
+  {
+    "companyId": "comp-fortaco",
+    "city": "Janów Lubelski",
+    "latitude": 50.7065,
+    "longitude": 22.4112,
+    "type": "Factory",
+    "name": "Fortaco Janów Lubelski"
+  }
+]
