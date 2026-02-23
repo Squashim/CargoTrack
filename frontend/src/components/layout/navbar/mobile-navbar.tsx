@@ -11,6 +11,8 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { BREAKPOINTS } from '@/lib/constants';
 import type { NavMenuItem } from '@/types/common';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
@@ -28,6 +30,12 @@ function MobileNavbar({ menuItems }: MobileNavbarProps) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [accordionValue, setAccordionValue] = useState<string[]>([]);
 
+  const isDesktop = useMediaQuery(`(width >= ${BREAKPOINTS.lg})`);
+
+  if (isDesktop && isSheetOpen) {
+    setIsSheetOpen(false);
+  }
+
   const handleSheetClose = () => {
     setIsSheetOpen(false);
   };
@@ -37,7 +45,7 @@ function MobileNavbar({ menuItems }: MobileNavbarProps) {
   };
 
   return (
-    <nav className="grid lg:hidden container w-full h-[calc(100%-1rem)] items-center mx-auto backdrop-blur-lg bg-background/90 rounded-2xl px-4 shadow-md inset-shadow-foreground/10 inset-shadow-xs">
+    <nav className="grid lg:hidden w-full h-[calc(100%-1rem)] items-center mx-auto backdrop-blur-lg bg-background/90 rounded-2xl px-4 shadow-md inset-shadow-foreground/10 inset-shadow-xs">
       <div className="flex items-center justify-between">
         <Logo redirect />
         <div className="flex items-center gap-4">
@@ -45,7 +53,7 @@ function MobileNavbar({ menuItems }: MobileNavbarProps) {
             <SheetTrigger
               render={
                 <Button
-                  size="icon"
+                  size="icon-lg"
                   variant="outline"
                   title={t('nav:hamburgerMenu.open')}
                   aria-label={t('nav:hamburgerMenu.open')}
@@ -58,11 +66,17 @@ function MobileNavbar({ menuItems }: MobileNavbarProps) {
               <SheetHeader className="p-4">
                 <SheetTitle className="sr-only">{t('nav:hamburgerMenu.title')}</SheetTitle>
                 <div className="flex items-center justify-between">
-                  <Logo redirect className="h-16" />
+                  <Logo
+                    redirect
+                    className="h-16"
+                    linkProps={{
+                      onClick: handleSheetClose,
+                    }}
+                  />
                   <SheetClose
                     render={
                       <Button
-                        size="icon"
+                        size="icon-lg"
                         variant="outline"
                         title={t('nav:hamburgerMenu.close')}
                         aria-label={t('nav:hamburgerMenu.close')}

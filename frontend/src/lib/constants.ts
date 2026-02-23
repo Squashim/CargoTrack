@@ -67,3 +67,9 @@ export const NAV_AUTH_ITEMS: NavMenuItem[] = [
     url: ROUTES.USER.ACCOUNT,
   },
 ];
+
+export const BREAKPOINTS = {
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+};
