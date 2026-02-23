@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { SVGProps } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { Link, type LinkProps } from 'react-router';
 
 const logoVariants = cva('transition-all duration-300 ease-in-out ', {
   variants: {
@@ -23,17 +23,17 @@ const LOGO_COLORS = {
   dark: '#F9F9F8',
 };
 
-function Logo({
-  className,
-  size,
-  redirect = false,
-  fill,
-  ...props
-}: SVGProps<SVGSVGElement> &
-  VariantProps<typeof logoVariants> & {
-    redirect?: boolean;
-  }) {
+interface BaseLogoProps extends SVGProps<SVGSVGElement>, VariantProps<typeof logoVariants> {}
+
+type LogoProps =
+  | ({ redirect?: false } & BaseLogoProps)
+  | ({ redirect: true; linkProps?: Partial<LinkProps> } & BaseLogoProps);
+
+function Logo({ className, size, redirect, fill, ...props }: LogoProps) {
   const { t } = useTranslation();
+  const { linkProps, ...svgProps } = redirect
+    ? (props as Extract<LogoProps, { redirect: true }>)
+    : { linkProps: undefined, ...(props as Extract<LogoProps, { redirect?: false }>) };
   const colorClass = fill ? '' : `text-[${LOGO_COLORS.light}] dark:text-[${LOGO_COLORS.dark}]`;
 
   const logoSvg = (
@@ -41,7 +41,7 @@ function Logo({
       className={cn(logoVariants({ className, size }), 'aspect-158/79', colorClass)}
       viewBox="0 0 158 79"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
+      {...svgProps}
     >
       <path
         d="M125.837 38.145L117.523 42.8958C116.891 43.2612 116.365 43.7865 115.999 44.4191C115.634 45.0517 115.441 45.7693 115.44 46.5V63.1667C115.441 63.8973 115.634 64.615 115.999 65.2476C116.365 65.8802 116.891 66.4055 117.523 66.7708L132.107 75.1042C132.74 75.4699 133.459 75.6624 134.19 75.6624M125.837 38.145C128.611 41.3729 131.388 43.9095 132.938 45.2479C133.299 45.5194 133.738 45.6661 134.19 45.6661C134.642 45.6661 135.081 45.5194 135.442 45.2479C136.992 43.9095 139.769 41.3729 142.543 38.145M125.837 38.145C121.677 33.3038 117.523 26.9076 117.523 20.6667C117.523 16.2464 119.279 12.0072 122.405 8.88155C125.53 5.75595 129.77 4 134.19 4C138.61 4 142.85 5.75595 145.975 8.88155C149.101 12.0072 150.857 16.2464 150.857 20.6667C150.857 26.9076 146.703 33.3038 142.543 38.145M134.19 75.6624C134.921 75.6624 135.64 75.4699 136.273 75.1042L150.857 66.7708C151.489 66.4055 152.015 65.8802 152.381 65.2476C152.746 64.615 152.939 63.8973 152.94 63.1667V46.5C152.939 45.7693 152.746 45.0517 152.381 44.4191C152.015 43.7865 151.489 43.2612 150.857 42.8958L142.543 38.145M134.19 75.6624V54.8333M134.19 54.8333L116.044 44.4167M134.19 54.8333L152.336 44.4167M140.44 20.6667C140.44 24.1184 137.642 26.9167 134.19 26.9167C130.738 26.9167 127.94 24.1184 127.94 20.6667C127.94 17.2149 130.738 14.4167 134.19 14.4167C137.642 14.4167 140.44 17.2149 140.44 20.6667Z"
@@ -91,18 +91,28 @@ function Logo({
     </svg>
   );
 
-  return redirect ? (
-    <Link
-      to={ROUTES.HOME}
-      aria-label={t('actions.goHome')}
-      title={t('actions.goHome')}
-      className="focus-visible:border-ring focus-visible:ring-ring/50 rounded-xl border border-transparent focus-visible:ring-[3px] transition-all shrink-0 [&_svg]:shrink-0 outline-none select-none"
-    >
-      {logoSvg}
-    </Link>
-  ) : (
-    logoSvg
-  );
+  if (redirect) {
+    const { className: linkClassName, ...restLinkProps } = linkProps || {};
+
+    return (
+      <Link
+        to={ROUTES.HOME}
+        aria-label={t('actions.goHome')}
+        title={t('actions.goHome')}
+        className={
+          (cn(
+            'focus-visible:border-ring focus-visible:ring-ring/50 rounded-xl border border-transparent focus-visible:ring-[3px] transition-all shrink-0 [&_svg]:shrink-0 outline-none select-none'
+          ),
+          linkClassName)
+        }
+        {...restLinkProps}
+      >
+        {logoSvg}
+      </Link>
+    );
+  }
+
+  return logoSvg;
 }
 
 export default Logo;

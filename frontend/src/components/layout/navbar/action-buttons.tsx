@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Typography } from '@/components/ui/typography';
@@ -58,7 +59,7 @@ function MobileActionButtons() {
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col gap-4 flex-1 justify-end">
-        <ThemeToggle size="icon" variant="ghost" className="mr-2" />
+        <ThemeToggle size="icon-lg" variant="ghost" showTooltip={false} />
         <Button
           variant="outline"
           size="lg"
@@ -81,6 +82,10 @@ function MobileActionButtons() {
 
   return (
     <div className="flex flex-col gap-4 flex-1 justify-end">
+      <ThemeToggle size="icon-lg" variant="ghost" showTooltip={false} />
+
+      <Separator />
+
       {isLoading ? (
         <div className="flex gap-2 items-center">
           <Spinner />
