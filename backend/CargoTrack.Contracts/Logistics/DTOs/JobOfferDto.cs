@@ -1,10 +1,11 @@
-namespace CargoTrack.Modules.Logistics.DTOs; 
+namespace CargoTrack.Contracts.Logistics.DTOs;
+
 public record JobOfferDto(
-    Guid Id, 
-    string CargoName, 
-    string RequiredTrailer, 
-    double WeightTons, 
-    decimal Revenue, 
+    Guid Id,
+    string CargoName,
+    string RequiredTrailer,
+    double WeightTons,
+    decimal Revenue,
     double DistanceKm,
     string SourceCity,
     string TargetCity

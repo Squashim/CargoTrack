@@ -1,34 +1,33 @@
+using CargoTrack.Contracts.Logistics.DTOs;
 using CargoTrack.Modules.Logistics.Database;
-using CargoTrack.Modules.Logistics.DTOs;
-using CargoTrack.Modules.Logistics.PublicApi;
+using CargoTrack.Modules.Logistics.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CargoTrack.Modules.Logistics.Services;
 
-public class LogisticsModuleApi : ILogisticsModuleApi
+public class JobOfferService : IJobOfferService
 {
     private readonly LogisticsDbContext _dbContext;
 
-    public LogisticsModuleApi(LogisticsDbContext dbContext)
+    public JobOfferService(LogisticsDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<JobOfferDto>> GetJobsNearAsync()
+    public async Task<IEnumerable<JobOfferDto>> GetJobOffersAsync(CancellationToken cancellationToken = default)
     {
-
         var jobs = await _dbContext.JobOffers
             .Include(j => j.SourceDepot)
             .Include(j => j.TargetDepot)
             .Where(j => !j.IsTaken && j.ExpiresAt > DateTime.UtcNow)
-            .OrderByDescending(j => j.Revenue) 
+            .OrderByDescending(j => j.Revenue)
             .Take(50)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return jobs.Select(j => new JobOfferDto(
             j.Id,
             j.CargoName,
-            j.RequiredTrailer.ToString(), 
+            j.RequiredTrailer.ToString(),
             j.WeightTons,
             j.Revenue,
             j.DistanceKm,
@@ -37,21 +36,21 @@ public class LogisticsModuleApi : ILogisticsModuleApi
         ));
     }
 
-    public async Task<JobDetailsDto?> ReserveJobAsync(Guid jobId)
+    public async Task<JobDetailsDto?> ReserveJobAsync(Guid jobId, CancellationToken cancellationToken = default)
     {
         var job = await _dbContext.JobOffers
             .Include(j => j.SourceDepot)
             .Include(j => j.TargetDepot)
-            .FirstOrDefaultAsync(j => j.Id == jobId);
+            .FirstOrDefaultAsync(j => j.Id == jobId, cancellationToken);
 
-        if (job == null || job.IsTaken) return null; 
+        if (job == null || job.IsTaken) return null;
 
         job.IsTaken = true;
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new JobDetailsDto(
             job.Id,
-            job.SourceDepot.Location.Y, 
+            job.SourceDepot.Location.Y,
             job.SourceDepot.Location.X,
             job.TargetDepot.Location.Y,
             job.TargetDepot.Location.X,
