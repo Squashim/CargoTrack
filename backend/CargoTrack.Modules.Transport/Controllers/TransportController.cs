@@ -1,6 +1,8 @@
 using CargoTrack.Modules.Transport.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
+using CargoTrack.Contracts.Logistics.Commands;
 namespace CargoTrack.Modules.Transport.Controllers;
 
 [ApiController]
@@ -8,30 +10,29 @@ namespace CargoTrack.Modules.Transport.Controllers;
 public class TransportController : ControllerBase
 {
     private readonly SimulationService _simulationService;
-
-    public TransportController(SimulationService simulationService)
+    private readonly IMediator _mediator;
+    public TransportController(SimulationService simulationService, IMediator mediator)
     {
         _simulationService = simulationService;
+        _mediator = mediator;
     }
 
     [HttpPost("start")]
     [Authorize]
     public async Task<IActionResult> Start([FromBody] StartTransportRequest request)
     {
-
-        var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (!Guid.TryParse(userIdString, out var userId))
+        var jobDetails = await _mediator.Send(new ReserveJobCommand(request.JobOfferId));
+        if (jobDetails == null)
         {
-            return Unauthorized("INVALID_ACCESS");
+            return BadRequest("Job details not found");
         }
 
         var id = await _simulationService.StartTransportAsync(
-            request.TruckId,
-            userId,
-            request.StartLat,
-            request.StartLon,
-            request.EndLat,
-            request.EndLon
+            request,
+            jobDetails.SourceLat,
+            jobDetails.SourceLon,
+            jobDetails.TargetLat,
+            jobDetails.TargetLon
         );
 
         return Ok(new { TransportId = id });
