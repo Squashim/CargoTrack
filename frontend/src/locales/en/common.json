@@ -1,0 +1,49 @@
+{
+  "themes": {
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme",
+    "switchTheme": "Switch theme"
+  },
+  "actions": {
+    "signup": {
+      "base": "Sign Up",
+      "pending": "Signing Up...",
+      "navbar": "Join Us"
+    },
+    "login": {
+      "base": "Log In",
+      "pending": "Logging In...",
+      "navbar": "Log In"
+    },
+    "logout": {
+      "base": "Log Out",
+      "pending": "Logging Out..."
+    },
+    "password": {
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "retry": "Try again",
+    "refreshPage": "Refresh page",
+    "loading": "Loading",
+    "goHome": "Go Home"
+  },
+  "info": {
+    "hello": "Hello"
+  },
+  "success": {
+    "register": "You've successfully registered! You can now log in with your new account.",
+    "login": "You've successfully logged in!",
+    "logout": "You've successfully logged out!"
+  },
+  "errors": {
+    "sessionExpired": "Session expired. Please login again.",
+    "unknownError": "Something went wrong. Please try again later.",
+    "networkError": "Unable to connect to the server.",
+    "pageNotFound": "Page not found."
+  },
+  "languages": {
+    "unknown": "Unknown",
+    "choose": "Choose language"
+  }
+}

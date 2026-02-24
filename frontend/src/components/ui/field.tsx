@@ -5,7 +5,6 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import type { TranslationKeys } from '@/types/translation-keys';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -168,7 +167,7 @@ function FieldError({
 }: React.ComponentProps<'div'> & {
   errors?: Array<{ message?: string } | undefined>;
 }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['validation', 'auth']);
   const content = useMemo(() => {
     if (children) {
       return children;
@@ -183,12 +182,12 @@ function FieldError({
       try {
         const parsedError = JSON.parse(msg);
         if (parsedError && typeof parsedError === 'object' && parsedError.key) {
-          return t(parsedError.key as TranslationKeys, parsedError) as string;
+          return t(parsedError.key, parsedError);
         }
       } catch {
         // Skip parsing
       }
-      return t(msg as TranslationKeys) as string;
+      return t(msg, msg) as string;
     };
 
     const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];

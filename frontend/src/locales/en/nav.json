@@ -1,0 +1,29 @@
+{
+  "howItWorks": {
+    "title": "How it works?",
+    "compendium": {
+      "title": "Compendium",
+      "description": "Detailed information about all game elements"
+    },
+    "rules": {
+      "title": "Rules",
+      "description": "Learn how to play and earn points."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  },
+  "scoreboard": {
+    "title": "Scoreboard"
+  },
+  "userMenu": {
+    "title": "User Menu",
+    "account": "My Account"
+  },
+  "hamburgerMenu": {
+    "title": "Menu",
+    "description": "Select one of the options to navigate to the corresponding page.",
+    "open": "Open menu",
+    "close": "Close menu"
+  }
+}

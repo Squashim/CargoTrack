@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "invalidEmail": "Proszę wprowadzić poprawny adres e-mail.",
+    "emailMaxLength": "Email musi mieć maksymalnie {{count}} znaków.",
+    "usernameRequired": "Nazwa użytkownika jest wymagana.",
+    "usernameMinLength": "Nazwa użytkownika musi mieć co najmniej {{count}} znaki.",
+    "usernameMaxLength": "Nazwa użytkownika musi mieć maksymalnie {{count}} znaków.",
+    "invalidPassword": "Proszę wprowadzić poprawne hasło.",
+    "passwordRequired": "Hasło jest wymagane.",
+    "passwordMinLength": "Hasło musi mieć co najmniej {{count}} znaków.",
+    "passwordUppercase": "Hasło musi zawierać co najmniej jedną wielką literę.",
+    "passwordLowercase": "Hasło musi zawierać co najmniej jedną małą literę.",
+    "passwordNumber": "Hasło musi zawierać co najmniej jedną cyfrę.",
+    "passwordSpecial": "Hasło musi zawierać co najmniej jeden znak specjalny."
+  }
+}

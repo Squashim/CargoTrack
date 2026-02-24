@@ -1,0 +1,29 @@
+{
+  "howItWorks": {
+    "title": "Jak to działa?",
+    "compendium": {
+      "title": "Kompendium",
+      "description": "Szczegółowe informacje o wszystkich elementach gry."
+    },
+    "rules": {
+      "title": "Zasady gry",
+      "description": "Dowiedz się, jak grać i zdobywać punkty."
+    }
+  },
+  "dashboard": {
+    "title": "Panel zarządzania"
+  },
+  "scoreboard": {
+    "title": "Tablica wyników"
+  },
+  "userMenu": {
+    "title": "Menu użytkownika",
+    "account": "Moje konto"
+  },
+  "hamburgerMenu": {
+    "title": "Menu",
+    "description": "Wybierz jedną z opcji, aby przejść do odpowiedniej podstrony.",
+    "open": "Otwórz menu",
+    "close": "Zamknij menu"
+  }
+}

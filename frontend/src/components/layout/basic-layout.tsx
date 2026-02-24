@@ -1,9 +1,8 @@
 import { cn } from '@/lib/utils';
+import type { WithClassName } from '@/types/common';
 import type { PropsWithChildren } from 'react';
 
-interface BasicLayoutProps {
-  className?: string;
-}
+type BasicLayoutProps = WithClassName;
 
 const BasicLayout = ({ children, className }: PropsWithChildren<BasicLayoutProps>) => {
   return (

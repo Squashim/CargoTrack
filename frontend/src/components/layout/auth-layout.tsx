@@ -17,7 +17,7 @@ const AuthLayout = () => {
   return (
     <div className="w-full min-h-dvh bg-radial from-primary/30 to-background flex flex-col">
       <div className="w-full mx-auto container flex flex-col flex-1 items-center p-4">
-        <nav className="w-full flex items-center py-4 md:py-6 justify-between">
+        <nav className="w-full flex items-center justify-between">
           <Logo size="lg" redirect />
           <div className="flex items-center gap-2">
             <Button variant="outline" size="lg" nativeButton={false} render={<a href={navigateTo}>{navigateText}</a>} />
