@@ -30,11 +30,6 @@ public class CompanyController : ControllerBase
     {
         
         var company = await _companyService.GetCompanyAsync();
-        Console.WriteLine($"Pobieranie firmy dla usera, znaleziono: {company?.Name}");
-        if (company == null)
-        {
-            return NotFound("Nie znaleziono firmy");
-        }
         return Ok(company);
     }
     

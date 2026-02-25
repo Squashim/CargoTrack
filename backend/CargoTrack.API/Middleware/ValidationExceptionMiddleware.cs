@@ -1,3 +1,4 @@
+using CargoTrack.Modules.Shared.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 namespace CargoTrack.API.Middleware;
@@ -20,6 +21,10 @@ public class ValidationExceptionMiddleware
         catch (ValidationException ex)
         {
             await HandleExceptionAsync(context, ex, StatusCodes.Status400BadRequest, "Validation errors occurred");
+        }
+        catch (NotFoundException ex)
+        {
+            await HandleExceptionAsync(context, ex, StatusCodes.Status404NotFound, "Resource not found");
         }
         catch (UnauthorizedAccessException ex)
         {
@@ -53,6 +58,20 @@ public class ValidationExceptionMiddleware
                 Title = title,
                 Status = statusCode,
                 Detail = "See the errors property for more details."
+            };
+        }
+        else if (exception is NotFoundException)
+        {
+            var errors = new Dictionary<string, string[]>
+            {
+                {"Resource", new[] { exception.Message }}
+            };
+            response = new ValidationProblemDetails(errors)
+            {
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                Title = title,
+                Status = statusCode,
+                Detail = "The requested resource was not found.",
             };
         }
         else if (exception is UnauthorizedAccessException)
