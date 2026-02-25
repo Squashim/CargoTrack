@@ -2,6 +2,7 @@ namespace CargoTrack.Modules.Transport.DTOs;
 
 public record TruckDto
 {
+    public Guid Id { get; init; }
     public string Model { get; init; } = string.Empty;
     public int ProductionYear { get; init; }
     public decimal Odometer { get; init; }

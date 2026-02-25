@@ -20,3 +20,12 @@ public record CompanyResponseDto
     public decimal Reputation { get; init; }
     public DateTime CreatedAt { get; init; }
 }
+
+public record DriverDto
+{
+    public Guid Id { get; init; }
+    public string Name { get; init; } = string.Empty;
+    public decimal Salary { get; init; }
+    public Guid? AssignedTruckId { get; init; }
+    public bool IsDriving { get; init; }
+}

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using CargoTrack.Contracts.Logistics.Commands;
+using FluentValidation;
 namespace CargoTrack.Modules.Transport.Controllers;
 
 [ApiController]
@@ -11,16 +12,24 @@ public class TransportController : ControllerBase
 {
     private readonly SimulationService _simulationService;
     private readonly IMediator _mediator;
-    public TransportController(SimulationService simulationService, IMediator mediator)
+    private readonly IValidator<StartTransportRequest> _validator;
+    public TransportController(SimulationService simulationService, IMediator mediator, IValidator<StartTransportRequest> validator)
     {
         _simulationService = simulationService;
         _mediator = mediator;
+        _validator = validator;
     }
 
     [HttpPost("start")]
     [Authorize]
     public async Task<IActionResult> Start([FromBody] StartTransportRequest request)
     {
+        var validationResult = await _validator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+
         var jobDetails = await _mediator.Send(new ReserveJobCommand(request.JobOfferId));
         if (jobDetails == null)
         {

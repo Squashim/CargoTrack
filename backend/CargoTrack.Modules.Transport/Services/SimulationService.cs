@@ -20,19 +20,11 @@ public class SimulationService
 
     public async Task<Guid> StartTransportAsync(StartTransportRequest startTransportRequest, double startLat, double startLon, double endLat, double endLon)
     {
-         var truck = await _db.Trucks.FindAsync(startTransportRequest.TruckId);
+        var truck = await _db.Trucks.FindAsync(startTransportRequest.TruckId);
         var driver = await _db.Drivers.FindAsync(startTransportRequest.DriverId);
-        var trailer = await _db.Trailers.FindAsync(startTransportRequest.TrailerId);
 
-        if (truck == null) throw new InvalidOperationException("TRUCK_NOT_FOUND");
-        if (driver == null) throw new InvalidOperationException("DRIVER_NOT_FOUND");
-        if (trailer == null) throw new InvalidOperationException("TRAILER_NOT_FOUND");
-
-        if (truck.IsDriving) throw new InvalidOperationException("TRUCK_ALREADY_DRIVING");
-        if (driver.IsDriving) throw new InvalidOperationException("DRIVER_ALREADY_DRIVING");
-
-        truck.IsDriving = true;
-        driver.IsDriving = true;
+        truck!.IsDriving = true;
+        driver!.IsDriving = true;
 
         var routeData = await _routeService.GetRouteAsync(startLat, startLon, endLat, endLon);
 
