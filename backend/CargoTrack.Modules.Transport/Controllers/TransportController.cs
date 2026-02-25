@@ -1,6 +1,9 @@
 using CargoTrack.Modules.Transport.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
+using CargoTrack.Contracts.Logistics.Commands;
+using FluentValidation;
 namespace CargoTrack.Modules.Transport.Controllers;
 
 [ApiController]
@@ -8,30 +11,37 @@ namespace CargoTrack.Modules.Transport.Controllers;
 public class TransportController : ControllerBase
 {
     private readonly SimulationService _simulationService;
-
-    public TransportController(SimulationService simulationService)
+    private readonly IMediator _mediator;
+    private readonly IValidator<StartTransportRequest> _validator;
+    public TransportController(SimulationService simulationService, IMediator mediator, IValidator<StartTransportRequest> validator)
     {
         _simulationService = simulationService;
+        _mediator = mediator;
+        _validator = validator;
     }
 
     [HttpPost("start")]
     [Authorize]
     public async Task<IActionResult> Start([FromBody] StartTransportRequest request)
     {
-
-        var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        if (!Guid.TryParse(userIdString, out var userId))
+        var validationResult = await _validator.ValidateAsync(request);
+        if (!validationResult.IsValid)
         {
-            return Unauthorized("INVALID_ACCESS");
+            throw new ValidationException(validationResult.Errors);
+        }
+
+        var jobDetails = await _mediator.Send(new ReserveJobCommand(request.JobOfferId));
+        if (jobDetails == null)
+        {
+            return BadRequest("Job details not found");
         }
 
         var id = await _simulationService.StartTransportAsync(
-            request.TruckId,
-            userId,
-            request.StartLat,
-            request.StartLon,
-            request.EndLat,
-            request.EndLon
+            request,
+            jobDetails.SourceLat,
+            jobDetails.SourceLon,
+            jobDetails.TargetLat,
+            jobDetails.TargetLon
         );
 
         return Ok(new { TransportId = id });

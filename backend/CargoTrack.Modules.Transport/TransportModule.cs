@@ -28,6 +28,8 @@ public static class TransportModule
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<ITruckService, TruckService>();
+        services.AddScoped<IDriverService, DriverService>();
+        services.AddScoped<ITrailerService, TrailerService>();
         services.AddScoped<CompanyFactory>();
         return services;
     }

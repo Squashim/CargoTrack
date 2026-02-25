@@ -1,6 +1,7 @@
 namespace CargoTrack.Modules.Transport.Services;
 
 using Microsoft.EntityFrameworkCore;
+using CargoTrack.Modules.Shared.Exceptions;
 using CargoTrack.Modules.Shared.Services;
 using CargoTrack.Modules.Transport.Database;
 using CargoTrack.Modules.Transport.Domain;
@@ -67,7 +68,7 @@ public class CompanyService : ICompanyService
 
         if (company == null)
         {
-            throw new InvalidOperationException("COMPANY_NOT_FOUND");
+            throw new NotFoundException("COMPANY_NOT_FOUND");
         }
 
         return new CompanyResponseDto

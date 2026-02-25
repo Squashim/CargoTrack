@@ -21,6 +21,12 @@ builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddTransportModule(builder.Configuration);
 builder.Services.AddLogisticsModule(builder.Configuration);
 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(LogisticsModule).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(TransportModule).Assembly);
+});
+
 
 builder.Services.AddControllers()
 .AddApplicationPart(typeof(IdentityModule).Assembly)

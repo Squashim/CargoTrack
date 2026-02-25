@@ -24,6 +24,7 @@ public class TruckService : ITruckService
             .Where(t => t.Company.UserId == userId)
             .Select(t => new TruckDto
             {
+                Id = t.Id,
                 Model = t.Model,
                 ProductionYear = t.ProductionYear,
                 Condition = t.Condition,
@@ -31,11 +32,14 @@ public class TruckService : ITruckService
                 MaxFuel = t.MaxFuel,
                 Odometer = t.Odometer,
                 IsDriving = t.IsDriving,
+                LicensePlate = t.LicensePlate,
                 AttachedTrailer = t.CurrentTrailer != null ? new TrailerDto
                 {
+                    Id = t.CurrentTrailer.Id,
                     Type = t.CurrentTrailer.Type,
                     CargoCapacityKg = t.CurrentTrailer.CargoCapacityKg,
-                    Condition = t.CurrentTrailer.Condition
+                    Condition = t.CurrentTrailer.Condition,
+                    ModelName = t.CurrentTrailer.ModelName
                 } : null
             })
             .ToList();

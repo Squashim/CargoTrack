@@ -18,15 +18,24 @@ public class SimulationService
         _routeService = routeService;
     }
 
-    public async Task<Guid> StartTransportAsync(Guid truckId, Guid userId, double startLat, double startLon, double endLat, double endLon)
+    public async Task<Guid> StartTransportAsync(StartTransportRequest startTransportRequest, double startLat, double startLon, double endLat, double endLon)
     {
+        var truck = await _db.Trucks.FindAsync(startTransportRequest.TruckId);
+        var driver = await _db.Drivers.FindAsync(startTransportRequest.DriverId);
+
+        truck!.IsDriving = true;
+        driver!.IsDriving = true;
+
         var routeData = await _routeService.GetRouteAsync(startLat, startLon, endLat, endLon);
 
         var transport = new TransportJob
         {
             Id = Guid.NewGuid(),
-            TruckId = truckId,
-            UserId = userId,
+            TruckId = startTransportRequest.TruckId,
+            DriverId = startTransportRequest.DriverId,
+            TrailerId = startTransportRequest.TrailerId,
+            CompanyId = truck.CompanyId,
+            JobOfferId = startTransportRequest.JobOfferId,
             StartTime = DateTime.UtcNow,
             EstimatedArrivalTime = DateTime.UtcNow.AddSeconds(routeData.DurationSeconds),
             TotalDistanceMeters = routeData.DistanceMeters,
@@ -94,6 +103,7 @@ public class SimulationService
     public async Task<List<TruckPositionDto>> CalculateCurrentPositionsAsync()
     {
         var activeJobs = await _db.Transports.AsNoTracking()
+            .Include(t => t.Company)
             .Where(t => !t.IsCompleted)
             .ToListAsync();
         var positions = new List<TruckPositionDto>();
@@ -114,7 +124,7 @@ public class SimulationService
 
             positions.Add(new TruckPositionDto(
                 job.TruckId,
-                job.UserId,
+                job.Company.UserId,
                 pointLocation.Y,
                 pointLocation.X,
                 fraction * 100

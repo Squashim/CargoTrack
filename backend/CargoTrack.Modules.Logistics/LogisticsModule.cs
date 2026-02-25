@@ -1,7 +1,7 @@
 using System.Reflection;
 using CargoTrack.Modules.Logistics.Database;
+using CargoTrack.Modules.Logistics.Interfaces;
 using CargoTrack.Modules.Logistics.Services;
-using CargoTrack.Modules.Logistics.PublicApi;
 using CargoTrack.Modules.Shared.Services;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +26,7 @@ public static class LogisticsModule
         services.AddHostedService<JobGenerationWorker>();
         services.AddHttpClient<RouteService>();
         services.AddScoped<RouteService>();
-        
-        services.AddScoped<ILogisticsModuleApi, LogisticsModuleApi>();
+        services.AddScoped<IJobOfferService, JobOfferService>();
 
         return services;
     }

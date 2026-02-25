@@ -16,10 +16,9 @@ public class TruckController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult GetTrucks()
+    public async Task<IActionResult> GetTrucks()
     {
-        var trucks = _truckService.GetTrucksAsync().Result;
+        var trucks = await _truckService.GetTrucksAsync();
         return Ok(trucks);
-        
     }
     }

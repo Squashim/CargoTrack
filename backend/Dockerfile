@@ -7,6 +7,7 @@ COPY ["CargoTrack.Modules.Identity/CargoTrack.Modules.Identity.csproj", "CargoTr
 COPY ["CargoTrack.Modules.Transport/CargoTrack.Modules.Transport.csproj", "CargoTrack.Modules.Transport/"]
 COPY ["CargoTrack.Modules.Logistics/CargoTrack.Modules.Logistics.csproj", "CargoTrack.Modules.Logistics/"]
 COPY ["CargoTrack.Modules.Shared/CargoTrack.Modules.Shared.csproj", "CargoTrack.Modules.Shared/"]
+COPY ["CargoTrack.Contracts/CargoTrack.Contracts.csproj", "CargoTrack.Contracts/"]
 
 RUN dotnet restore "CargoTrack.slnx"
 

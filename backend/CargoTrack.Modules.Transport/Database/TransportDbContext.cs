@@ -28,6 +28,26 @@ public class TransportDbContext : DbContext
             
             entity.Property(e => e.RouteGeometry).HasColumnType("geography(LineString, 4326)");
             entity.Property(e => e.CurrentLocation).HasColumnType("geography(Point, 4326)");
+
+            entity.HasOne(e => e.Truck)
+                  .WithMany()
+                  .HasForeignKey(e => e.TruckId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Driver)
+                  .WithMany()
+                  .HasForeignKey(e => e.DriverId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Trailer)
+                  .WithMany()
+                  .HasForeignKey(e => e.TrailerId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Company)
+                  .WithMany()
+                  .HasForeignKey(e => e.CompanyId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
 
         
