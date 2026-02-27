@@ -82,7 +82,8 @@ public class LogisticDataSeeder
                 Code = c.Id,
                 Name = c.Name,
                 BasePrice = c.BasePrice,
-                RequiredTrailer = Enum.Parse<TrailerType>(c.RequiredTrailer)
+                RequiredTrailer = Enum.Parse<TrailerType>(c.RequiredTrailer),
+                ImageUrl = c.ImageUrl
             });
 
             _dbContext.CargoTypes.AddRange(cargos);

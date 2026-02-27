@@ -28,4 +28,5 @@ public record DriverDto
     public decimal Salary { get; init; }
     public Guid? AssignedTruckId { get; init; }
     public bool IsDriving { get; init; }
+    public string? ImageUrl { get; init; }
 }

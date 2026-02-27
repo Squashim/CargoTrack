@@ -9,4 +9,5 @@ public record TrailerDto
     public double CargoCapacityKg { get; init; }
     public double Condition { get; init; }
     public TrailerType Type { get; init; }
+    public string? ImageUrl { get; init; }
 }

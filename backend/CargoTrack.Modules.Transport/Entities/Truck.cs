@@ -23,4 +23,5 @@ public class Truck
     
     public Trailer? CurrentTrailer { get; set; }
     public Guid GarageId { get; set; }
+    public string? ImageUrl { get; set; }
 }

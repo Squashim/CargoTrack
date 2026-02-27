@@ -14,4 +14,5 @@ public class CargoType
     public decimal BasePrice { get; set; }
     
     public TrailerType RequiredTrailer { get; set; } 
+    public string? ImageUrl { get; set; }
 }

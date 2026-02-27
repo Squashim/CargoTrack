@@ -18,5 +18,6 @@ public class Trailer
     
     public string ModelName { get; set; } = string.Empty; 
     public Guid GarageId { get; set; }
+    public string? ImageUrl { get; set; }
 }
 

@@ -15,4 +15,5 @@ public record TruckDto
     public decimal MaxFuel { get; init; }
 
     public TrailerDto? AttachedTrailer { get; init; }
+    public string? ImageUrl { get; init; }
 }

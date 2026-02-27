@@ -29,7 +29,8 @@ public class TrailerService : ITrailerService
                 ModelName = t.ModelName,
                 CargoCapacityKg = t.CargoCapacityKg,
                 Condition = t.Condition,
-                Type = t.Type
+                Type = t.Type,
+                ImageUrl = t.ImageUrl
             })
             .ToListAsync();
     }

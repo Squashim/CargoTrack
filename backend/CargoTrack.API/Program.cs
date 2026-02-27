@@ -107,6 +107,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+var uploadsPath = Path.Combine(app.Environment.WebRootPath ?? Path.Combine(app.Environment.ContentRootPath, "wwwroot"), "uploads");
+Directory.CreateDirectory(uploadsPath);
+app.UseStaticFiles();
+
 app.UseMiddleware<JwtRefreshMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
