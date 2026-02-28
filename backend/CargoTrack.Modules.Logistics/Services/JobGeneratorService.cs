@@ -58,6 +58,7 @@ public async Task GenerateJobs(int countToGenerate){
                 SourceDepotId = source.Id,
                 TargetDepotId = target.Id,
                 
+                CargoTypeId = cargo.Id,
                 CargoName = cargo.Name,
                 RequiredTrailer = cargo.RequiredTrailer, 
                 

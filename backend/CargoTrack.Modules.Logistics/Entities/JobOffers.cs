@@ -14,6 +14,9 @@ public class JobOffer
     public Guid TargetDepotId { get; set; }
     public Depot TargetDepot { get; set; } = null!;
 
+    public Guid CargoTypeId { get; set; }
+    public CargoType CargoType { get; set; } = null!;
+
     public TrailerType RequiredTrailer {get; set;}
 
     public string CargoName { get; set; } = string.Empty;

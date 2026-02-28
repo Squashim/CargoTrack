@@ -93,6 +93,9 @@ namespace CargoTrack.Modules.Logistics.Database.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("CargoTypeId")
+                        .HasColumnType("uuid");
+
                     b.Property<double>("DistanceKm")
                         .HasColumnType("double precision");
 
@@ -118,6 +121,8 @@ namespace CargoTrack.Modules.Logistics.Database.Migrations
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CargoTypeId");
 
                     b.HasIndex("SourceDepotId");
 
@@ -165,6 +170,12 @@ namespace CargoTrack.Modules.Logistics.Database.Migrations
 
             modelBuilder.Entity("CargoTrack.Modules.Logistics.Entities.JobOffer", b =>
                 {
+                    b.HasOne("CargoTrack.Modules.Logistics.Entities.CargoType", "CargoType")
+                        .WithMany()
+                        .HasForeignKey("CargoTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CargoTrack.Modules.Logistics.Entities.Depot", "SourceDepot")
                         .WithMany()
                         .HasForeignKey("SourceDepotId")
@@ -176,6 +187,8 @@ namespace CargoTrack.Modules.Logistics.Database.Migrations
                         .HasForeignKey("TargetDepotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CargoType");
 
                     b.Navigation("SourceDepot");
 

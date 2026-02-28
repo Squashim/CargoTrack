@@ -49,6 +49,7 @@ public class CompanyFactory
             Fuel = 400.0m,
             MaxFuel = 1000.0m,
             Odometer = 850000.0m,
+            ImageUrl = "/images/trucks/default.png",
             IsDriving = false
         };
 
@@ -61,6 +62,7 @@ public class CompanyFactory
             AttachedTruckId = truck.Id,
             AttachedTruck = truck,
             Type = TrailerType.Curtain,
+            ImageUrl = "/images/trailers/default.png",
             Condition = 0.7
         };
 
@@ -69,7 +71,8 @@ public class CompanyFactory
             Id = Guid.NewGuid(),
             CompanyId = company.Id,
             AssignedTruckId = truck.Id,
-            Name = "(Właściciel)" 
+            Name = "(Właściciel)",
+            ImageUrl = "/images/drivers/default.png"
         };
 
         return (company, garage, truck, trailer, driver);

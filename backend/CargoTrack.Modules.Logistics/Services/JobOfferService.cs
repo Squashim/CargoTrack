@@ -19,6 +19,7 @@ public class JobOfferService : IJobOfferService
         var jobs = await _dbContext.JobOffers
             .Include(j => j.SourceDepot)
             .Include(j => j.TargetDepot)
+            .Include(j => j.CargoType)
             .Where(j => !j.IsTaken && j.ExpiresAt > DateTime.UtcNow)
             .OrderByDescending(j => j.Revenue)
             .Take(50)
@@ -27,6 +28,7 @@ public class JobOfferService : IJobOfferService
         return jobs.Select(j => new JobOfferDto(
             j.Id,
             j.CargoName,
+            j.CargoType.ImageUrl ?? "/images/cargo/default.png",
             j.RequiredTrailer.ToString(),
             j.WeightTons,
             j.Revenue,
