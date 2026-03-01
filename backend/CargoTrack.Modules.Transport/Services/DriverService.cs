@@ -29,7 +29,8 @@ public class DriverService : IDriverService
                 Name = d.Name,
                 Salary = d.Salary,
                 AssignedTruckId = d.AssignedTruckId,
-                IsDriving = d.IsDriving
+                IsDriving = d.IsDriving,
+                ImageUrl = d.ImageUrl
             })
             .ToListAsync();
     }

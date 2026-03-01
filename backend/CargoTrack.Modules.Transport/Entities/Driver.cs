@@ -13,4 +13,5 @@ public class Driver
     public Guid? AssignedTruckId { get; set; }
     public bool IsDriving { get; set; } 
     public Company Company { get; set; } = null!;
+    public string? ImageUrl { get; set; }
 }

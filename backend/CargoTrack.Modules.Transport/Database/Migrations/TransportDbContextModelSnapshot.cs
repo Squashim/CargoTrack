@@ -71,6 +71,9 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsDriving")
                         .HasColumnType("boolean");
 
@@ -140,6 +143,9 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
 
                     b.Property<Guid>("GarageId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
 
                     b.Property<string>("ModelName")
                         .IsRequired()
@@ -231,6 +237,9 @@ namespace CargoTrack.Modules.Transport.Database.Migrations
 
                     b.Property<Guid>("GarageId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDriving")
                         .HasColumnType("boolean");

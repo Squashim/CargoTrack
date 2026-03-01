@@ -3,6 +3,7 @@ namespace CargoTrack.Contracts.Logistics.DTOs;
 public record JobOfferDto(
     Guid Id,
     string CargoName,
+    string CargoImageUrl,
     string RequiredTrailer,
     double WeightTons,
     decimal Revenue,

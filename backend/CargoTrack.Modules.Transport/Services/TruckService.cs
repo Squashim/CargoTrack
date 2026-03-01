@@ -33,13 +33,15 @@ public class TruckService : ITruckService
                 Odometer = t.Odometer,
                 IsDriving = t.IsDriving,
                 LicensePlate = t.LicensePlate,
+                ImageUrl = t.ImageUrl,
                 AttachedTrailer = t.CurrentTrailer != null ? new TrailerDto
                 {
                     Id = t.CurrentTrailer.Id,
                     Type = t.CurrentTrailer.Type,
                     CargoCapacityKg = t.CurrentTrailer.CargoCapacityKg,
                     Condition = t.CurrentTrailer.Condition,
-                    ModelName = t.CurrentTrailer.ModelName
+                    ModelName = t.CurrentTrailer.ModelName,
+                    ImageUrl = t.CurrentTrailer.ImageUrl
                 } : null
             })
             .ToList();

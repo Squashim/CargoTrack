@@ -3,42 +3,49 @@
     "id": "cargo-furniture",
     "name": "Meble w paczkach",
     "basePrice": 2.5,
-    "requiredTrailer": "Curtain"
+    "requiredTrailer": "Curtain",
+    "imageUrl": "/images/cargo/cargo-furniture.png"
   },
   {
     "id": "cargo-electronics",
     "name": "Elektronika AGD",
     "basePrice": 4.0,
-    "requiredTrailer": "Curtain"
+    "requiredTrailer": "Curtain",
+    "imageUrl": "/images/cargo/cargo-electronics.png"
   },
   {
     "id": "cargo-steel",
     "name": "Elementy Stalowe",
     "basePrice": 3.0,
-    "requiredTrailer": "Flatbed"
+    "requiredTrailer": "Flatbed",
+    "imageUrl": "/images/cargo/cargo-steel.png"
   },
   {
     "id": "cargo-alcohol",
     "name": "Palety z Alkoholem",
     "basePrice": 3.5,
-    "requiredTrailer": "Curtain"
+    "requiredTrailer": "Curtain",
+    "imageUrl": "/images/cargo/cargo-alcohol.png"
   },
   {
     "id": "cargo-fuel",
     "name": "Paliwo (Diesel)",
     "basePrice": 4.5,
-    "requiredTrailer": "Tanker"
+    "requiredTrailer": "Tanker",
+    "imageUrl": "/images/cargo/cargo-fuel.png"
   },
   {
     "id": "cargo-sand",
     "name": "Piach / Kruszywo",
     "basePrice": 1.2,
-    "requiredTrailer": "Dumper"
+    "requiredTrailer": "Dumper",
+    "imageUrl": "/images/cargo/cargo-sand.png"
   },
   {
     "id": "cargo-food",
     "name": "Mrożona Żywność",
     "basePrice": 2.8,
-    "requiredTrailer": "Refrigerated"
+    "requiredTrailer": "Refrigerated",
+    "imageUrl": "/images/cargo/cargo-food.png"
   }
 ]
