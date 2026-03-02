@@ -20,6 +20,8 @@ public class TransportJob
 
   public Guid JobOfferId { get; set; }
 
+  public decimal Revenue { get; set; }
+
   public DateTime StartTime { get; set; }
 
   public DateTime EstimatedArrivalTime { get; set; }
