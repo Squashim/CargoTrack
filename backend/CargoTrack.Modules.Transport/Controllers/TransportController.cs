@@ -41,7 +41,8 @@ public class TransportController : ControllerBase
             jobDetails.SourceLat,
             jobDetails.SourceLon,
             jobDetails.TargetLat,
-            jobDetails.TargetLon
+            jobDetails.TargetLon,
+            jobDetails.Revenue
         );
 
         return Ok(new { TransportId = id });

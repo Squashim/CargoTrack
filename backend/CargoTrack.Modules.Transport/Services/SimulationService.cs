@@ -1,6 +1,6 @@
+using CargoTrack.Modules.Shared.Services;
 using CargoTrack.Modules.Transport.Database;
 using CargoTrack.Modules.Transport.Entities;
-using CargoTrack.Modules.Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.LinearReferencing;
@@ -18,7 +18,14 @@ public class SimulationService
         _routeService = routeService;
     }
 
-    public async Task<Guid> StartTransportAsync(StartTransportRequest startTransportRequest, double startLat, double startLon, double endLat, double endLon)
+    public async Task<Guid> StartTransportAsync(
+        StartTransportRequest startTransportRequest,
+        double startLat,
+        double startLon,
+        double endLat,
+        double endLon,
+        decimal revenue
+    )
     {
         var truck = await _db.Trucks.FindAsync(startTransportRequest.TruckId);
         var driver = await _db.Drivers.FindAsync(startTransportRequest.DriverId);
@@ -36,12 +43,13 @@ public class SimulationService
             TrailerId = startTransportRequest.TrailerId,
             CompanyId = truck.CompanyId,
             JobOfferId = startTransportRequest.JobOfferId,
+            Revenue = revenue,
             StartTime = DateTime.UtcNow,
             EstimatedArrivalTime = DateTime.UtcNow.AddSeconds(routeData.DurationSeconds),
             TotalDistanceMeters = routeData.DistanceMeters,
             RouteGeometry = routeData.Geometry,
             CurrentLocation = (Point)routeData.Geometry.StartPoint,
-            IsCompleted = false
+            IsCompleted = false,
         };
 
         _db.Transports.Add(transport);
@@ -52,9 +60,7 @@ public class SimulationService
 
     public async Task UpdatePositionsAsync()
     {
-        var activeJobs = await _db.Transports
-            .Where(t => !t.IsCompleted)
-            .ToListAsync();
+        var activeJobs = await _db.Transports.Where(t => !t.IsCompleted).ToListAsync();
 
         foreach (var job in activeJobs)
         {
@@ -65,13 +71,15 @@ public class SimulationService
                 job.IsCompleted = true;
                 var endPoint = (Point)job.RouteGeometry.EndPoint;
                 job.CurrentLocation = new Point(endPoint.X, endPoint.Y) { SRID = 4326 };
+                await HandleTransportEnd(job);
                 continue;
             }
 
             var totalTime = (job.EstimatedArrivalTime - job.StartTime).TotalSeconds;
             var elapsedTime = (now - job.StartTime).TotalSeconds;
 
-            if (totalTime <= 0) totalTime = 1;
+            if (totalTime <= 0)
+                totalTime = 1;
 
             double fraction = elapsedTime / totalTime;
 
@@ -89,20 +97,24 @@ public class SimulationService
     public async Task<object?> GetTransportStatus(Guid id)
     {
         var t = await _db.Transports.FindAsync(id);
-        if (t == null) return null;
+        if (t == null)
+            return null;
 
         return new
         {
             t.Id,
             CurrentLat = t.CurrentLocation.Y,
             CurrentLon = t.CurrentLocation.X,
-            Progress = (DateTime.UtcNow - t.StartTime).TotalSeconds / (t.EstimatedArrivalTime - t.StartTime).TotalSeconds * 100
+            Progress = (DateTime.UtcNow - t.StartTime).TotalSeconds
+                / (t.EstimatedArrivalTime - t.StartTime).TotalSeconds
+                * 100,
         };
     }
 
     public async Task<List<TruckPositionDto>> CalculateCurrentPositionsAsync()
     {
-        var activeJobs = await _db.Transports.AsNoTracking()
+        var activeJobs = await _db
+            .Transports.AsNoTracking()
             .Include(t => t.Company)
             .Where(t => !t.IsCompleted)
             .ToListAsync();
@@ -111,25 +123,62 @@ public class SimulationService
 
         foreach (var job in activeJobs)
         {
-            if (now >= job.EstimatedArrivalTime) continue;
+            if (now >= job.EstimatedArrivalTime)
+                continue;
 
             var totalTime = (job.EstimatedArrivalTime - job.StartTime).TotalSeconds;
             var elapsedTime = (now - job.StartTime).TotalSeconds;
-            if (totalTime <= 0) totalTime = 1;
+            if (totalTime <= 0)
+                totalTime = 1;
 
             double fraction = elapsedTime / totalTime;
             var length = job.RouteGeometry.Length;
             var indexedLine = new LengthIndexedLine(job.RouteGeometry);
             var pointLocation = indexedLine.ExtractPoint(fraction * length);
 
-            positions.Add(new TruckPositionDto(
-                job.TruckId,
-                job.Company.UserId,
-                pointLocation.Y,
-                pointLocation.X,
-                fraction * 100
-            ));
+            positions.Add(
+                new TruckPositionDto(
+                    job.TruckId,
+                    job.Company.UserId,
+                    pointLocation.Y,
+                    pointLocation.X,
+                    fraction * 100
+                )
+            );
         }
         return positions;
     }
+
+    private async Task HandleTransportEnd(TransportJob transportJob)
+    {
+        var distanceKm = transportJob.TotalDistanceMeters / 1000.0;
+
+        var truck = await _db.Trucks.FindAsync(transportJob.TruckId);
+        if (truck != null)
+        {
+            truck.IsDriving = false;
+            truck.Fuel = Math.Max(0, truck.Fuel - (decimal)(distanceKm * 0.35));
+            truck.Odometer += (decimal)distanceKm;
+            truck.Condition = Math.Max(0, truck.Condition - (decimal)(distanceKm * 0.01));
+        }
+
+        var driver = await _db.Drivers.FindAsync(transportJob.DriverId);
+        if (driver != null)
+        {
+            driver.IsDriving = false;
+        }
+
+        var trailer = await _db.Trailers.FindAsync(transportJob.TrailerId);
+        if (trailer != null)
+        {
+            trailer.Condition = Math.Max(0, trailer.Condition - distanceKm * 0.005);
+        }
+
+        var company = await _db.Companies.FindAsync(transportJob.CompanyId);
+        if (company != null)
+        {
+            company.Balance += transportJob.Revenue;
+        }
+    }
 }
+
