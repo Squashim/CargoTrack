@@ -25,5 +25,9 @@
     "description": "Wybierz jedną z opcji, aby przejść do odpowiedniej podstrony.",
     "open": "Otwórz menu",
     "close": "Zamknij menu"
+  },
+  "sidebar": {
+    "open": "Otwórz pasek boczny",
+    "close": "Zamknij pasek boczny"
   }
 }

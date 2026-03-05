@@ -99,12 +99,10 @@ function Logo({ className, size, redirect, fill, ...props }: LogoProps) {
         to={ROUTES.HOME}
         aria-label={t('actions.goHome')}
         title={t('actions.goHome')}
-        className={
-          (cn(
-            'focus-visible:border-ring focus-visible:ring-ring/50 rounded-xl border border-transparent focus-visible:ring-[3px] transition-all shrink-0 [&_svg]:shrink-0 outline-none select-none'
-          ),
-          linkClassName)
-        }
+        className={cn(
+          'focus-visible:border-ring focus-visible:ring-ring/50 rounded-xl border border-transparent focus-visible:ring-[3px] transition-all shrink-0 [&_svg]:shrink-0 outline-none select-none',
+          linkClassName
+        )}
         {...restLinkProps}
       >
         {logoSvg}

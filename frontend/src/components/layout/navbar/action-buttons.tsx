@@ -15,12 +15,17 @@ import { UserDropdownMenu } from './user-dropdown-menu';
 function DesktopActionButtons() {
   const { isAuthenticated } = useAuth();
   const { t } = useTranslation(['common', 'nav']);
+  const { pathname } = useLocation();
+
+  const isDashboard = pathname.startsWith(ROUTES.USER.DASHBOARD);
 
   return (
     <div className="flex items-center gap-2 justify-end">
       {isAuthenticated ? (
         <>
-          <Button nativeButton={false} render={<Link to={ROUTES.USER.DASHBOARD}>{t('nav:dashboard.title')}</Link>} />
+          {!isDashboard && (
+            <Button nativeButton={false} render={<Link to={ROUTES.USER.DASHBOARD}>{t('nav:dashboard.title')}</Link>} />
+          )}
           <UserDropdownMenu />
         </>
       ) : (
@@ -51,6 +56,8 @@ function MobileActionButtons() {
   const { pathname } = useLocation();
   const { logout } = useLogout();
   const { t } = useTranslation(['common', 'nav']);
+
+  const isDashboard = pathname.startsWith(ROUTES.USER.DASHBOARD);
 
   const handleLogout = () => {
     logout.mutate();
@@ -110,11 +117,13 @@ function MobileActionButtons() {
         ))}
       </ul>
 
-      <Button
-        size="lg"
-        nativeButton={false}
-        render={<Link to={ROUTES.USER.DASHBOARD}>{t('nav:dashboard.title')}</Link>}
-      />
+      {!isDashboard && (
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link to={ROUTES.USER.DASHBOARD}>{t('nav:dashboard.title')}</Link>}
+        />
+      )}
 
       {isLoading ? (
         <Button data-icon="inline-start" variant="secondary" size="lg" disabled className="w-full">

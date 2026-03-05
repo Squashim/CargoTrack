@@ -1,5 +1,6 @@
 import type { NavMenuItem } from '@/types/common';
 import { BookSearch, CircleUser, ClipboardList } from 'lucide-react';
+import type { LngLatBoundsLike, LngLatLike } from 'maplibre-gl';
 
 const PATHS = {
   AUTH: '/auth',
@@ -72,4 +73,13 @@ export const BREAKPOINTS = {
   sm: '640px',
   md: '768px',
   lg: '1024px',
+};
+
+export const MAP_SETTINGS = {
+  center: [19.2, 52.3] as LngLatLike,
+  zoom: 6,
+  maxBounds: [
+    [6.5, 48.3], // Southwest coordinates
+    [31.4, 55.8], // Northeast coordinates
+  ] as LngLatBoundsLike,
 };

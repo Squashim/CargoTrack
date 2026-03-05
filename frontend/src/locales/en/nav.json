@@ -25,5 +25,9 @@
     "description": "Select one of the options to navigate to the corresponding page.",
     "open": "Open menu",
     "close": "Close menu"
+  },
+  "sidebar": {
+    "open": "Open sidebar",
+    "close": "Close sidebar"
   }
 }

@@ -6,6 +6,7 @@ import { RegisterPage } from '@/pages/register';
 import { createBrowserRouter, Navigate } from 'react-router';
 import App from './App';
 import { AuthLayout } from './components/layout/auth-layout';
+import { DashboardLayout } from './components/layout/dashboard-layout';
 import { MainLayout } from './components/layout/main-layout';
 import { ROUTES } from './lib/constants';
 import { AccountPage } from './pages/account';
@@ -60,7 +61,11 @@ const router = createBrowserRouter([
         path: ROUTES.USER.BASE,
         element: <AuthGuard allowMode="authenticated" />,
         children: [
-          { path: ROUTES.USER.DASHBOARD, Component: DashboardPage },
+          {
+            element: <DashboardLayout />,
+            path: ROUTES.USER.DASHBOARD,
+            children: [{ index: true, Component: DashboardPage }],
+          },
           { path: ROUTES.USER.ACCOUNT, Component: AccountPage },
         ],
       },
