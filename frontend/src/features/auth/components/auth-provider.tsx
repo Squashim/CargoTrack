@@ -45,4 +45,4 @@ function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext.Provider value={guestValue}>{children}</AuthContext.Provider>;
 }
 
-export { AuthContext, AuthProvider };
+export { AuthProvider };
