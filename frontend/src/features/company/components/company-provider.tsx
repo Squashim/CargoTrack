@@ -1,11 +1,11 @@
 import { isAxiosError } from 'axios';
 import { useEffect, type PropsWithChildren } from 'react';
 import { CompanyContext, type CompanyContextType } from '../context/company-context';
-import { useUserCompany } from '../queries/use-user-company';
+import { useCompanyQuery } from '../queries/use-company-query';
 import { companyStorage } from '../utils/company-storage';
 
 function CompanyProvider({ children }: PropsWithChildren) {
-  const { data: company, error, isLoading, isFetching } = useUserCompany();
+  const { data: company, error, isLoading, isFetching } = useCompanyQuery();
 
   const is404 = isAxiosError(error) && error.response?.status === 404;
   const knownNoCompany = companyStorage.hasNoCompanyFlag();

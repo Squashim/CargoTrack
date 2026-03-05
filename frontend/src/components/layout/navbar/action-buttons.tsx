@@ -3,8 +3,8 @@ import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { Typography } from '@/components/ui/typography';
-import { useAuth } from '@/features/auth/hooks/use-auth';
-import { useLogout } from '@/features/auth/queries/use-logout';
+import { useAuthContext } from '@/features/auth/hooks/use-auth-context';
+import { useLogoutQuery } from '@/features/auth/queries/use-logout-query';
 import { NAV_AUTH_ITEMS, ROUTES } from '@/lib/constants';
 import { LogIn, LogOutIcon, RefreshCw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ import { ListItem } from './list-item';
 import { UserDropdownMenu } from './user-dropdown-menu';
 
 function DesktopActionButtons() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthContext();
   const { t } = useTranslation(['common', 'nav']);
   const { pathname } = useLocation();
 
@@ -52,9 +52,9 @@ function DesktopActionButtons() {
 }
 
 function MobileActionButtons() {
-  const { isAuthenticated, user, isLoading, authError } = useAuth();
+  const { isAuthenticated, user, isLoading, authError } = useAuthContext();
   const { pathname } = useLocation();
-  const { logout } = useLogout();
+  const { logout } = useLogoutQuery();
   const { t } = useTranslation(['common', 'nav']);
 
   const isDashboard = pathname.startsWith(ROUTES.USER.DASHBOARD);

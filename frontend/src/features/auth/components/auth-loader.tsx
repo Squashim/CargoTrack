@@ -4,7 +4,7 @@ import { useEffect, type PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { AuthContext } from '../context/auth-context';
-import { useUserAuth } from '../queries/use-user-auth';
+import { useUserQuery } from '../queries/use-user-query';
 
 interface AuthLoaderProps {
   onLogin: () => void;
@@ -13,7 +13,7 @@ interface AuthLoaderProps {
 
 export function AuthLoader({ children, onLogin, onLogout }: PropsWithChildren<AuthLoaderProps>) {
   const { t } = useTranslation();
-  const { data: user, isLoading, error, refetch } = useUserAuth();
+  const { data: user, isLoading, error, refetch } = useUserQuery();
 
   useEffect(() => {
     if (isAxiosError(error) && error.response?.status === 401) {

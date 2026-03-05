@@ -1,8 +1,8 @@
 import { use } from 'react';
 import { CompanyContext } from '../context/company-context';
 
-export function useCompany() {
+export function useCompanyContext() {
   const context = use(CompanyContext);
-  if (!context) throw new Error('useCompany must be used within CompanyProvider');
+  if (!context) throw new Error('useCompanyContext must be used within CompanyProvider');
   return context;
 }

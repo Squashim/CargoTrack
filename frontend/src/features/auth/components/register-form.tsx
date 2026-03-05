@@ -9,8 +9,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
-import { useRegister } from '../queries/use-register';
-import { AUTH_CONSTRAINTS } from '../schemas/constants';
+import { useRegisterQuery } from '../queries/use-register-query';
+import { AUTH_CONSTRAINTS } from '../schemas/constraints';
 import { registerDefaultValues, registerSchema, type RegisterFormValues } from '../schemas/register-schema';
 
 const RegisterForm = () => {
@@ -20,7 +20,7 @@ const RegisterForm = () => {
     defaultValues: registerDefaultValues,
   });
   const { t } = useTranslation(['common', 'auth']);
-  const { register } = useRegister({ setError });
+  const { register } = useRegisterQuery({ setError });
 
   function togglePasswordVisibility() {
     setIsPasswordVisible((prev) => !prev);

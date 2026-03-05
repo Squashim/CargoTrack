@@ -8,11 +8,11 @@ import { toast } from 'sonner';
 import { register } from '../api/auth-api';
 import type { RegisterFormValues } from '../schemas/register-schema';
 
-interface UseRegisterProps {
+interface UseRegisterQueryProps {
   setError?: UseFormSetError<RegisterFormValues>;
 }
 
-export function useRegister({ setError }: UseRegisterProps = {}) {
+export function useRegisterQuery({ setError }: UseRegisterQueryProps = {}) {
   const navigate = useNavigate();
 
   const registerMutation = useMutation({

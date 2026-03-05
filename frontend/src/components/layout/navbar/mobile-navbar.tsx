@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useAuthContext } from '@/features/auth/hooks/use-auth-context';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { BREAKPOINTS } from '@/lib/constants';
 import type { NavMenuItem } from '@/types/common';
@@ -118,7 +118,7 @@ interface MobileMenuItemProps {
 
 function MobileMenuItem({ item, onSheetClose, onAccordionClose }: MobileMenuItemProps) {
   const { t } = useTranslation(['nav']);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthContext();
   const { pathname } = useLocation();
 
   const handleSheetCloseWithAccordion = () => {

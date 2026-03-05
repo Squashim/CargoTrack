@@ -4,11 +4,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { logout as logoutApi } from '../api/auth-api';
-import { useAuth } from '../hooks/use-auth';
+import { useAuthContext } from '../hooks/use-auth-context';
 
-export function useLogout() {
+export function useLogoutQuery() {
   const navigate = useNavigate();
-  const { onLogout } = useAuth();
+  const { onLogout } = useAuthContext();
 
   const logoutMutation = useMutation({
     mutationFn: logoutApi,

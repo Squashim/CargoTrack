@@ -3,19 +3,19 @@ import { getCompany } from '../api/company-api';
 import { companyStorage } from '../utils/company-storage';
 import { companyKeys } from '../utils/query-keys';
 
-const userCompanyQueryOptions = {
+const companyQueryOptions = {
   queryKey: companyKeys.user(),
   queryFn: getCompany,
   retry: false,
   refetchOnWindowFocus: false,
 };
 
-function useUserCompany() {
+function useCompanyQuery() {
   const knowNoCompany = companyStorage.hasNoCompanyFlag();
   return useQuery({
-    ...userCompanyQueryOptions,
+    ...companyQueryOptions,
     enabled: !knowNoCompany,
   });
 }
 
-export { useUserCompany };
+export { useCompanyQuery };

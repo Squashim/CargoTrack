@@ -8,8 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircleIcon } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
-import { useLogin } from '../queries/use-login';
-import { AUTH_CONSTRAINTS } from '../schemas/constants';
+import { useLoginQuery } from '../queries/use-login-query';
+import { AUTH_CONSTRAINTS } from '../schemas/constraints';
 import { loginDefaultValues, loginSchema, type LoginFormValues } from '../schemas/login-schema';
 
 function LoginForm() {
@@ -22,7 +22,7 @@ function LoginForm() {
     defaultValues: loginDefaultValues,
   });
   const { t } = useTranslation(['common', 'validation', 'auth']);
-  const { login } = useLogin({ setError });
+  const { login } = useLoginQuery({ setError });
 
   function onSubmit(data: LoginFormValues) {
     login.mutate(data);

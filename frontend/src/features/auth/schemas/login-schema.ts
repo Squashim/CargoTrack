@@ -1,6 +1,6 @@
 import { tZod } from '@/lib/utils';
 import z from 'zod';
-import { AUTH_CONSTRAINTS } from './constants';
+import { AUTH_CONSTRAINTS } from './constraints';
 
 const loginSchema = z.object({
   email: z

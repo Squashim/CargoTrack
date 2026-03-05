@@ -6,18 +6,18 @@ import type { UseFormSetError } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { login as loginApi } from '../api/auth-api';
-import { useAuth } from '../hooks/use-auth';
+import { useAuthContext } from '../hooks/use-auth-context';
 import type { LoginFormValues } from '../schemas/login-schema';
-import { userQueryOptions } from './use-user-auth';
+import { userQueryOptions } from './use-user-query';
 
-interface UseLoginProps {
+interface UseLoginQueryProps {
   setError?: UseFormSetError<LoginFormValues>;
 }
 
-export function useLogin({ setError }: UseLoginProps = {}) {
+export function useLoginQuery({ setError }: UseLoginQueryProps = {}) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { onLogin } = useAuth();
+  const { onLogin } = useAuthContext();
 
   const loginMutation = useMutation({
     mutationFn: loginApi,

@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Spinner } from '@/components/ui/spinner';
 import { Typography } from '@/components/ui/typography';
-import { useAuth } from '@/features/auth/hooks/use-auth';
-import { useLogout } from '@/features/auth/queries/use-logout';
+import { useAuthContext } from '@/features/auth/hooks/use-auth-context';
+import { useLogoutQuery } from '@/features/auth/queries/use-logout-query';
 import { NAV_AUTH_ITEMS } from '@/lib/constants';
 import { LogOutIcon, User2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -19,8 +19,8 @@ import { Link } from 'react-router';
 
 function UserDropdownMenu() {
   const { t } = useTranslation(['common', 'nav']);
-  const { user, isLoading, authError } = useAuth();
-  const { logout } = useLogout();
+  const { user, isLoading, authError } = useAuthContext();
+  const { logout } = useLogoutQuery();
 
   const handleLogout = () => {
     logout.mutate();

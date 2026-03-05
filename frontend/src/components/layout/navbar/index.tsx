@@ -1,10 +1,10 @@
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useAuthContext } from '@/features/auth/hooks/use-auth-context';
 import { NAV_MENU_ITEMS } from '@/lib/constants';
 import { DesktopNavbar } from './desktop-navbar';
 import { MobileNavbar } from './mobile-navbar';
 
 function Navbar() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthContext();
 
   const filteredMenuItems = NAV_MENU_ITEMS.filter((item) => {
     if (item.allow === 'authenticated' && !isAuthenticated) {

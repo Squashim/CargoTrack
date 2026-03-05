@@ -8,7 +8,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useAuthContext } from '@/features/auth/hooks/use-auth-context';
 import type { NavMenuItem } from '@/types/common';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router';
@@ -41,7 +41,7 @@ function DesktopNavbar({ menuItems }: DesktopNavbarProps) {
 
 function DesktopMenuItem({ item }: { item: NavMenuItem }) {
   const { t } = useTranslation(['nav']);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthContext();
   const { pathname } = useLocation();
 
   if (item.items) {

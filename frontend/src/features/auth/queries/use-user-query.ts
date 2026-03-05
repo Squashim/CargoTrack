@@ -12,8 +12,8 @@ const userQueryOptions = {
   staleTime: STALE_TIME,
 };
 
-function useUserAuth() {
+function useUserQuery() {
   return useQuery(userQueryOptions);
 }
 
-export { userQueryOptions, useUserAuth };
+export { userQueryOptions, useUserQuery };

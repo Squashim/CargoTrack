@@ -3,7 +3,7 @@ import { ErrorPage } from '@/pages/error';
 import type { AuthAccess } from '@/types/common';
 import { useQueryClient } from '@tanstack/react-query';
 import { Navigate, Outlet, useLocation } from 'react-router';
-import { useAuth } from '../hooks/use-auth';
+import { useAuthContext } from '../hooks/use-auth-context';
 import { authKeys } from '../utils/query-keys';
 
 interface AuthGuardProps {
@@ -11,7 +11,7 @@ interface AuthGuardProps {
 }
 
 function AuthGuard({ allowMode }: AuthGuardProps) {
-  const { user, authError } = useAuth();
+  const { user, authError } = useAuthContext();
   const location = useLocation();
   const queryClient = useQueryClient();
 
